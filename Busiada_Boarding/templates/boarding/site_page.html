@@ -1,0 +1,144 @@
+{% extends 'boarding/base.html' %}
+
+{% block content %}
+<div class="w-full px-4 py-10 sm:px-6 lg:px-8 lg:py-14 space-y-8">
+    <section class="bg-slate-50/90 border border-slate-200 rounded-3xl shadow-sm p-8">
+        <div class="space-y-4">
+            <div class="space-y-2">
+                <p class="text-xs uppercase tracking-[0.36em] text-slate-400">Page details</p>
+                <h1 class="text-3xl font-bold text-[#0A2540]">{{ page.title }}</h1>
+                {% if page.category %}<p class="text-sm uppercase tracking-[0.24em] text-[#0A2540]/70">Category: {{ page.category }}</p>{% endif %}
+            </div>
+            <div class="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:justify-between sm:items-center">
+                <span>Status: {{ page.get_status_display }}</span>
+                <span>Last updated: {{ page.updated_at|date:"d M, Y" }}</span>
+            </div>
+            {% if page.featured_image %}
+            <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm mx-auto w-full max-w-6xl">
+                <img src="{{ page.featured_image.url }}" alt="{{ page.title }} featured image" data-lightbox-src="{{ page.featured_image.url }}" class="block w-full h-auto max-w-full object-contain cursor-zoom-in" />
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-[#0A2540]">Page description</h2>
+                <p class="text-sm text-slate-500 mt-2">A neat breakdown of the page content, presented in a full-width row container.</p>
+            </div>
+            <span class="text-xs uppercase tracking-[0.24em] text-slate-400">Updated {{ page.updated_at|date:"d M Y" }}</span>
+        </div>
+        <div class="mt-6 prose prose-lg max-w-none text-gray-700 leading-relaxed">
+            {{ page.content|safe }}
+        </div>
+    </section>
+
+    {% if page.images.exists %}
+    <section class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-[#0A2540]">Gallery</h2>
+                <p class="text-sm text-slate-500">Full-resolution photos displayed responsively across all screen sizes.</p>
+            </div>
+            <span class="text-sm text-slate-400">{{ page.images.count }} items</span>
+        </div>
+        <div class="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
+            {% for img in page.images.all %}
+            <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div class="overflow-hidden bg-slate-100 flex items-center justify-center min-h-[16rem] sm:min-h-[18rem] md:min-h-[20rem]">
+                    <img src="{{ img.image.url }}" alt="{{ img.caption|default:img.title|default:page.title }}" data-lightbox-src="{{ img.image.url }}" class="block w-full h-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105 cursor-zoom-in" />
+                </div>
+                <div class="p-5 flex flex-col gap-3">
+                    <div class="flex items-center justify-between gap-4">
+                        <h3 class="text-lg font-semibold text-[#0A2540]">{{ img.title|default:'Photo' }}</h3>
+                        <span class="text-xs uppercase tracking-[0.24em] text-slate-400">{{ img.uploaded_at|date:"d M Y" }}</span>
+                    </div>
+                    {% if img.caption %}
+                    <p class="text-sm text-slate-500 italic">{{ img.caption }}</p>
+                    {% endif %}
+                    {% if img.description %}
+                    <p class="text-sm text-gray-700">{{ img.description|linebreaks }}</p>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <div id="image-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4">
+        <button id="lightbox-close" type="button" class="absolute top-4 right-4 text-white text-3xl leading-none hover:text-slate-200">&times;</button>
+        <img id="lightbox-img" src="" alt="Expanded image view" class="max-h-[90vh] max-w-full rounded-3xl shadow-2xl" />
+    </div>
+
+    {% if page.videos.exists %}
+    <section class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-[#0A2540]">Videos</h2>
+                <p class="text-sm text-slate-500">Videos displayed in full-width responsive layout.</p>
+            </div>
+            <span class="text-sm text-slate-400">{{ page.videos.count }} items</span>
+        </div>
+        <div class="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
+            {% for vid in page.videos.all %}
+            <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div class="overflow-hidden bg-black w-full min-h-80 sm:min-h-96 flex items-center justify-center">
+                    <video controls class="w-full h-auto object-contain">
+                        <source src="{{ vid.video.url }}" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="p-5 flex flex-col gap-3">
+                    <div class="flex items-center justify-between gap-4">
+                        <h3 class="text-lg font-semibold text-[#0A2540]">{{ vid.title|default:'Video' }}</h3>
+                        <span class="text-xs uppercase tracking-[0.24em] text-slate-400">{{ vid.uploaded_at|date:"d M Y" }}</span>
+                    </div>
+                    {% if vid.caption %}
+                    <p class="text-sm text-slate-500 italic">{{ vid.caption }}</p>
+                    {% endif %}
+                    {% if vid.description %}
+                    <p class="text-sm text-gray-700">{{ vid.description|linebreaks }}</p>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if page.documents.exists %}
+    <section class="bg-white border border-slate-200 rounded-3xl shadow-sm p-8">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-2xl font-semibold text-[#0A2540]">Downloads</h2>
+                <p class="text-sm text-slate-500">Each document has a clear row card, label, and upload timestamp.</p>
+            </div>
+            <span class="text-sm text-slate-400">{{ page.documents.count }} items</span>
+        </div>
+        <div class="mt-6 grid gap-4">
+            {% for document in page.documents.all %}
+            <article class="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <a href="{{ document.file.url }}" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
+                        {{ document.title }}
+                    </a>
+                    {% if document.description %}
+                    <p class="text-sm text-slate-500 mt-1">{{ document.description }}</p>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col items-start gap-2 sm:items-end">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                        Download
+                    </span>
+                    <span class="text-xs text-slate-400">{{ document.uploaded_at|date:"d M Y" }}</span>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

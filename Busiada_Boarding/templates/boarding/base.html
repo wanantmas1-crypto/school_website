@@ -1,0 +1,1168 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busiada Girls Senior School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html {
+            scroll-behavior: smooth;
+            background: #e8f4ff;
+            overflow-x: hidden;
+        }
+        body {
+            background: linear-gradient(180deg, #f5faff 0%, #e4f1ff 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        @media (max-width: 767px) {
+            body {
+                padding-bottom: 9.5rem;
+            }
+        }
+        .nav-shell {
+            width: 100%;
+            max-width: 100%;
+        }
+        .brand-wrap {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+        .brand-title {
+            display: block;
+            line-height: 1.15;
+            word-break: break-word;
+        }
+        .brand-subtitle {
+            display: block;
+        }
+        @media (max-width: 640px) {
+            .brand-title { font-size: 0.98rem; }
+            .brand-subtitle { display: none; }
+        }
+        .mobile-menu-scroll {
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .page-shell {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: calc(100vh - 5rem);
+            padding-top: 1.5rem;
+            padding-bottom: 3rem;
+        }
+        .panel-card {
+            transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+        .panel-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 54, 100, 0.08);
+            background-color: #ffffff;
+        }
+        .content-card {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+        }
+        .scroll-fade {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .scroll-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .7s ease, transform .7s ease;
+            transition-delay: var(--reveal-delay, 0ms);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .media-feature {
+            overflow: hidden;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            background: #f8fafc;
+            box-shadow: 0 22px 55px rgba(15, 23, 42, 0.10);
+        }
+        .media-feature img {
+            display: block;
+            width: 100%;
+            height: min(64vh, 620px);
+            object-fit: cover;
+            object-position: center;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+            gap: 1rem;
+            align-items: stretch;
+        }
+        .gallery-card {
+            overflow: hidden;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            background: #ffffff;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        }
+        .gallery-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(14, 165, 233, 0.45);
+            box-shadow: 0 24px 48px rgba(15, 23, 42, 0.13);
+        }
+        .gallery-frame {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+        }
+        .gallery-frame img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            cursor: zoom-in;
+            transition: transform .6s ease, filter .3s ease;
+        }
+        .gallery-card:hover .gallery-frame img {
+            transform: scale(1.06);
+            filter: saturate(1.08) contrast(1.03);
+        }
+        .gallery-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 54%, rgba(15, 23, 42, 0.18));
+            pointer-events: none;
+        }
+        .dropdown-menu {
+            min-width: 15rem;
+            animation: dropdownFade .18s ease;
+        }
+        .dropdown-link {
+            border-radius: 0.9rem;
+            transition: transform .18s ease, background-color .18s ease, color .18s ease;
+        }
+        .dropdown-link:hover {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: #0A2540;
+            transform: translateX(3px);
+        }
+        .dropdown-link:hover i {
+            color: #1d4ed8;
+        }
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+
+        }
+        :root {
+            --a11y-base-scale: 1;
+            --a11y-line-height: 1.6;
+            --a11y-letter-spacing: 0em;
+        }
+        html {
+            font-size: calc(100% * var(--a11y-base-scale));
+        }
+        body {
+            line-height: var(--a11y-line-height);
+            letter-spacing: var(--a11y-letter-spacing);
+        }
+        body.a11y-invert {
+            filter: invert(1) hue-rotate(180deg);
+        }
+        body.a11y-monochrome {
+            filter: grayscale(1) contrast(1.15) brightness(1.05);
+        }
+        body.a11y-dark-contrast {
+            filter: contrast(1.35) brightness(0.92);
+        }
+        body.a11y-light-contrast {
+            filter: contrast(1.15) brightness(1.12);
+        }
+        body.a11y-low-saturation {
+            filter: saturate(0.45) brightness(1.03);
+        }
+        body.a11y-high-saturation {
+            filter: saturate(1.5) contrast(1.05);
+        }
+        body.a11y-highlight-links a {
+            outline: 3px solid rgba(56, 189, 248, 0.85);
+            outline-offset: 2px;
+        }
+        body.a11y-highlight-headings h1,
+        body.a11y-highlight-headings h2,
+        body.a11y-highlight-headings h3,
+        body.a11y-highlight-headings h4,
+        body.a11y-highlight-headings h5,
+        body.a11y-highlight-headings h6 {
+            outline: 3px dashed rgba(245, 158, 11, 0.95);
+            outline-offset: 4px;
+        }
+        .a11y-toggle-button {
+            position: fixed;
+            bottom: 5.75rem;
+            right: 0.9rem;
+            z-index: 60;
+            width: 3.6rem;
+            height: 3.6rem;
+            display: grid;
+            place-items: center;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: white;
+            box-shadow: 0 25px 40px rgba(14, 165, 233, 0.35);
+            border: 2px solid rgba(255,255,255,0.35);
+            transition: transform .2s ease, box-shadow .2s ease;
+            touch-action: manipulation;
+        }
+        .a11y-toggle-button:hover,
+        .a11y-toggle-button:focus-visible {
+            transform: scale(1.05);
+            box-shadow: 0 30px 45px rgba(14, 165, 233, 0.45);
+        }
+        .a11y-panel {
+            position: fixed;
+            bottom: 5.5rem;
+            right: 1rem;
+            z-index: 55;
+            width: min(360px, calc(100vw - 1.5rem));
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 1.5rem;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 1rem;
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(18px);
+            display: none;
+        }
+        .a11y-panel.open {
+            display: block;
+        }
+        .a11y-panel h2 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #a5f3fc;
+        }
+        .a11y-section {
+            margin-bottom: 1rem;
+        }
+        .a11y-section:last-child {
+            margin-bottom: 0;
+        }
+        .a11y-section label {
+            display: block;
+            font-size: 0.9rem;
+            color: #f8fafc;
+            margin-bottom: 0.35rem;
+        }
+        .a11y-section button,
+        .a11y-section input[type="range"] {
+            width: 100%;
+        }
+        .a11y-controls {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .a11y-controls button {
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.08);
+            color: #f8fafc;
+            padding: 0.75rem 0.9rem;
+            text-align: left;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background .2s ease, transform .15s ease;
+        }
+        .a11y-controls button.active {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: rgba(56, 189, 248, 0.55);
+        }
+        .a11y-controls button:hover,
+        .a11y-controls button:focus-visible {
+            background: rgba(255,255,255,0.14);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        .whatsapp-float {
+            position: fixed;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            z-index: 60;
+            border-radius: 9999px;
+            box-shadow: 0 18px 35px rgba(22, 163, 74, 0.35);
+            touch-action: manipulation;
+        }
+        @media (max-width: 640px) {
+            .a11y-toggle-button {
+                right: 0.55rem;
+                bottom: 10.2rem;
+                width: 3.2rem;
+                height: 3.2rem;
+            }
+            .whatsapp-float {
+                right: 0.55rem;
+                bottom: 5.85rem;
+                padding: 0.8rem;
+            }
+            .whatsapp-float span {
+                display: none;
+            }
+        }
+        .a11y-slider {
+            width: 100%;
+        }
+        .a11y-slider-value {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            margin-top: 0.25rem;
+        }
+        /* Hero slideshow effects */
+.landing-slide {
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+    animation: kenburns 12s ease-in-out infinite;
+}
+
+.landing-slide.opacity-100 {
+    opacity: 1;
+}
+
+@keyframes kenburns {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+/* Dark gradient shading */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.15),
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.65)
+        );
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Wind movement */
+.wind-effect {
+    animation: windFlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes windFlow {
+    from {
+        transform: translateX(-10px);
+    }
+    to {
+        transform: translateX(10px);
+    }
+}
+
+.particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.particles::before,
+.particles::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 2px);
+    background-size: 50px 50px;
+    animation: drift 30s linear infinite;
+}
+
+.particles::after {
+    animation-direction: reverse;
+    opacity: .5;
+}
+
+@keyframes drift {
+    from {
+        transform: translateY(0) translateX(0);
+    }
+    to {
+        transform: translateY(-120px) translateX(60px);
+    }
+}
+@keyframes floatBlob {
+    0% {
+        transform: translate(0,0);
+    }
+    50% {
+        transform: translate(30px,-20px);
+    }
+    100% {
+        transform: translate(-20px,20px);
+    }
+}
+
+.floating-blob {
+    animation: floatBlob 15s ease-in-out infinite alternate;
+}
+.hero-aurora {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255,0,128,.25), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(0,255,255,.25), transparent 35%),
+        radial-gradient(circle at 60% 80%, rgba(255,255,0,.15), transparent 30%);
+    animation: auroraMove 20s linear infinite;
+}
+
+@keyframes auroraMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-30px); }
+    100% { transform: translateX(30px); }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(56, 189, 248, 0.9);
+    outline-offset: 3px;
+}
+@media (max-width: 767px) {
+    .site-footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 45;
+        padding-top: 0.85rem;
+        padding-bottom: 0.85rem;
+        box-shadow: 0 -18px 35px rgba(15, 23, 42, 0.22);
+    }
+    .site-footer .footer-inner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .site-footer .footer-grid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    .site-footer .footer-brand {
+        min-width: 0;
+    }
+    .site-footer .footer-brand h3 {
+        font-size: 0.95rem;
+        line-height: 1.2;
+    }
+    .site-footer .footer-brand p,
+    .site-footer .footer-brand .footer-follow-label {
+        display: none;
+    }
+    .site-footer .footer-social {
+        flex-shrink: 0;
+        padding-top: 0;
+    }
+    .site-footer .footer-bottom {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        font-size: 0.72rem;
+    }
+}
+    </style>
+</head>
+<body class="bg-sky-50 text-zinc-900">
+    <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+    <!-- Navbar -->
+    <nav role="navigation" aria-label="Primary navigation" class="bg-[#0A2540] text-white sticky top-0 z-50 shadow-lg">
+        <div class="nav-shell mx-auto px-3 sm:px-6">
+            <div class="flex items-center justify-between gap-3 py-3 sm:py-4 min-h-[4rem]">
+                <a href="{% url 'home' %}" class="brand-wrap flex items-center gap-3 hover:scale-[1.02] transition-transform">
+                    <div class="w-10 h-10 md:w-11 md:h-11 flex-shrink-0 bg-white rounded-2xl flex items-center justify-center text-[#0A2540] font-bold text-2xl md:text-3xl">B</div>
+                    <div class="min-w-0">
+                        <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
+                        <span class="brand-subtitle block text-xs text-white/70">Unleash Your Potential</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex items-center gap-x-2 text-sm font-medium">
+                    <div class="relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="about-menu" aria-expanded="false" aria-controls="about-menu">About <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="about-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="{% url 'site_page' slug='school-history' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book-open text-sm text-[#0A2540]"></i><span>School History</span></a>
+                            <a href="{% url 'site_page' slug='location' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-location-dot text-sm text-[#0A2540]"></i><span>Location</span></a>
+                            <a href="{% url 'site_page' slug='strategic-plan' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-chart-line text-sm text-[#0A2540]"></i><span>Strategic Plan</span></a>
+                            <a href="{% url 'site_page' slug='school-chaplaincy' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-church text-sm text-[#0A2540]"></i><span>School Chaplaincy</span></a>
+                            <a href="{% url 'site_page' slug='service-charter' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-lines text-sm text-[#0A2540]"></i><span>Service Charter</span></a>
+                            <a href="{% url 'site_page' slug='contacts' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-address-book text-sm text-[#0A2540]"></i><span>Contacts</span></a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="admissions-menu" aria-expanded="false" aria-controls="admissions-menu">Admissions <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="admissions-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="{% url 'site_page' slug='admission-process' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-signature text-sm text-[#0A2540]"></i><span>Admission Process</span></a>
+                            <a href="{% url 'site_page' slug='fee-payment' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-credit-card text-sm text-[#0A2540]"></i><span>Fee Payment</span></a>
+                            <a href="{% url 'site_page' slug='admissions-office' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-building text-sm text-[#0A2540]"></i><span>Admissions Office</span></a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="academics-menu" aria-expanded="false" aria-controls="academics-menu">Academics <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="academics-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="{% url 'site_page' slug='elearning-portal' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-laptop text-sm text-[#0A2540]"></i><span>E-Learning Portal</span></a>
+                            <a href="{% url 'site_page' slug='online-courses' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book text-sm text-[#0A2540]"></i><span>Online Courses</span></a>
+                            <a href="{% url 'site_page' slug='assignment-portal' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-tasks text-sm text-[#0A2540]"></i><span>Assignment Portal</span></a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="student-life-menu" aria-expanded="false" aria-controls="student-life-menu">Student Life <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="student-life-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="{% url 'site_page' slug='games-sports' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#0A2540]"></i><span>Games & Sports</span></a>
+                            <a href="{% url 'site_page' slug='clubs-societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#0A2540]"></i><span>Clubs & Societies</span></a>
+                            <a href="{% url 'site_page' slug='student-welfare' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#0A2540]"></i><span>Student Welfare</span></a>
+                            <a href="{% url 'site_page' slug='school-gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#0A2540]"></i><span>School Gallery</span></a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="departments-menu" aria-expanded="false" aria-controls="departments-menu">Departments <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="departments-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="{% url 'academics' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#0A2540]"></i><span>Academics</span></a>
+                            <a href="{% url 'boarding' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bed text-sm text-[#0A2540]"></i><span>Boarding</span></a>
+                            <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-heart-circle-check text-sm text-[#0A2540]"></i><span>Guiding and Counselling</span></a>
+                            <a href="{% url 'site_page' slug='examination-department' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-clipboard-check text-sm text-[#0A2540]"></i><span>Examination Department</span></a>
+                            <a href="{% url 'site_page' slug='clubs-and-societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-user-group text-sm text-[#0A2540]"></i><span>Clubs and Societies</span></a>
+                            <a href="{% url 'site_page' slug='transport' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bus text-sm text-[#0A2540]"></i><span>Transport</span></a>
+                        </div>
+                    </div>
+                    <a href="{% url 'announcements' %}" class="px-4 py-2 hover:bg-[#1E3A8A] rounded-xl transition-all">Announcements</a>
+                </div>
+
+                <button id="menu-btn" class="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-xl text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label="Open menu" aria-expanded="false" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden hidden bg-[#0A2540] text-white px-3 pb-4">
+            <div class="mobile-menu-scroll grid gap-2 py-3">
+                <a href="{% url 'home' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Home</a>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-about" aria-expanded="false">
+                        <span>About</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-about" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="{% url 'site_page' slug='school-history' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School History</a>
+                        <a href="{% url 'site_page' slug='location' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Location</a>
+                        <a href="{% url 'site_page' slug='strategic-plan' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Strategic Plan</a>
+                        <a href="{% url 'site_page' slug='school-chaplaincy' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Chaplaincy</a>
+                        <a href="{% url 'site_page' slug='service-charter' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Service Charter</a>
+                        <a href="{% url 'site_page' slug='contacts' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Contacts</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-admissions" aria-expanded="false">
+                        <span>Admissions</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-admissions" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="{% url 'site_page' slug='admission-process' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admission Process</a>
+                        <a href="{% url 'site_page' slug='fee-payment' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Fee Payment</a>
+                        <a href="{% url 'site_page' slug='admissions-office' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admissions Office</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-academics" aria-expanded="false">
+                        <span>Academics</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-academics" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="{% url 'site_page' slug='elearning-portal' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">E-Learning Portal</a>
+                        <a href="{% url 'site_page' slug='online-courses' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Online Courses</a>
+                        <a href="{% url 'site_page' slug='assignment-portal' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Assignment Portal</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-student-life" aria-expanded="false">
+                        <span>Student Life</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="{% url 'site_page' slug='games-sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
+                        <a href="{% url 'site_page' slug='clubs-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
+                        <a href="{% url 'site_page' slug='student-welfare' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Student Welfare</a>
+                        <a href="{% url 'site_page' slug='school-gallery' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Gallery</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-departments" aria-expanded="false">
+                        <span>Departments</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-departments" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="{% url 'academics' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Academics</a>
+                        <a href="{% url 'boarding' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Boarding</a>
+                        <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding and Counselling</a>
+                        <a href="{% url 'site_page' slug='examination-department' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Examination Department</a>
+                        <a href="{% url 'site_page' slug='clubs-and-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs and Societies</a>
+                        <a href="{% url 'site_page' slug='transport' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Transport</a>
+                    </div>
+                </div>
+
+                <a href="{% url 'announcements' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Announcements</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" class="w-full overflow-x-hidden" tabindex="-1">
+        {% block content_wrapper_start %}
+        <div class="w-full max-w-none px-3 py-5 sm:px-6 lg:px-8 lg:py-8">
+        {% endblock %}
+
+            {% block content %}{% endblock %}
+
+        {% block content_wrapper_end %}
+        </div>
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer bg-[#0A2540] text-white py-16">
+        <div class="footer-inner w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer Content Grid -->
+            <div class="footer-grid grid grid-cols-1 gap-8 mb-12 md:grid-cols-[1fr_auto] md:items-center">
+                <!-- School Info -->
+                <div class="footer-brand space-y-4">
+                    <h3 class="text-lg font-bold">Busiada Girls Senior School</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Unleash Your Potential</p>
+                    <p class="footer-follow-label text-xs uppercase tracking-[0.3em] text-white/70">Follow Us:</p>
+                    <div class="footer-social flex gap-3 pt-1">
+                        <!-- Facebook -->
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook"
+                            class="group relative flex items-center justify-center w-9 h-9 border-2 border-white/40 rounded hover:border-blue-500 hover:bg-blue-500/20 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="w-4 h-4 fill-current">
+                                <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/>
+                            </svg>
+                        </a>
+                        <!-- TikTok -->
+                        <a href="https://tiktok.com" target="_blank" aria-label="TikTok"
+                            class="group relative flex items-center justify-center w-9 h-9 border-2 border-white/40 rounded hover:border-black hover:bg-black/20 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current">
+                                <path d="M448 209.9a210.1 210.1 0 0 1-122.8-39.3v178.7A133.4 133.4 0 1 1 191.8 216v72.6a61.8 61.8 0 1 0 43.2 59V0h90.2a121.2 121.2 0 0 0 122.8 121.2z"/>
+                            </svg>
+                        </a>
+                        <!-- X / Twitter -->
+                        <a href="https://x.com" target="_blank" aria-label="X"
+                            class="group relative flex items-center justify-center w-9 h-9 border-2 border-white/40 rounded hover:border-slate-400 hover:bg-slate-400/20 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4 fill-current">
+                                <path d="M389.2 48h70.6L305.6 224.2 487.2 464H345.3L233.7 318.6 106.5 464H35.8l164.8-188.5L24.8 48h145.6l101 132.3L389.2 48z"/>
+                            </svg>
+                        </a>
+                        <!-- Instagram -->
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram"
+                            class="group relative flex items-center justify-center w-9 h-9 border-2 border-white/40 rounded hover:border-pink-500 hover:bg-pink-500/20 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current">
+                                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9S160.5 370.8 224.1 370.8 339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.2 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.5 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.9-26.9 26.9s-26.9-12-26.9-26.9 12-26.9 26.9-26.9 26.9 12 26.9 26.9zM398.8 80A48.1 48.1 0 0 0 364.8 46C337.7 32 224 32 224 32S110.3 32 83.2 46A48.1 48.1 0 0 0 49.2 80C35.2 107.1 35.2 256 35.2 256s0 148.9 14 176a48.1 48.1 0 0 0 34 34c27.1 14 140.8 14 140.8 14s113.7 0 140.8-14a48.1 48.1 0 0 0 34-34c14-27.1 14-176 14-176s0-148.9-14-176z"/>
+                            </svg>
+                        </a>
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp"
+                            class="group relative flex items-center justify-center w-9 h-9 border-2 border-white/40 rounded hover:border-green-500 hover:bg-green-500/20 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current">
+                                <path d="M380.9 97.1C339-6.8 217.5-33.2 123.1 28.6 28.7 90.4-8.4 208.7 34.2 311.2L0 480l172.7-45.3c92.5 50.5 208.7 16.8 269.4-75.9 60.8-92.7 50.3-214.5-61.2-261.7zM224 392c-30.4 0-60.1-8.1-86.1-23.4l-6.2-3.7-102.5 26.9 27.4-99.8-4-6.5c-55.3-89.7-3.4-207.3 101.4-229.7 104.8-22.4 201.8 63.8 177.7 169.2C312.2 327.4 274.1 392 224 392zm101.2-138.2c-5.5-2.8-32.6-16.1-37.6-17.9-5-1.8-8.6-2.8-12.2 2.8-3.6 5.5-14 17.9-17.2 21.5-3.1 3.6-6.3 4.1-11.8 1.4-5.5-2.8-23.3-8.6-44.3-27.4-16.3-14.5-27.3-32.4-30.5-37.9-3.2-5.5-.3-8.5 2.4-11.3 2.5-2.5 5.5-6.3 8.3-9.5 2.8-3.2 3.6-5.5 5.5-9.1 1.8-3.6.9-6.8-.5-9.5-1.4-2.8-12.2-29.4-16.7-40.2-4.4-10.6-8.9-9.1-12.2-9.3-3.1-.2-6.8-.2-10.5-.2s-9.5 1.4-14.5 6.8c-5 5.5-19.1 18.7-19.1 45.6s19.6 53 22.3 56.6c2.8 3.6 38.6 59 93.5 82.7 13.1 5.7 23.3 9.1 31.2 11.6 13.1 4.2 25.1 3.6 34.5 2.2 10.5-1.6 32.6-13.3 37.2-26.2 4.6-12.9 4.6-23.9 3.2-26.2-1.3-2.3-5-3.6-10.5-6.3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Divider -->
+            <div class="border-t border-white/10"></div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom text-center text-white/50 text-sm pt-8 mt-8">
+                ┬⌐ 2026 Busiada Girls Senior School. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <button id="a11y-toggle-button" class="a11y-toggle-button" aria-controls="a11y-panel" aria-expanded="false" aria-label="Open accessibility tools">
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8"></circle>
+            <path d="M12 7v10"></path>
+            <path d="M7 10c1.3 1 2.7 1.7 5 1.7s3.7-.7 5-1.7"></path>
+            <path d="M7 14c1.3-1 2.7-1.7 5-1.7s3.7.7 5 1.7"></path>
+        </svg>
+    </button>
+
+    <aside id="a11y-panel" class="a11y-panel" aria-label="Accessibility tools panel">
+        <div class="flex items-center justify-between gap-3 mb-4">
+            <div>
+                <h2 class="text-base font-semibold tracking-[0.18em] text-cyan-200">Accessibility Tools</h2>
+                <p class="text-xs text-slate-300">Toggle settings for better readability.</p>
+            </div>
+            <button id="a11y-panel-close" class="text-slate-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 rounded-lg" aria-label="Close accessibility tools">├ù</button>
+        </div>
+        <div class="a11y-controls">
+            <button type="button" data-a11y-mode="invert">Invert colors</button>
+            <button type="button" data-a11y-mode="monochrome">Monochrome</button>
+            <button type="button" data-a11y-mode="dark-contrast">Dark contrast</button>
+            <button type="button" data-a11y-mode="light-contrast">Light contrast</button>
+            <button type="button" data-a11y-mode="low-saturation">Low saturation</button>
+            <button type="button" data-a11y-mode="high-saturation">High saturation</button>
+            <button type="button" data-a11y-mode="highlight-links">Highlight links</button>
+            <button type="button" data-a11y-mode="highlight-headings">Highlight headings</button>
+        </div>
+        <div class="a11y-section mt-4">
+            <label for="a11y-base-scale">Content scaling: <span id="a11y-base-scale-value">100%</span></label>
+            <input id="a11y-base-scale" class="a11y-slider" type="range" min="0.8" max="1.4" step="0.05" value="1">
+        </div>
+        <div class="a11y-section">
+            <label for="a11y-font-scale">Font size: <span id="a11y-font-scale-value">100%</span></label>
+            <input id="a11y-font-scale" class="a11y-slider" type="range" min="0.8" max="1.5" step="0.05" value="1">
+        </div>
+        <div class="a11y-section">
+            <label for="a11y-line-height">Line height: <span id="a11y-line-height-value">1.6</span></label>
+            <input id="a11y-line-height" class="a11y-slider" type="range" min="1.2" max="2.2" step="0.1" value="1.6">
+        </div>
+        <div class="a11y-section">
+            <label for="a11y-letter-spacing">Letter spacing: <span id="a11y-letter-spacing-value">0em</span></label>
+            <input id="a11y-letter-spacing" class="a11y-slider" type="range" min="0" max="0.25" step="0.01" value="0">
+        </div>
+        <button id="a11y-reset" class="mt-3 bg-slate-100/10 text-white px-4 py-3 rounded-xl border border-white/15 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-cyan-300">Reset accessibility settings</button>
+    </aside>
+
+    <a href="https://wa.me/254700000000" target="_blank" class="whatsapp-float bg-green-500 hover:bg-green-600 text-white p-4 sm:p-5 shadow-2xl flex items-center gap-3 transition-all hover:scale-110 ring-4 ring-green-400/30" aria-label="Chat with us on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-7 h-7 sm:w-8 sm:h-8 fill-current" aria-hidden="true">
+            <path d="M380.9 97.1C339-6.8 217.5-33.2 123.1 28.6 28.7 90.4-8.4 208.7 34.2 311.2L0 480l172.7-45.3c92.5 50.5 208.7 16.8 269.4-75.9 60.8-92.7 50.3-214.5-61.2-261.7zM224 392c-30.4 0-60.1-8.1-86.1-23.4l-6.2-3.7-102.5 26.9 27.4-99.8-4-6.5c-55.3-89.7-3.4-207.3 101.4-229.7 104.8-22.4 201.8 63.8 177.7 169.2C312.2 327.4 274.1 392 224 392zm101.2-138.2c-5.5-2.8-32.6-16.1-37.6-17.9-5-1.8-8.6-2.8-12.2 2.8-3.6 5.5-14 17.9-17.2 21.5-3.1 3.6-6.3 4.1-11.8 1.4-5.5-2.8-23.3-8.6-44.3-27.4-16.3-14.5-27.3-32.4-30.5-37.9-3.2-5.5-.3-8.5 2.4-11.3 2.5-2.5 5.5-6.3 8.3-9.5 2.8-3.2 3.6-5.5 5.5-9.1 1.8-3.6.9-6.8-.5-9.5-1.4-2.8-12.2-29.4-16.7-40.2-4.4-10.6-8.9-9.1-12.2-9.3-3.1-.2-6.8-.2-10.5-.2s-9.5 1.4-14.5 6.8c-5 5.5-19.1 18.7-19.1 45.6s19.6 53 22.3 56.6c2.8 3.6 38.6 59 93.5 82.7 13.1 5.7 23.3 9.1 31.2 11.6 13.1 4.2 25.1 3.6 34.5 2.2 10.5-1.6 32.6-13.3 37.2-26.2 4.6-12.9 4.6-23.9 3.2-26.2-1.3-2.3-5-3.6-10.5-6.3z"/>
+        </svg>
+        <span class="hidden md:inline font-semibold pr-2 text-base">Chat with us on WhatsApp</span>
+    </a>
+
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const a11yButton = document.getElementById('a11y-toggle-button');
+    const a11yPanel = document.getElementById('a11y-panel');
+    const a11yClose = document.getElementById('a11y-panel-close');
+    const a11yToggleButtons = document.querySelectorAll('[data-a11y-mode]');
+    const a11yReset = document.getElementById('a11y-reset');
+    const a11yBaseScale = document.getElementById('a11y-base-scale');
+    const a11yFontScale = document.getElementById('a11y-font-scale');
+    const a11yLineHeight = document.getElementById('a11y-line-height');
+    const a11yLetterSpacing = document.getElementById('a11y-letter-spacing');
+    const a11yBaseScaleValue = document.getElementById('a11y-base-scale-value');
+    const a11yFontScaleValue = document.getElementById('a11y-font-scale-value');
+    const a11yLineHeightValue = document.getElementById('a11y-line-height-value');
+    const a11yLetterSpacingValue = document.getElementById('a11y-letter-spacing-value');
+
+    const a11yClasses = [
+        'a11y-invert',
+        'a11y-monochrome',
+        'a11y-dark-contrast',
+        'a11y-light-contrast',
+        'a11y-low-saturation',
+        'a11y-high-saturation',
+        'a11y-highlight-links',
+        'a11y-highlight-headings'
+    ];
+
+    const setValueText = (element, value, suffix = '') => {
+        if (element) element.textContent = `${value}${suffix}`;
+    };
+
+    const applyA11yMode = (mode) => {
+        const body = document.body;
+        a11yClasses.forEach((className) => body.classList.remove(className));
+
+        if (mode === 'highlight-links' || mode === 'highlight-headings') {
+            body.classList.add(`a11y-${mode}`);
+        } else if (mode) {
+            body.classList.add(`a11y-${mode}`);
+        }
+    };
+
+    const clearA11yModes = () => {
+        document.body.classList.remove(...a11yClasses);
+        a11yToggleButtons.forEach((button) => button.classList.remove('active'));
+        localStorage.removeItem('a11y-mode');
+    };
+
+    const loadA11ySettings = () => {
+        const savedMode = localStorage.getItem('a11y-mode');
+        const savedScale = parseFloat(localStorage.getItem('a11y-base-scale')) || 1;
+        const savedFont = parseFloat(localStorage.getItem('a11y-font-scale')) || 1;
+        const savedLineHeight = parseFloat(localStorage.getItem('a11y-line-height')) || 1.6;
+        const savedLetterSpacing = localStorage.getItem('a11y-letter-spacing') || '0em';
+
+        if (savedMode) {
+            applyA11yMode(savedMode);
+            const activeButton = document.querySelector(`[data-a11y-mode="${savedMode}"]`);
+            activeButton?.classList.add('active');
+        }
+        document.documentElement.style.setProperty('--a11y-base-scale', savedScale);
+        document.documentElement.style.setProperty('--a11y-font-scale', savedFont);
+        document.documentElement.style.setProperty('--a11y-line-height', savedLineHeight);
+        document.documentElement.style.setProperty('--a11y-letter-spacing', savedLetterSpacing);
+
+        if (a11yBaseScale) a11yBaseScale.value = savedScale;
+        if (a11yFontScale) a11yFontScale.value = savedFont;
+        if (a11yLineHeight) a11yLineHeight.value = savedLineHeight;
+        if (a11yLetterSpacing) a11yLetterSpacing.value = parseFloat(savedLetterSpacing) || 0;
+
+        setValueText(a11yBaseScaleValue, Math.round(savedScale * 100), '%');
+        setValueText(a11yFontScaleValue, Math.round(savedFont * 100), '%');
+        setValueText(a11yLineHeightValue, savedLineHeight);
+        setValueText(a11yLetterSpacingValue, savedLetterSpacing);
+    };
+
+    const updateScale = (element, property, unit = '', storageKey, displayValue) => {
+        if (!element) return;
+        const value = element.value;
+        document.documentElement.style.setProperty(`--${property}`, value);
+        if (storageKey) localStorage.setItem(storageKey, value);
+        if (displayValue) displayValue.textContent = `${value}${unit}`;
+    };
+
+    if (a11yButton && a11yPanel) {
+        a11yButton.addEventListener('click', () => {
+            const open = !a11yPanel.classList.contains('open');
+            a11yPanel.classList.toggle('open', open);
+            a11yButton.setAttribute('aria-expanded', String(open));
+        });
+    }
+
+    if (a11yClose && a11yPanel) {
+        a11yClose.addEventListener('click', () => {
+            a11yPanel.classList.remove('open');
+            a11yButton.setAttribute('aria-expanded', 'false');
+            a11yButton.focus();
+        });
+    }
+
+    if (a11yToggleButtons) {
+        a11yToggleButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const mode = button.getAttribute('data-a11y-mode');
+                if (!mode) return;
+                const isActive = button.classList.contains('active');
+                clearA11yModes();
+                if (!isActive) {
+                    button.classList.add('active');
+                    applyA11yMode(mode);
+                    localStorage.setItem('a11y-mode', mode);
+                } else {
+                    localStorage.removeItem('a11y-mode');
+                }
+            });
+        });
+    }
+
+    if (a11yBaseScale) {
+        a11yBaseScale.addEventListener('input', () => updateScale(a11yBaseScale, 'a11y-base-scale', '', 'a11y-base-scale', a11yBaseScaleValue));
+    }
+    if (a11yFontScale) {
+        a11yFontScale.addEventListener('input', () => updateScale(a11yFontScale, 'a11y-font-scale', '', 'a11y-font-scale', a11yFontScaleValue));
+    }
+    if (a11yLineHeight) {
+        a11yLineHeight.addEventListener('input', () => updateScale(a11yLineHeight, 'a11y-line-height', '', 'a11y-line-height', a11yLineHeightValue));
+    }
+    if (a11yLetterSpacing) {
+        a11yLetterSpacing.addEventListener('input', () => {
+            const value = `${a11yLetterSpacing.value}em`;
+            document.documentElement.style.setProperty('--a11y-letter-spacing', value);
+            localStorage.setItem('a11y-letter-spacing', value);
+            setValueText(a11yLetterSpacingValue, value);
+        });
+    }
+
+    if (a11yReset) {
+        a11yReset.addEventListener('click', () => {
+            clearA11yModes();
+            if (a11yBaseScale) {
+                a11yBaseScale.value = 1;
+                updateScale(a11yBaseScale, 'a11y-base-scale', '', 'a11y-base-scale', a11yBaseScaleValue);
+            }
+            if (a11yFontScale) {
+                a11yFontScale.value = 1;
+                updateScale(a11yFontScale, 'a11y-font-scale', '', 'a11y-font-scale', a11yFontScaleValue);
+            }
+            if (a11yLineHeight) {
+                a11yLineHeight.value = 1.6;
+                updateScale(a11yLineHeight, 'a11y-line-height', '', 'a11y-line-height', a11yLineHeightValue);
+            }
+            if (a11yLetterSpacing) {
+                a11yLetterSpacing.value = 0;
+                document.documentElement.style.setProperty('--a11y-letter-spacing', '0em');
+                localStorage.setItem('a11y-letter-spacing', '0em');
+                setValueText(a11yLetterSpacingValue, '0em');
+            }
+            localStorage.removeItem('a11y-mode');
+        });
+    }
+
+    document.addEventListener('click', (event) => {
+        if (a11yPanel && !event.target.closest('#a11y-panel') && !event.target.closest('#a11y-toggle-button')) {
+            a11yPanel.classList.remove('open');
+            a11yButton?.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && a11yPanel && a11yPanel.classList.contains('open')) {
+            a11yPanel.classList.remove('open');
+            a11yButton?.setAttribute('aria-expanded', 'false');
+            a11yButton?.focus();
+        }
+    });
+
+    loadA11ySettings();
+
+    const revealOnScrollItems = document.querySelectorAll('.reveal-on-scroll, .scroll-fade');
+
+    if (revealOnScrollItems.length && 'IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible', 'visible');
+                revealObserver.unobserve(entry.target);
+            });
+        }, {
+            threshold: 0.14,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealOnScrollItems.forEach((item, index) => {
+            if (!item.style.getPropertyValue('--reveal-delay')) {
+                item.style.setProperty('--reveal-delay', `${Math.min(index % 6, 5) * 80}ms`);
+            }
+            revealObserver.observe(item);
+        });
+    } else {
+        revealOnScrollItems.forEach((item) => item.classList.add('is-visible', 'visible'));
+    }
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const willOpen = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(willOpen));
+            menuBtn.innerHTML = willOpen
+                ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+        });
+    }
+
+    const dropdownTriggers = document.querySelectorAll('.nav-dropdown-trigger');
+    const dropdownMenus = document.querySelectorAll('[data-dropdown-menu]');
+    const mobileNavToggles = document.querySelectorAll('.mobile-nav-toggle');
+
+    function closeMobileDropdowns() {
+        mobileNavToggles.forEach((button) => {
+            const targetId = button.getAttribute('data-mobile-target');
+            const panel = document.getElementById(targetId);
+            if (panel) {
+                panel.classList.add('hidden');
+            }
+            button.setAttribute('aria-expanded', 'false');
+            button.querySelector('i')?.classList.remove('fa-chevron-up');
+            button.querySelector('i')?.classList.add('fa-chevron-down');
+        });
+    }
+
+    function closeAllDropdowns() {
+        dropdownMenus.forEach((menu) => menu.classList.add('hidden'));
+        dropdownTriggers.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+    }
+
+    dropdownTriggers.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const target = button.getAttribute('data-dropdown-target');
+            const menu = document.getElementById(target);
+
+            if (!menu) return;
+
+            const isOpen = !menu.classList.contains('hidden');
+
+            closeAllDropdowns();
+
+            if (!isOpen) {
+                menu.classList.remove('hidden');
+                button.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    mobileNavToggles.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const targetId = button.getAttribute('data-mobile-target');
+            const panel = document.getElementById(targetId);
+            const icon = button.querySelector('i');
+
+            if (!panel) return;
+
+            const isOpen = !panel.classList.contains('hidden');
+            closeMobileDropdowns();
+
+            if (!isOpen) {
+                panel.classList.remove('hidden');
+                button.setAttribute('aria-expanded', 'true');
+                icon?.classList.remove('fa-chevron-down');
+                icon?.classList.add('fa-chevron-up');
+            }
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.relative.group')) {
+            closeAllDropdowns();
+        }
+        if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobile-menu')) {
+            closeMobileDropdowns();
+        }
+        if (mobileMenu && !event.target.closest('#mobile-menu') && !event.target.closest('#menu-btn')) {
+            mobileMenu.classList.add('hidden');
+            if (menuBtn) {
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+            }
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeAllDropdowns();
+            closeMobileDropdowns();
+            if (menuBtn) {
+                menuBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+
+    const slides = document.querySelectorAll('.landing-slide');
+
+    if (slides.length > 1) {
+        let current = 0;
+
+        setInterval(() => {
+            slides[current].classList.remove('opacity-100');
+            slides[current].classList.add('opacity-0');
+
+            current = (current + 1) % slides.length;
+
+            slides[current].classList.remove('opacity-0');
+            slides[current].classList.add('opacity-100');
+        }, 6000);
+    }
+
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    document.querySelectorAll('img[data-lightbox-src]').forEach((img) => {
+        img.addEventListener('click', () => {
+            const src = img.getAttribute('data-lightbox-src');
+            if (!src || !lightbox || !lightboxImg) return;
+            lightboxImg.src = src;
+            lightbox.classList.remove('hidden');
+        });
+    });
+
+    const hideLightbox = () => {
+        if (!lightbox || !lightboxImg) return;
+        lightbox.classList.add('hidden');
+        lightboxImg.src = '';
+    };
+
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', hideLightbox);
+    }
+
+    if (lightbox) {
+        lightbox.addEventListener('click', (event) => {
+            if (event.target === lightbox || event.target === lightboxClose) {
+                hideLightbox();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            hideLightbox();
+        }
+    });
+});
+</script>
+</body>
+
+</div>
+</html>
+
