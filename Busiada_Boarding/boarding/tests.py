@@ -31,10 +31,18 @@ class AnnouncementAdminFieldsTests(TestCase):
 
 class PublicPagesTests(TestCase):
     def test_home_page_renders_successfully(self):
+        page = SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Busiada Girls Senior School')
+        self.assertContains(response, page.title)
+        self.assertContains(response, 'Welcome to the homepage.')
 
     def test_about_page_contains_location_map_link(self):
         response = self.client.get('/about/')

@@ -48,7 +48,9 @@ function createAIButton() {
         btn.disabled = true;
         btn.textContent = 'Generating...';
         const csrftoken = getCookie('csrftoken');
-        const content = (tinymce && tinymce.get('id_content')) ? tinymce.get('id_content').getContent({ format: 'text' }) : document.getElementById('id_content').value;
+        const quill = window.__quill_editors && window.__quill_editors['id_content'];
+        const tiny = window.tinymce && window.tinymce.activeEditor;
+        const content = quill ? quill.getText() : tiny ? tiny.getContent({ format: 'text' }) : contentEl.value;
         try {
             const resp = await fetch('/ai/admin/suggest/', {
                 method: 'POST',
@@ -70,9 +72,13 @@ function createAIButton() {
     applyBtn.addEventListener('click', () => {
         const text = resultBox.value;
         if (!text) return;
-        if (tinymce && tinymce.get('id_content')) {
-            const cur = tinymce.get('id_content').getContent();
-            tinymce.get('id_content').setContent(cur + '<p>' + text.replace(/\n/g, '<br>') + '</p>');
+        const quill = window.__quill_editors && window.__quill_editors['id_content'];
+        const tiny = window.tinymce && window.tinymce.activeEditor;
+        if (quill) {
+            const cur = quill.root.innerHTML;
+            quill.root.innerHTML = cur + '<p>' + text.replace(/\n/g, '<br>') + '</p>';
+        } else if (tiny) {
+            tiny.setContent(tiny.getContent() + '<p>' + text.replace(/\n/g, '<br>') + '</p>');
         } else {
             const el = document.getElementById('id_content');
             el.value = el.value + "\n\n" + text;

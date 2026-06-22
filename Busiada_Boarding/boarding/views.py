@@ -3,8 +3,37 @@ from django.http import HttpResponse
 from .models import Inquiry, SitePage, Announcement
 
 def home(request):
-    """Render the clean new homepage."""
-    return render(request, 'boarding/home_new.html')
+    page = SitePage.objects.filter(slug='home', status='published').first()
+    if not page:
+        page = SitePage.objects.filter(slug='home').first()
+
+    # Build a list of slides with per-slide delay: prefer featured_image, then page images
+    slides = []
+    try:
+        if page:
+            if getattr(page, 'featured_image', None) and getattr(page.featured_image, 'url', None):
+                slides.append(page.featured_image.url)
+            for img in page.images.all():
+                url = getattr(getattr(img, 'image', None), 'url', None)
+                if url and url not in slides:
+                    slides.append(url)
+    except Exception:
+        slides = []
+
+    slide_interval = 12
+    # Build slides metadata with per-slide delay (seconds)
+    slides_meta = []
+    for i, url in enumerate(slides):
+        slides_meta.append({'url': url, 'delay': i * slide_interval})
+
+    hero_total_duration = max(len(slides) * slide_interval, 12)
+
+    return render(request, 'boarding/index.html', {
+        'page': page,
+        'slides': slides_meta,
+        'slide_interval': slide_interval,
+        'hero_total_duration': hero_total_duration,
+    })
 
 
 def about(request):
@@ -81,6 +110,29 @@ def academics(request):
         )
 
     return render(request, 'boarding/site_page.html', {'page': page})
+
+
+def academics_844(request):
+    context = {
+        'title': '8-4-4 Curriculum',
+        'content': (
+            '<h2 class="text-2xl font-bold mb-4">8-4-4 Curriculum</h2>'
+            '<p>This page provides an overview of the 8-4-4 curriculum. Update content in the template or through Django Admin.</p>'
+        ),
+    }
+    return render(request, 'boarding/academics_844.html', context)
+
+
+def academics_26333(request):
+    context = {
+        'title': '2-6-3-3-3 Curriculum',
+        'content': (
+            '<h2 class="text-2xl font-bold mb-4">2-6-3-3-3 Curriculum</h2>'
+            '<p>This page provides an overview of the 2-6-3-3-3 curriculum. Update content in the template or through Django Admin.</p>'
+        ),
+    }
+    return render(request, 'boarding/academics_26333.html', context)
+
 
 def boarding_page(request):
     return render(request, 'boarding/boarding.html')

@@ -1,0 +1,62 @@
+{% extends 'boarding/base.html' %}
+
+{% block content %}
+<div class="w-full max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <main class="space-y-8">
+            <section class="reveal-on-scroll bg-white border border-slate-200 rounded-3xl shadow-sm p-6 sm:p-8">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <p class="text-xs uppercase tracking-[0.36em] text-slate-400">Page details</p>
+                        <h1 class="text-3xl font-bold text-[#0A2540]">{% block page_title %}{% endblock %}</h1>
+                        <p class="text-sm text-slate-500">{% block page_subtitle %}{% endblock %}</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="content-card p-6 sm:p-8 space-y-8">
+                {% block page_content %}{% endblock %}
+            </div>
+        </main>
+
+        <aside class="hidden lg:block">
+            <div class="space-y-6">
+                <div class="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+                    <p class="text-xs uppercase tracking-[0.36em] text-slate-400">Page summary</p>
+                    <h2 class="mt-3 text-xl font-semibold text-[#0A2540]">Quick details</h2>
+                    <div class="mt-4 space-y-3 text-sm text-slate-600">
+                        {% if page.category %}
+                        <div>
+                            <p class="font-semibold text-slate-900">Category</p>
+                            <p>{{ page.category }}</p>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="font-semibold text-slate-900">Last updated</p>
+                            <p>{{ page.updated_at|date:'F j, Y' }}</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-slate-900">Content blocks</p>
+                            <p>{{ page.sections|length }} section{{ page.sections|length|pluralize }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% if page.sections %}
+                <div class="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+                    <p class="text-xs uppercase tracking-[0.36em] text-slate-400">Section links</p>
+                    <h2 class="mt-3 text-xl font-semibold text-[#0A2540]">Jump to</h2>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        {% for block in page.sections %}
+                        <li>
+                            <a href="#{{ block.slug|default:block.title|slugify }}" class="block rounded-xl px-3 py-2 text-slate-700 transition hover:bg-slate-100">{{ block.title|default:'Section ' }}{% if block.title %}{% else %}{{ forloop.counter }}{% endif %}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

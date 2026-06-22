@@ -4,342 +4,216 @@
 {% block content_wrapper_end %}{% endblock %}
 
 {% block content %}
-{% with hero_bg=hero_background %}
-<section class="relative overflow-hidden text-white min-h-screen lg:h-screen flex items-center {% if not hero_bg %}bg-gradient-to-br from-[#031926] via-[#0a2540] to-[#144e7f]{% endif %}">
-    {% if hero_bg %}
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute inset-0" style="background:
-            linear-gradient(135deg, rgba(2,6,23,0.72), rgba(15,23,42,0.80)),
-            url('{{ hero_bg }}') center/cover no-repeat;
-            transform: scale(1.04);
-            filter: saturate(1.08) contrast(1.04) brightness(0.98);"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_25%),radial-gradient(circle_at_bottom_right,_rgba(236,72,153,0.12),_transparent_25%)] pointer-events-none"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-[#031926]/70 via-transparent to-[#0f172a]/40"></div>
+{% with slides=slides|default:None %}
+<section class="relative min-h-screen overflow-hidden text-white">
+    <style>
+        .landing-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform-origin:center; animation-name:slideShow; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
+        @keyframes slideShow {
+            0% { opacity:0; transform:scale(1); }
+            12% { opacity:1; transform:scale(1.03); }
+            78% { opacity:1; transform:scale(1.06); }
+            90% { opacity:0; transform:scale(1.12); }
+            100% { opacity:0; transform:scale(1.12); }
+        }
+    </style>
+    <div class="absolute inset-0">
+        {% if slides %}
+            {% for s in slides %}
+            <div class="landing-slide" style="background-image:url('{{ s.url }}'); animation-duration: {{ hero_total_duration }}s; animation-delay: {{ s.delay }}s;"></div>
+            {% endfor %}
+        {% else %}
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),_transparent_35%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]"></div>
+        {% endif %}
+        <div class="absolute inset-0 bg-slate-950/65"></div>
     </div>
-    {% else %}
-    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(15,23,42,0.68))]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.20),_transparent_18%),radial-gradient(circle_at_bottom_right,_rgba(132,204,255,0.18),_transparent_22%)] pointer-events-none"></div>
-    <div aria-hidden="true" class="absolute top-0 left-0 w-80 h-80 rounded-full bg-cyan-400/15 blur-3xl"></div>
-    <div aria-hidden="true" class="absolute top-16 right-0 w-[28rem] h-[28rem] rounded-full bg-violet-500/15 blur-3xl"></div>
-    <div aria-hidden="true" class="absolute bottom-0 left-1/4 w-[24rem] h-[24rem] rounded-full bg-sky-300/10 blur-3xl"></div>
-    <div aria-hidden="true" class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-white/10 to-transparent pointer-events-none"></div>
-    {% endif %}
-    <div class="relative z-10 w-full">
-        <div class="grid w-full min-h-screen gap-8 sm:gap-10 lg:grid-cols-2 items-center px-4 sm:px-6 lg:px-12">
-            <div class="relative z-10 space-y-6 sm:space-y-8 py-10 sm:py-14 lg:py-0">
-                <div class="rounded-[2.25rem] border border-white/10 bg-slate-950/15 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.25)] backdrop-blur-2xl sm:p-8 lg:p-10 text-center lg:text-left">
-                    <div class="space-y-6">
-                        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-cyan-100 shadow-lg shadow-cyan-900/20">Welcome to</span>
-                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white drop-shadow-[0_10px_20px_rgba(8,47,73,0.55)]">Busiada Girls Senior School</h1>
-                        <p class="mx-auto max-w-xl text-base text-white/85 sm:text-lg lg:mx-0">A vibrant learning community where academic excellence, discipline, leadership and character growth come together.</p>
-                        <div class="flex flex-wrap justify-center gap-3 text-sm text-slate-100 lg:justify-start">
-                            <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">Academic Excellence</span>
-                            <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">Leadership</span>
-                            <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">Values & Discipline</span>
-                        </div>
-                        {% if page %}
-                        <div class="prose prose-lg prose-invert max-w-none text-white/85">{{ page.content|safe }}</div>
-                        {% endif %}
-                        <div class="flex flex-wrap justify-center gap-4 pt-2 lg:justify-start">
-                            <a href="{% url 'about' %}#location" class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-300 via-sky-200 to-white px-6 py-3 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-400/20 transition hover:-translate-y-0.5 hover:shadow-xl sm:px-8 sm:py-4">Take a Virtual Tour</a>
-                            <a href="{% url 'about' %}" class="inline-flex items-center justify-center rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/15 sm:px-8 sm:py-4">Explore Our School</a>
-                        </div>
-                    </div>
+
+    <div class="relative z-10 flex min-h-screen items-center">
+        <div class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+            <div class="space-y-8 text-center">
+                <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">Busiada Girls Senior School</p>
+                <h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Busiada Girls Senior School</h1>
+                <p class="mx-auto max-w-2xl text-lg leading-8 text-slate-300">A bright, welcoming boarding school landing page using the background image uploaded for the Home page in admin.</p>
+
+                <div class="grid gap-4 sm:grid-cols-3">
+                    <a href="{% url 'site_page' slug='admission-process' %}" class="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-4 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300">Admission Process</a>
+                    <a href="{% url 'site_page' slug='school-history' %}" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/20">History</a>
+                    <a href="{% url 'site_page' slug='contacts' %}" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-slate-800/70 px-6 py-4 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/80">Contact Us</a>
                 </div>
             </div>
-
-            <div class="relative flex items-center justify-center">
-                <div class="scroll-reveal rounded-[2rem] border border-white/10 bg-white/10 p-3 shadow-[0_25px_60px_rgba(15,23,42,0.35)] backdrop-blur-xl animate-float w-full max-w-none lg:max-w-[42rem] mx-auto sm:p-4">
-                    {% if page_images %}
-                    <div class="relative overflow-hidden rounded-[1.75rem] h-[18rem] min-h-[18rem] sm:h-[24rem] sm:min-h-[24rem] md:h-[30rem] md:min-h-[30rem] lg:h-[72vh] lg:min-h-[28rem]">
-                        <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(2,6,23,0.55),rgba(15,23,42,0.55),rgba(15,23,42,0.35))] z-10"></div>
-                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.20),_transparent_25%),radial-gradient(circle_at_bottom_right,_rgba(192,132,252,0.16),_transparent_20%)] z-10"></div>
-                        {% for image in page_images %}
-                        <img src="{{ image.image.url }}"
-                             alt="{{ image.title|default:page.title }}"
-                             data-hero-title="{{ image.title|default:'Campus Life' }}"
-                             data-hero-caption="{{ image.caption|default:'School image added by the admin.' }}"
-                             data-hero-description="{{ image.description|default:'' }}"
-                             class="hero-static-image absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out {{ forloop.first|yesno:'opacity-100,opacity-0' }}" />
-                        {% endfor %}
-                        <div class="absolute inset-x-0 bottom-0 z-20 rounded-b-[1.75rem] bg-gradient-to-t from-black/85 via-black/45 to-transparent p-5">
-                            {% if page_images.0.description %}
-                            <p id="hero-image-description" class="text-sm text-slate-100 sm:text-base leading-relaxed">{{ page_images.0.description }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% elif page and page.featured_image %}
-                    <div class="relative overflow-hidden rounded-[1.75rem] h-[18rem] sm:h-[24rem] md:h-[30rem] lg:h-[26rem]">
-                        <img src="{{ page.featured_image.url }}" alt="{{ page.title }}" class="h-full w-full object-cover" />
-                        <div class="absolute inset-x-0 bottom-0 rounded-b-[1.75rem] bg-gradient-to-t from-black/80 via-transparent to-transparent p-5">
-                            <p class="text-sm text-slate-200">Featured image managed in admin</p>
-                        </div>
-                    </div>
+        </div>
+    </div>
+</section>
+<!-- Principal Message Section -->
+<section class="relative overflow-hidden bg-slate-50/90 py-16">
+    <div class="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-cyan-200/30 to-transparent pointer-events-none"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid gap-10 lg:grid-cols-[380px_minmax(0,1fr)] items-center">
+            <div class="rounded-[2rem] border border-slate-200 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] p-6">
+                <div class="overflow-hidden rounded-[1.75rem] bg-slate-100">
+                    {% if site_settings.principal_image %}
+                        <img src="{{ site_settings.principal_image.url }}" alt="Principal" class="aspect-[4/5] w-full object-cover" loading="lazy">
                     {% else %}
-                    <div class="relative h-[18rem] sm:h-[24rem] md:h-[30rem] overflow-hidden rounded-[1.75rem] bg-slate-900/70 p-6 sm:p-10 flex items-center justify-center text-center">
-                        <div class="text-center space-y-4">
-                            <div class="text-4xl">📸</div>
-                            <p class="text-lg text-white/80">Upload homepage images via admin using the “Page images” inline section on the Home page.</p>
-                            <p class="text-sm text-white/60">Multiple images will rotate automatically in the hero.</p>
+                        <div class="flex h-[440px] items-center justify-center rounded-[1.75rem] border border-dashed border-slate-300 bg-slate-100 text-slate-500">
+                            <div class="space-y-4 text-center">
+                                <div class="text-5xl">👩🏾‍🏫</div>
+                                <p class="text-sm uppercase tracking-[0.35em] text-slate-400">Principal Portrait</p>
+                            </div>
                         </div>
-                    </div>
                     {% endif %}
                 </div>
+                <div class="mt-6 text-center">
+                    <p class="text-sm uppercase tracking-[0.35em] text-cyan-600 font-semibold">Principal’s message</p>
+                    <h3 class="mt-3 text-2xl font-semibold text-slate-900">{{ site_settings.principal_name|default:'Principal Name' }}</h3>
+                    <p class="text-sm text-slate-500">{{ site_settings.principal_title|default:'Principal' }}</p>
+                </div>
             </div>
-        </div>
-    </div>
-    <div aria-hidden="true" class="absolute top-10 left-10 w-32 h-32 rounded-full bg-white/10 blur-3xl animate-pulse"></div>
-    <div aria-hidden="true" class="absolute bottom-20 right-20 w-48 h-48 rounded-full bg-cyan-400/10 blur-3xl animate-pulse"></div>
-</section>
-{% endwith %}
-
-<section class="relative overflow-hidden py-12 sm:py-16 md:py-20 bg-gradient-to-br from-slate-100 via-white to-cyan-50 text-[#0A2540]">
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-slate-100 via-cyan-100 to-sky-200"></div>
-        <div class="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-cyan-300/25 blur-3xl"></div>
-        <div class="absolute -bottom-20 right-10 h-96 w-96 rounded-full bg-indigo-300/20 blur-3xl"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_18%),radial-gradient(circle_at_bottom_right,_rgba(129,140,248,0.16),_transparent_20%)]"></div>
-    </div>
-    <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <div class="mb-8 text-center sm:mb-12">
-            <p class="text-xs uppercase tracking-[0.35em] text-[#0A2540]/70 sm:text-sm">Departments & pathways</p>
-            <h2 class="mt-3 text-3xl font-black text-[#0A2540] sm:mt-4 sm:text-4xl">A strong foundation in every pathway</h2>
-            <p class="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:mt-4 sm:text-base">Choose a department-led pathway and explore the learning opportunities that shape each learner’s future.</p>
-        </div>
-        <div class="grid gap-5 sm:gap-8 md:grid-cols-3">
-            <a href="{% url 'academics' %}" class="scroll-reveal pathway-card group relative block overflow-hidden rounded-[1.5rem] border border-white/10 bg-sky-100/20 p-6 shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-sky-400 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-sky-400 active:scale-[0.98] active:bg-sky-200/70 sm:rounded-[2rem] sm:p-8 md:p-10">
-                <div class="absolute inset-0 bg-gradient-to-br from-sky-50/90 via-cyan-50/70 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
-                <div class="relative z-10">
-                    <div class="mb-4 text-4xl text-[#0A2540] transition duration-300 group-hover:scale-110 sm:mb-6 sm:text-5xl"><i class="fa-solid fa-flask-vial"></i></div>
-                    <h3 class="mb-2 text-xl font-semibold text-[#0A2540] sm:mb-3 sm:text-2xl">STEM</h3>
-                    <p class="text-sm text-slate-600 sm:text-base">Science, Technology, Engineering and Mathematics taught through inquiry and innovation.</p>
-                    <span class="mt-5 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-4 py-2 text-xs font-semibold text-white shadow-lg transition group-hover:bg-sky-600 sm:mt-6 sm:text-sm">Explore Academics <i class="fa-solid fa-arrow-right"></i></span>
-                </div>
-            </a>
-            <a href="{% url 'academics' %}" class="scroll-reveal pathway-card group relative block overflow-hidden rounded-[1.5rem] border border-white/10 bg-violet-100/20 p-6 shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-violet-400 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-violet-400 active:scale-[0.98] active:bg-violet-200/70 sm:rounded-[2rem] sm:p-8 md:p-10">
-                <div class="absolute inset-0 bg-gradient-to-br from-violet-50/90 via-fuchsia-50/70 to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
-                <div class="relative z-10">
-                    <div class="mb-4 text-4xl text-[#0A2540] transition duration-300 group-hover:scale-110 sm:mb-6 sm:text-5xl"><i class="fa-solid fa-earth-americas"></i></div>
-                    <h3 class="mb-2 text-xl font-semibold text-[#0A2540] sm:mb-3 sm:text-2xl">Social Sciences</h3>
-                    <p class="text-sm text-slate-600 sm:text-base">Humanities, business and leadership courses that grow thoughtful global citizens.</p>
-                    <span class="mt-5 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-4 py-2 text-xs font-semibold text-white shadow-lg transition group-hover:bg-cyan-600 sm:mt-6 sm:text-sm">Explore Academics <i class="fa-solid fa-arrow-right"></i></span>
-                </div>
-            </a>
-            <a href="{% url 'academics' %}" class="scroll-reveal pathway-card group relative block overflow-hidden rounded-[1.5rem] border border-white/10 bg-rose-100/20 p-6 shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-rose-400 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-rose-400 active:scale-[0.98] active:bg-rose-200/70 sm:rounded-[2rem] sm:p-8 md:p-10">
-                <div class="absolute inset-0 bg-gradient-to-br from-rose-50/90 via-white to-transparent opacity-0 transition duration-300 group-hover:opacity-100"></div>
-                <div class="relative z-10">
-                    <div class="mb-4 text-4xl text-[#0A2540] transition duration-300 group-hover:scale-110 sm:mb-6 sm:text-5xl"><i class="fa-solid fa-paintbrush"></i></div>
-                    <h3 class="mb-2 text-xl font-semibold text-[#0A2540] sm:mb-3 sm:text-2xl">Arts & Sports</h3>
-                    <p class="text-sm text-slate-600 sm:text-base">Creative expression, performing arts and active living that build confidence and team spirit.</p>
-                    <span class="mt-5 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-4 py-2 text-xs font-semibold text-white shadow-lg transition group-hover:bg-rose-600 sm:mt-6 sm:text-sm">Explore Academics <i class="fa-solid fa-arrow-right"></i></span>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
-
-<section class="relative overflow-hidden bg-white py-12 sm:py-16 md:py-20 text-[#0A2540]">
-    <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(248,250,252,0.98),rgba(224,242,254,0.96),rgba(236,253,245,0.92))]"></div>
-    <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <div class="rounded-[2rem] border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur-xl sm:p-8 lg:p-10">
-            <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-                <div class="space-y-4">
-                    <p class="text-xs uppercase tracking-[0.35em] text-[#0A2540]/70">Visit us</p>
-                    <h2 class="text-3xl font-black text-[#0A2540] sm:text-4xl">Our school location</h2>
-                    <p class="max-w-xl text-slate-600">Find Busiada Girls Senior School on the map and plan your visit with the contact details and directions below.</p>
-                    <ul class="space-y-3 text-sm text-slate-700">
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-location-dot mt-1 text-red-500"></i><span>Busiada, Kenya</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-phone mt-1 text-sky-600"></i><span>+254 700 000 000</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-envelope mt-1 text-sky-600"></i><span>info@busiadagirls.ac.ke</span></li>
-                    </ul>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Busiada+Girls+Senior+School+Kenya" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-[#0A2540]/15 bg-[#0A2540]/5 px-4 py-2 text-sm font-semibold text-[#0A2540] transition hover:bg-[#0A2540]/10">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        Open in Google Maps
-                    </a>
-                </div>
-                <div class="overflow-hidden rounded-[1.5rem] border border-slate-200 shadow-lg shadow-slate-200/80 bg-slate-50">
-                    <iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=13&output=embed"
-                            title="Busiada Girls Senior School location"
-                            class="h-[280px] w-full border-0 sm:h-[340px] lg:h-[380px]"
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            allowfullscreen></iframe>
-                </div>
+            <div class="space-y-6 rounded-[2rem] border border-slate-200 bg-white/90 p-8 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.15)]">
+                {% if site_settings.principal_message %}
+                    <div class="space-y-6 text-slate-700">
+                        {{ site_settings.principal_message|safe }}
+                    </div>
+                {% else %}
+                    <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-8 text-slate-500">
+                        <p class="text-lg font-semibold">Principal’s message will appear here.</p>
+                        <p class="mt-4">Use the admin editor to add formatted text, headings, lists, and links.</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
 
-<style>
-  .pathway-card {
-    transform: translateY(0);
-    will-change: transform, box-shadow, background-color;
-  }
-  @media (max-width: 767px) {
-    .animate-float {
-      animation: none !important;
-    }
-    .scroll-reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 500ms ease, transform 500ms ease;
-    }
-    .scroll-reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .pathway-card:hover {
-    animation: pathway-bounce 420ms ease;
-  }
-  .pathway-card:focus-visible {
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35), 0 18px 38px rgba(15, 23, 42, 0.16);
-  }
-  @media (max-width: 640px) {
-    .pathway-card {
-      position: relative;
-      overflow: hidden;
-    }
-    .pathway-card::after {
-      content: "";
-      position: absolute;
-      inset: -40% auto auto -10%;
-      width: 120px;
-      height: 120px;
-      border-radius: 9999px;
-      background: rgba(255,255,255,0.18);
-      filter: blur(10px);
-      opacity: 0;
-      transition: opacity 200ms ease;
-      pointer-events: none;
-    }
-    .pathway-card:hover::after,
-    .pathway-card:focus-visible::after,
-    .pathway-card:active::after {
-      opacity: 1;
-      animation: pulse-glow 800ms ease-in-out infinite;
-    }
-  }
-  @keyframes pathway-bounce {
-    0% { transform: translateY(0); }
-    40% { transform: translateY(-4px) scale(1.01); }
-    70% { transform: translateY(-1px); }
-    100% { transform: translateY(0); }
-  }
-  @keyframes pulse-glow {
-    0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-    50% { transform: translateY(6px) scale(1.04); opacity: 0.6; }
-  }
-</style>
-<!---
-<section class="py-20 bg-gradient-to-br from-[#0A2540] to-[#1b3a63] text-white">
-    <div class="max-w-4xl mx-auto px-6">
-        <div class="text-center mb-12">
-            <p class="text-sm uppercase tracking-[0.3em] text-white/60">Get in Touch</p>
-            <h2 class="mt-4 text-4xl font-bold">Start Your Journey</h2>
-            <p class="mt-3 text-white/80">Have questions? Our admissions team is here to help.</p>
+<!-- CBE Section -->
+<section class="relative py-16 overflow-hidden bg-slate-50">
+    <div class="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-fuchsia-200/70 to-transparent pointer-events-none"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+        <div class="text-center mb-10 scroll-fade" data-reveal>
+            <p class="text-sm uppercase tracking-[0.35em] text-fuchsia-600 font-semibold">CBE</p>
+            <h2 class="text-3xl font-extrabold text-slate-900">2-6-3-3-3 Competency-Based Education</h2>
+            <p class="mt-3 text-slate-600 max-w-2xl mx-auto">A next-level learning path with stronger competency development through Grades 10, 11 and 12.</p>
         </div>
-        
-        <form hx-post="{% url 'submit_inquiry' %}" hx-target="#inquiry-response" hx-swap="innerHTML" class="space-y-5 bg-white/10 backdrop-blur-xl rounded-[2rem] p-10 border border-white/20">
-            {% csrf_token %}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <input type="text" name="name" placeholder="Your Name" required class="bg-white/20 border border-white/30 rounded-lg px-5 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
-                <input type="email" name="email" placeholder="Email Address" required class="bg-white/20 border border-white/30 rounded-lg px-5 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
-            </div>
-            <input type="tel" name="phone" placeholder="Phone (Optional)" class="w-full bg-white/20 border border-white/30 rounded-lg px-5 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition" />
-            <textarea name="message" placeholder="How can we help?" rows="4" class="w-full bg-white/20 border border-white/30 rounded-lg px-5 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition resize-none"></textarea>
-            
-            <div class="flex gap-4">
-                <button type="submit" class="flex-1 bg-white text-[#0A2540] font-semibold py-3 rounded-lg hover:scale-105 transition-transform shadow-lg">Send Inquiry</button>
-                <button type="reset" class="flex-1 border border-white/30 text-white font-semibold py-3 rounded-lg hover:bg-white/10 transition">Clear</button>
-            </div>
-            
-            <div id="inquiry-response" class="mt-6"></div>
-        </form>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+            <article class="group overflow-hidden rounded-[1.5rem] border border-fuchsia-200/70 bg-gradient-to-br from-fuchsia-50 via-white to-rose-50 p-6 shadow-[0_18px_55px_-28px_rgba(192,38,211,0.55)] transition hover:-translate-y-1 hover:shadow-[0_26px_70px_-24px_rgba(192,38,211,0.45)] scroll-fade" data-reveal>
+                <div class="mb-4 flex items-baseline gap-3">
+                    <span class="text-6xl font-black text-fuchsia-700">10</span>
+                    <span class="text-sm uppercase tracking-[0.35em] text-fuchsia-500 font-semibold">Grade</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-slate-900">Grade 10</h3>
+                <p class="mt-3 text-slate-600">Start CBE with strong foundational projects, digital fluency and interdisciplinary competencies.</p>
+                <a href="{% url 'academics_26333' %}" class="mt-6 inline-flex items-center rounded-full bg-fuchsia-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-fuchsia-700">Explore Grade 10</a>
+            </article>
+
+            <article class="group overflow-hidden rounded-[1.5rem] border border-sky-200/75 bg-gradient-to-br from-sky-50 via-white to-cyan-50 p-6 shadow-[0_18px_55px_-28px_rgba(14,165,233,0.35)] transition hover:-translate-y-1 hover:shadow-[0_26px_70px_-24px_rgba(14,165,233,0.45)] scroll-fade" data-reveal>
+                <div class="mb-4 flex items-baseline gap-3">
+                    <span class="text-6xl font-black text-sky-700">11</span>
+                    <span class="text-sm uppercase tracking-[0.35em] text-sky-500 font-semibold">Grade</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-slate-900">Grade 11</h3>
+                <p class="mt-3 text-slate-600">Build advanced competencies through collaborative inquiry, assessments and practical applications.</p>
+                <a href="{% url 'academics_26333' %}" class="mt-6 inline-flex items-center rounded-full bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700">Explore Grade 11</a>
+            </article>
+
+            <article class="group overflow-hidden rounded-[1.5rem] border border-amber-200/75 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-6 shadow-[0_18px_55px_-28px_rgba(234,88,12,0.35)] transition hover:-translate-y-1 hover:shadow-[0_26px_70px_-24px_rgba(234,88,12,0.45)] scroll-fade" data-reveal>
+                <div class="mb-4 flex items-baseline gap-3">
+                    <span class="text-6xl font-black text-amber-700">12</span>
+                    <span class="text-sm uppercase tracking-[0.35em] text-amber-500 font-semibold">Grade</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-slate-900">Grade 12</h3>
+                <p class="mt-3 text-slate-600">Finish with real-world demonstrations, personal growth pathways and readiness for the next stage.</p>
+                <a href="{% url 'academics_26333' %}" class="mt-6 inline-flex items-center rounded-full bg-amber-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-amber-700">Explore Grade 12</a>
+            </article>
+        </div>
     </div>
 </section>
---->
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const prefersSmallScreen = window.matchMedia('(max-width: 767px)').matches;
-        const revealItems = document.querySelectorAll('.scroll-reveal');
+<!-- 8-4-4 Curriculum Section -->
+<section class="relative overflow-hidden py-16 bg-slate-950/5 text-slate-900">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.06),_transparent_48%),radial-gradient(circle_at_bottom_right,_rgba(251,191,36,0.05),_transparent_44%),linear-gradient(180deg,rgba(15,23,42,0.08)_0%,rgba(15,23,42,0.03)_100%)]"></div>
+    <div class="absolute -top-10 left-1/2 w-[76rem] h-[34rem] -translate-x-1/2 bg-gradient-to-r from-cyan-500/6 via-slate-800/2 to-amber-400/6 rounded-full opacity-50 blur-3xl transform rotate-12 pointer-events-none"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 scroll-fade" data-reveal>
+            <h2 class="text-3xl font-extrabold text-slate-900">8-4-4</h2>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Explore curriculum pathways below. Choose the form to learn more about structure and subjects.</p>
+        </div>
 
-        if (prefersSmallScreen && 'IntersectionObserver' in window) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.12,
-                rootMargin: '0px 0px -30px 0px'
-            });
+        <div class="grid gap-6 sm:grid-cols-2">
+            <article class="content-card p-6 scroll-fade card-form4" data-reveal>
+                <h3 class="text-xl font-bold text-zinc-900">Form 4</h3>
+                <p class="mt-3 text-zinc-700">Final year overview: examinations, career guidance and consolidation of secondary education.</p>
+                <div class="mt-6">
+                      <a href="{% url 'academics_844' %}" class="btn-form-4 inline-flex items-center gap-3 rounded-lg px-5 py-3 text-sm font-semibold text-[#042033] bg-cyan-400 shadow-md shadow-cyan-300/30 hover:scale-[1.02] hover:shadow-lg transition transform focus:outline-none">Learn about Form 4</a>
+                </div>
+            </article>
 
-            revealItems.forEach((item) => observer.observe(item));
-        } else {
-            revealItems.forEach((item) => item.classList.add('is-visible'));
+            <article class="content-card p-6 scroll-fade card-form3" data-reveal>
+                <h3 class="text-xl font-bold text-zinc-900">Form 3</h3>
+                <p class="mt-3 text-zinc-700">Penultimate year: subject choices, examinations prep and academic consolidation.</p>
+                <div class="mt-6">
+                      <a href="{% url 'academics_844' %}" class="btn-form-3 inline-flex items-center gap-3 rounded-lg px-5 py-3 text-sm font-semibold text-white bg-amber-500 shadow-md shadow-amber-300/30 hover:scale-[1.02] hover:shadow-lg transition transform focus:outline-none">Learn about Form 3</a>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <style>
+        /* Form 4: cool cyan panel with hover fill color */
+        .card-form4 {
+            background: linear-gradient(180deg, rgba(14,165,233,0.18), rgba(56,189,248,0.08));
+            border-radius: .75rem;
+            border-left: 6px solid rgba(6,182,212,0.28);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 10px 35px rgba(6,95,70,0.08);
+            transition: transform .32s cubic-bezier(.2,.9,.2,1), box-shadow .32s ease, background .32s ease;
         }
 
-        const heroImages = document.querySelectorAll('.hero-static-image');
-        const heroDescription = document.getElementById('hero-image-description');
+        .card-form4:hover {
+            background: linear-gradient(180deg, rgba(14,165,233,0.28), rgba(56,189,248,0.22));
+            box-shadow: 0 16px 45px rgba(6,95,70,0.14);
+        }
 
-        function updateHeroText(index) {
-            const image = heroImages[index];
-            if (!image) return;
-            const description = image.getAttribute('data-hero-description') || '';
+        /* Form 3: warm amber panel with hover fill color */
+        .card-form3 {
+            background: linear-gradient(180deg, rgba(250,204,21,0.18), rgba(253,230,138,0.12));
+            border-radius: .75rem;
+            border-left: 6px solid rgba(245,158,11,0.22);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 10px 35px rgba(133,77,14,0.07);
+            transition: transform .32s cubic-bezier(.2,.9,.2,1), box-shadow .32s ease, background .32s ease;
+        }
 
-            if (heroDescription) {
-                heroDescription.textContent = description;
-                heroDescription.classList.toggle('hidden', !description);
+        .card-form3:hover {
+            background: linear-gradient(180deg, rgba(250,204,21,0.28), rgba(253,230,138,0.24));
+            box-shadow: 0 16px 45px rgba(133,77,14,0.12);
+        }
+
+        /* Hover lifts */
+        .card-form4:hover, .card-form3:hover { transform: translateY(-8px); }
+
+        /* Button press motion */
+        .btn-form-4:active, .btn-form-3:active { transform: translateY(1px) scale(.995); }
+    </style>
+
+    <script>
+        // IntersectionObserver to reveal elements with .scroll-fade
+        (function(){
+            const els = document.querySelectorAll('[data-reveal]');
+            if (!('IntersectionObserver' in window)) {
+                els.forEach(el => el.classList.add('visible'));
+                return;
             }
-        }
+            const obs = new IntersectionObserver((entries)=>{
+                entries.forEach(e=>{
+                    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+                });
+            }, { threshold: 0.15 });
+            els.forEach(el => obs.observe(el));
 
-        if (heroImages.length > 1) {
-            let active = 0;
-            updateHeroText(active);
-            setInterval(() => {
-                heroImages[active].classList.remove('opacity-100');
-                heroImages[active].classList.add('opacity-0');
-                active = (active + 1) % heroImages.length;
-                heroImages[active].classList.remove('opacity-0');
-                heroImages[active].classList.add('opacity-100');
-                updateHeroText(active);
-            }, 5000);
-        } else if (heroImages.length === 1) {
-            updateHeroText(0);
-        }
+            // no visited color changes — keep click behavior default
+        })();
+    </script>
+</section>
 
-        const pathwaySlides = document.querySelectorAll('.pathway-slide');
-        if (pathwaySlides.length > 1) {
-            let active = 0;
-            setInterval(() => {
-                pathwaySlides[active].classList.remove('opacity-100');
-                pathwaySlides[active].classList.add('opacity-0');
-                active = (active + 1) % pathwaySlides.length;
-                pathwaySlides[active].classList.remove('opacity-0');
-                pathwaySlides[active].classList.add('opacity-100');
-            }, 5000);
-        }
-    });
-
-    // HTMX loading state feedback
-    document.body.addEventListener('htmx:xhr:progress', function(evt) {
-        if (evt.detail.loaded / evt.detail.total) {
-            console.log('Loading...');
-        }
-    });
-    
-    // HTMX response handling
-    document.body.addEventListener('htmx:afterSwap', function(evt) {
-        if (evt.detail.target.id === 'inquiry-response') {
-            setTimeout(() => {
-                evt.detail.target.style.opacity = '0';
-                setTimeout(() => evt.detail.target.innerHTML = '', 3000);
-            }, 3000);
-        }
-    });
-</script>
+{% endwith %}
 {% endblock %}
+

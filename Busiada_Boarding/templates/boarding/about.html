@@ -10,14 +10,7 @@
     </div>
     {% endif %}
 
-    <section class="rounded-3xl bg-white p-8 shadow-xl border border-slate-200 mb-8">
-        <h2 class="text-2xl font-semibold mb-4 text-[#0A2540]">School overview</h2>
-        {% if page.content %}
-        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">{{ page.content|safe }}</div>
-        {% else %}
-        <p class="text-zinc-700 leading-relaxed">Update this page from Django Admin to manage the About page content.</p>
-        {% endif %}
-    </section>
+    {% include 'boarding/page_sections.html' %}
 
     {% if page.images.exists %}
     <section class="rounded-3xl bg-white p-8 shadow-xl border border-slate-200 mb-8">

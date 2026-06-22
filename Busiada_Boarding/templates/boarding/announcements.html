@@ -1,130 +1,170 @@
-{% extends 'boarding/base.html' %}
+{% extends 'boarding/page_template.html' %}
 
-{% block content %}
-<div class="w-full px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-    <div class="mx-auto max-w-7xl rounded-[2rem] bg-white/90 p-6 shadow-xl ring-1 ring-slate-200 sm:p-8 lg:p-10">
-        <div class="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-                <p class="text-xs uppercase tracking-[0.35em] text-slate-400">Latest updates</p>
-                <h1 class="text-3xl font-bold text-[#0A2540] sm:text-4xl">Announcements</h1>
-                <p class="mt-3 max-w-2xl text-slate-600">Post updates, event countdowns, notices, and image-led highlights from the admin panel.</p>
-            </div>
-            <span class="inline-flex items-center rounded-full bg-[#0A2540] px-4 py-2 text-sm font-semibold text-white shadow">{{ announcements|length }} active post{{ announcements|length|pluralize }}</span>
-        </div>
+{% block page_title %}Announcements{% endblock %}
+{% block page_subtitle %}Latest updates, events and notices{% endblock %}
 
-        {% if announcements %}
-            <div class="grid gap-8 xl:grid-cols-2">
-                {% for announcement in announcements %}
-                <article class="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                    {% if announcement.image %}
-                    <div class="announcement-media rounded-[1.5rem] p-3 sm:p-4">
-                        <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" class="w-full rounded-[1.25rem] border border-white/80 object-contain object-center shadow-inner bg-white" />
-                    </div>
-                    {% else %}
-                    <div class="h-56 w-full bg-gradient-to-br from-[#0A2540] via-[#1E3A8A] to-[#38bdf8] flex items-end p-6 text-white">
-                        <span class="rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">{{ announcement.category|default:'General' }}</span>
-                    </div>
-                    {% endif %}
-                    <div class="p-6 sm:p-8">
-                        <div class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-500">
-                            <span class="rounded-full bg-white px-3 py-1 shadow-sm">{{ announcement.category|default:'General' }}</span>
-                            {% if announcement.is_featured %}<span class="rounded-full bg-amber-100 px-3 py-1 text-amber-700">Featured</span>{% endif %}
-                            <span>{{ announcement.date|date:"d M, Y" }}</span>
-                        </div>
-                        <h2 class="mt-4 text-2xl font-semibold text-[#0A2540]">{{ announcement.title }}</h2>
-                        {% if announcement.subtitle %}<p class="mt-2 text-slate-600">{{ announcement.subtitle }}</p>{% endif %}
-                        <div class="mt-4 text-slate-700 leading-relaxed">{{ announcement.content|linebreaks }}</div>
-
-                        {% if announcement.is_live_event or announcement.event_date %}
-                        <div class="mt-6 rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 to-indigo-50 p-4">
-                            <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Event details</p>
-                            {% if announcement.event_start %}
-                                <p class="mt-2 text-sm text-slate-700">Starts on {{ announcement.event_start|date:"d M Y, H:i" }}</p>
-                            {% elif announcement.event_date %}
-                                <p class="mt-2 text-sm text-slate-700">Starts on {{ announcement.event_date|date:"d M Y, H:i" }}</p>
-                            {% endif %}
-                            {% if announcement.event_end %}
-                                <p class="text-sm text-slate-700">Ends on {{ announcement.event_end|date:"d M Y, H:i" }}</p>
-                            {% endif %}
-                            {% if announcement.event_location %}
-                                <p class="text-sm text-slate-700">Location: {{ announcement.event_location }}</p>
-                            {% endif %}
-                            {% if announcement.event_link %}
-                                <a href="{{ announcement.event_link }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-4 py-2 text-sm font-semibold text-white shadow hover:bg-[#1E3A8A] transition">Join event</a>
-                            {% endif %}
-                            {% if announcement.video_url %}
-                                <p class="mt-3 text-sm text-slate-700">Watch live or replay: <a href="{{ announcement.video_url }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">{{ announcement.video_url }}</a></p>
-                            {% endif %}
-                            {% if announcement.document_link and announcement.document_label %}
-                                <p class="mt-3 text-sm text-slate-700">Document: <a href="{{ announcement.document_link }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">{{ announcement.document_label }}</a></p>
-                            {% elif announcement.document_link %}
-                                <p class="mt-3 text-sm text-slate-700">Document: <a href="{{ announcement.document_link }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">View document</a></p>
-                            {% endif %}
-                            <div class="mt-3 flex flex-wrap gap-3 text-sm text-[#0A2540]" data-countdown="{{ announcement.event_start|default:announcement.event_date|date:'c' }}">
-                                <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0d</span>
-                                <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0h</span>
-                                <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0m</span>
-                                <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0s</span>
-                            </div>
-                        </div>
-                        {% endif %}
-
-                        {% if announcement.cta_text and announcement.cta_link %}
-                        <a href="{{ announcement.cta_link }}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-5 py-3 text-sm font-semibold text-white shadow hover:bg-[#1E3A8A] transition">{{ announcement.cta_text }} <i class="fa-solid fa-arrow-right"></i></a>
-                        {% endif %}
-                    </div>
-                </article>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-slate-500">No announcements at the moment. Add one from the admin area to publish updates, events and image highlights.</p>
-        {% endif %}
+{% block page_content %}
+    <div class="mb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <p class="text-sm text-slate-600 max-w-2xl">Post updates, event countdowns, notices, and image-led highlights from the admin panel.</p>
+        <span class="inline-flex items-center rounded-full bg-[#0A2540] px-4 py-2 text-sm font-semibold text-white shadow">{{ announcements|length }} active post{{ announcements|length|pluralize }}</span>
     </div>
-</div>
 
-<style>
-  .announcement-media {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(14, 165, 233, 0.08));
-  }
+    {% if announcements %}
+    <div class="announcements-gallery" role="list">
+      {% for announcement in announcements %}
+      <article role="listitem" tabindex="0" class="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl reveal-on-scroll">
+        {% if announcement.image %}
+        <figure class="announcement-figure rounded-[1.5rem] p-0 sm:p-0 overflow-hidden">
+          <button type="button" class="announcement-thumb relative w-full h-full p-0 block focus:outline-none" data-lightbox-src="{{ announcement.image.url }}" data-lightbox-caption="{{ announcement.image_caption|default:''|escape }}" aria-label="Open image for {{ announcement.title }}">
+            <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" loading="lazy" decoding="async" class="w-full h-[220px] sm:h-[240px] md:h-[200px] object-cover rounded-[1.25rem] border border-white/80 shadow-inner bg-white transition-transform duration-400 ease-out announcement-img" />
+            <div class="absolute inset-x-0 bottom-0 rounded-b-[1.25rem] bg-gradient-to-t from-black/85 via-black/40 to-transparent px-4 py-3 text-white">
+              <p class="font-semibold text-sm line-clamp-2">{{ announcement.title }}</p>
+              {% if announcement.image_caption %}
+              <p class="text-[11px] text-slate-200 mt-1 line-clamp-2">{{ announcement.image_caption }}</p>
+              {% endif %}
+              <p class="text-[10px] uppercase tracking-[0.2em] text-slate-300 mt-2">Tap to view full caption</p>
+            </div>
+          </button>
+        </figure>
+        {% else %}
+        <div class="w-full aspect-video bg-gradient-to-br from-[#0A2540] via-[#1E3A8A] to-[#38bdf8] flex items-end p-6 text-white">
+          <span class="rounded-full bg-white/10 px-3 py-1 text-xs uppercase tracking-[0.3em]">{{ announcement.category|default:'General' }}</span>
+        </div>
+        {% endif %}
+        <div class="p-6 sm:p-8">
+          <div class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-500">
+            <span class="rounded-full bg-white px-3 py-1 shadow-sm">{{ announcement.category|default:'General' }}</span>
+            {% if announcement.is_featured %}<span class="rounded-full bg-amber-100 px-3 py-1 text-amber-700">Featured</span>{% endif %}
+            <span>{{ announcement.date|date:"d M, Y" }}</span>
+          </div>
+          <h2 class="mt-4 text-2xl font-semibold text-[#0A2540]">{{ announcement.title }}</h2>
+          {% if announcement.subtitle %}<p class="mt-2 text-slate-600">{{ announcement.subtitle }}</p>{% endif %}
+          <div class="mt-4 text-slate-700 leading-relaxed">{{ announcement.content|linebreaks }}</div>
 
-  .announcement-media img {
-    display: block;
-    height: auto;
-    max-height: 24rem;
-    background-color: #f8fafc;
-  }
+          {% if announcement.is_live_event or announcement.event_date %}
+          <div class="mt-6 rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 to-indigo-50 p-4">
+            <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Event details</p>
+            {% if announcement.event_start %}
+              <p class="mt-2 text-sm text-slate-700">Starts on {{ announcement.event_start|date:"d M Y, H:i" }}</p>
+            {% elif announcement.event_date %}
+              <p class="mt-2 text-sm text-slate-700">Starts on {{ announcement.event_date|date:"d M Y, H:i" }}</p>
+            {% endif %}
+            {% if announcement.event_end %}
+              <p class="text-sm text-slate-700">Ends on {{ announcement.event_end|date:"d M Y, H:i" }}</p>
+            {% endif %}
+            {% if announcement.event_location %}
+              <p class="text-sm text-slate-700">Location: {{ announcement.event_location }}</p>
+            {% endif %}
+            {% if announcement.event_link %}
+              <a href="{{ announcement.event_link }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-4 py-2 text-sm font-semibold text-white shadow hover:bg-[#1E3A8A] transition">Join event</a>
+            {% endif %}
+            {% if announcement.video_url %}
+              <p class="mt-3 text-sm text-slate-700">Watch live or replay: <a href="{{ announcement.video_url }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">{{ announcement.video_url }}</a></p>
+            {% endif %}
+            {% if announcement.document_link and announcement.document_label %}
+              <p class="mt-3 text-sm text-slate-700">Document: <a href="{{ announcement.document_link }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">{{ announcement.document_label }}</a></p>
+            {% elif announcement.document_link %}
+              <p class="mt-3 text-sm text-slate-700">Document: <a href="{{ announcement.document_link }}" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#0A2540] hover:text-[#2563eb]">View document</a></p>
+            {% endif %}
+            <div class="mt-3 flex flex-wrap gap-3 text-sm text-[#0A2540]" data-countdown="{{ announcement.event_start|default:announcement.event_date|date:'c' }}">
+              <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0d</span>
+              <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0h</span>
+              <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0m</span>
+              <span class="rounded-xl bg-white px-3 py-2 shadow-sm">0s</span>
+            </div>
+          </div>
+          {% endif %}
 
-  @media (min-width: 768px) {
-    .announcement-media img {
-      max-height: 28rem;
-    }
-  }
-</style>
+          {% if announcement.cta_text and announcement.cta_link %}
+          <a href="{{ announcement.cta_link }}" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0A2540] px-5 py-3 text-sm font-semibold text-white shadow hover:bg-[#1E3A8A] transition">{{ announcement.cta_text }} <i class="fa-solid fa-arrow-right"></i></a>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p class="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-slate-500">No announcements at the moment. Add one from the admin area to publish updates, events and image highlights.</p>
+    {% endif %}
 
-<script>
-  document.querySelectorAll('[data-countdown]').forEach((node) => {
-    const target = new Date(node.dataset.countdown).getTime();
-    if (Number.isNaN(target)) return;
-    const update = () => {
-      const now = new Date().getTime();
-      const diff = target - now;
-      if (diff <= 0) {
-        node.innerHTML = '<span class="rounded-xl bg-white px-3 py-2 shadow-sm">Live</span>';
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      node.innerHTML = [
-        `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${days}d</span>`,
-        `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${hours}h</span>`,
-        `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${minutes}m</span>`,
-        `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${seconds}s</span>`,
-      ].join('');
-    };
-    update();
-    setInterval(update, 1000);
-  });
-</script>
+    <style>
+      :root { --gallery-gap: 1.25rem; }
+      .announcements-gallery { display:grid; gap:var(--gallery-gap); grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); align-items:start; }
+      .announcement-figure { margin:0; }
+      .announcement-img { transition: transform .35s ease, opacity .35s ease; display:block; }
+      .announcement-thumb:focus .announcement-img, .announcement-thumb:hover .announcement-img { transform: scale(1.05); }
+      .reveal-on-scroll { opacity:0; transform:translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal-on-scroll.visible { opacity:1; transform:translateY(0); }
+
+      /* Lightbox */
+      #announcement-lightbox { position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.88); backdrop-filter:blur(6px); padding:1.25rem; }
+      #announcement-lightbox.show { display:flex; }
+      #announcement-lightbox img { max-height:90vh; max-width:100%; object-fit:contain; border-radius:.75rem; }
+      #announcement-lightbox .lb-close { position:absolute; top:1rem; right:1rem; background:transparent; border:0; color:white; font-size:1.25rem; }
+    </style>
+
+    <!-- Lightbox modal -->
+    <div id="announcement-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+      <button class="lb-close" aria-label="Close image viewer">✕</button>
+      <figure class="max-w-4xl w-full flex flex-col items-center">
+        <img id="announcement-lightbox-img" src="" alt="" />
+        <figcaption id="announcement-lightbox-caption" class="mt-4 text-white text-sm text-center"></figcaption>
+      </figure>
+    </div>
+
+    <script>
+      // Reveal on scroll
+      (function(){
+        const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } }); },{threshold:0.12});
+        document.querySelectorAll('.reveal-on-scroll').forEach(n=>io.observe(n));
+      })();
+
+      // Lightbox with keyboard and touch support
+      (function(){
+        const lightbox = document.getElementById('announcement-lightbox');
+        const lbImg = document.getElementById('announcement-lightbox-img');
+        const lbCaption = document.getElementById('announcement-lightbox-caption');
+        const closeBtn = lightbox.querySelector('.lb-close');
+
+        function open(src, alt, caption){ lbImg.src = src; lbImg.alt = alt || ''; lbCaption.textContent = caption || ''; lightbox.classList.add('show'); lightbox.setAttribute('aria-hidden','false'); closeBtn.focus(); document.body.style.overflow='hidden'; }
+        function close(){ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); lbImg.src=''; document.body.style.overflow=''; }
+
+        document.querySelectorAll('.announcement-thumb').forEach(btn=>{
+          btn.addEventListener('click', ()=> open(btn.dataset.lightboxSrc, btn.getAttribute('aria-label'), btn.dataset.lightboxCaption));
+          btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); open(btn.dataset.lightboxSrc, btn.getAttribute('aria-label'), btn.dataset.lightboxCaption); } });
+        });
+
+        closeBtn.addEventListener('click', close);
+        lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) close(); });
+        document.addEventListener('keydown', (e)=>{ if(lightbox.classList.contains('show') && e.key==='Escape') close(); });
+
+        let sx=0; lightbox.addEventListener('touchstart', (e)=>{ sx = e.changedTouches[0].clientX; }, {passive:true});
+        lightbox.addEventListener('touchend', (e)=>{ const ex=e.changedTouches[0].clientX; if(Math.abs(ex-sx)>60) close(); }, {passive:true});
+      })();
+
+      // Countdown timers (unchanged)
+      document.querySelectorAll('[data-countdown]').forEach((node) => {
+        const target = new Date(node.dataset.countdown).getTime();
+        if (Number.isNaN(target)) return;
+        const update = () => {
+          const now = new Date().getTime();
+          const diff = target - now;
+          if (diff <= 0) {
+            node.innerHTML = '<span class="rounded-xl bg-white px-3 py-2 shadow-sm">Live</span>';
+            return;
+          }
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          node.innerHTML = [
+            `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${days}d</span>`,
+            `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${hours}h</span>`,
+            `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${minutes}m</span>`,
+            `<span class="rounded-xl bg-white px-3 py-2 shadow-sm">${seconds}s</span>`,
+          ].join('');
+        };
+        update();
+        setInterval(update, 1000);
+      });
+    </script>
 {% endblock %}

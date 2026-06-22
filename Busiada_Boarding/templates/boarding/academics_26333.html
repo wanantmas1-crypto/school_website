@@ -1,0 +1,9 @@
+{% extends 'boarding/base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto py-12">
+  <div class="content-card p-8">
+    <h1 class="text-3xl font-bold mb-4">{{ title }}</h1>
+    <div class="prose max-w-none text-zinc-800">{{ content|safe }}</div>
+  </div>
+</div>
+{% endblock %}
