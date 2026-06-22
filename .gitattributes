@@ -1,1 +1,2 @@
+*.mp4 filter=lfs diff=lfs merge=lfs -text
 Busiada_Boarding/media/videos/folksong.mp4 filter=lfs diff=lfs merge=lfs -text
