@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Busiada Girls Senior School{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        .nav-item:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mobile-nav-toggle {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            .mobile-nav-toggle {
+                display: block;
+            }
+            .nav-dropdown {
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                position: static;
+                background: #f8f9fa;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                pointer-events: auto;
+            }
+            .nav-item.mobile-open .nav-dropdown {
+                max-height: 500px;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo and School Name -->
+                <div class="flex items-center gap-4">
+                    <!-- Logo Placeholder -->
+                    <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center border-2 border-gray-300">
+                        <i class="fas fa-image text-gray-400 text-2xl"></i>
+                    </div>
+                    <!-- School Name -->
+                    <div class="hidden sm:block">
+                        <h1 class="text-xl font-bold text-[#0A2540]">Busiada Girls</h1>
+                        <p class="text-xs text-gray-600">Senior School</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav hidden md:flex gap-1">
+                    <a href="{% url 'home' %}" class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition">
+                        Home
+                    </a>
+
+                    <!-- About Dropdown -->
+                    <div class="nav-item relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition flex items-center gap-1">
+                            About <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="nav-dropdown absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School History</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Location</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Anthem</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Strategic Plan</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Chaplaincy</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Service Charter</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Contacts</a>
+                        </div>
+                    </div>
+
+                    <!-- Admissions Dropdown -->
+                    <div class="nav-item relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition flex items-center gap-1">
+                            Admissions <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="nav-dropdown absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Admission Process</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Fee Payment</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Admissions Office</a>
+                        </div>
+                    </div>
+
+                    <!-- Departments Dropdown -->
+                    <div class="nav-item relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition flex items-center gap-1">
+                            Departments <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="nav-dropdown absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Academics</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Examination</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Boarding</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Guiding & Counselling</a>
+                        </div>
+                    </div>
+
+                    <!-- Student Life Dropdown -->
+                    <div class="nav-item relative group">
+                        <button class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition flex items-center gap-1">
+                            Student Life <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="nav-dropdown absolute left-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Games & Sports</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Clubs & Societies</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Gallery</a>
+                        </div>
+                    </div>
+
+                    <a href="#" class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition">
+                        Transport
+                    </a>
+
+                    <a href="#" class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition">
+                        Announcements
+                    </a>
+
+                    <a href="#" class="px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium transition">
+                        Projects & Tenders
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-nav-toggle md:hidden text-gray-700 text-2xl" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+                <div class="px-4 py-2">
+                    <a href="{% url 'home' %}" class="block px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium">
+                        Home
+                    </a>
+
+                    <!-- Mobile About -->
+                    <div class="nav-item">
+                        <button class="mobile-nav-trigger w-full text-left px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium flex justify-between items-center" data-target="about-menu">
+                            About <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="about-menu" class="nav-dropdown">
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School History</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Location</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Anthem</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Strategic Plan</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Chaplaincy</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Service Charter</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Contacts</a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Admissions -->
+                    <div class="nav-item">
+                        <button class="mobile-nav-trigger w-full text-left px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium flex justify-between items-center" data-target="admissions-menu">
+                            Admissions <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="admissions-menu" class="nav-dropdown">
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Admission Process</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Fee Payment</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Admissions Office</a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Departments -->
+                    <div class="nav-item">
+                        <button class="mobile-nav-trigger w-full text-left px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium flex justify-between items-center" data-target="departments-menu">
+                            Departments <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="departments-menu" class="nav-dropdown">
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Academics</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Examination</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Boarding</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Guiding & Counselling</a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Student Life -->
+                    <div class="nav-item">
+                        <button class="mobile-nav-trigger w-full text-left px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium flex justify-between items-center" data-target="studentlife-menu">
+                            Student Life <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="studentlife-menu" class="nav-dropdown">
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Games & Sports</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">Clubs & Societies</a>
+                            <a href="#" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#0A2540]">School Gallery</a>
+                        </div>
+                    </div>
+
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium">
+                        Transport
+                    </a>
+
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium">
+                        Announcements
+                    </a>
+
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:text-[#0A2540] font-medium">
+                        Projects & Tenders
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0A2540] text-white py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Busiada Girls Senior School</h3>
+                    <p class="text-gray-300 text-sm">Unleash Your Potential</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#" class="hover:text-white">About</a></li>
+                        <li><a href="#" class="hover:text-white">Admissions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contact</h4>
+                    <p class="text-sm text-gray-300">Email: info@busiada.sc</p>
+                    <p class="text-sm text-gray-300">Phone: +249 (0)1 234 5678</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Follow Us</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-center text-gray-300 text-sm">© 2026 Busiada Girls Senior School. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mobile dropdown toggles
+        document.querySelectorAll('.mobile-nav-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                const menu = document.getElementById(target);
+                const parent = this.closest('.nav-item');
+                
+                // Close other menus
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    if (item !== parent) {
+                        item.classList.remove('mobile-open');
+                    }
+                });
+                
+                // Toggle this menu
+                parent.classList.toggle('mobile-open');
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

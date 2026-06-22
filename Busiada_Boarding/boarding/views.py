@@ -3,34 +3,15 @@ from django.http import HttpResponse
 from .models import Inquiry, SitePage, Announcement
 
 def home(request):
-    # Try to render an editable SitePage with slug 'home' if present
-    try:
-        page = SitePage.objects.filter(slug='home').prefetch_related('images').first()
-    except Exception:
-        page = None
+    """Render the clean new homepage."""
+    return render(request, 'boarding/home_new.html')
 
-    page_images = list(page.images.all()) if page else []
-    hero_background = None
-
-    if page_images:
-        hero_background = page_images[0].image.url
-    elif page and getattr(page.featured_image, 'name', None):
-        hero_background = page.featured_image.url
-
-    return render(
-        request,
-        'boarding/index.html',
-        {
-            'page': page,
-            'page_images': page_images,
-            'hero_background': hero_background,
-        },
-    )
 
 def about(request):
     page = (
         SitePage.objects
         .filter(slug='about', status='published')
+        .prefetch_related('images', 'videos', 'documents')
         .prefetch_related('images', 'videos', 'documents')
         .first()
     )
@@ -60,7 +41,7 @@ def about(request):
     embed_map = (
         '<iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=13&output=embed" '
         'title="Busiada Girls Senior School location" '
-        'class="w-full h-[320px] sm:h-[400px] border-0 rounded-2xl" '
+        'width="100%" height="320" style="min-height:320px; border:0; border-radius:1rem;" '
         'loading="lazy" referrerpolicy="no-referrer-when-downgrade" '
         'allowfullscreen></iframe>'
     )
@@ -105,8 +86,20 @@ def boarding_page(request):
     return render(request, 'boarding/boarding.html')
 
 def site_page(request, slug):
-    page = get_object_or_404(SitePage, slug=slug)
-    return render(request, 'boarding/site_page.html', {'page': page})
+    page = get_object_or_404(
+        SitePage.objects.prefetch_related('images', 'videos', 'documents'),
+        slug=slug,
+    )
+    embed_map = None
+    if slug == 'location':
+        embed_map = (
+            '<iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=15&output=embed" '
+            'title="Busiada Girls Senior School location" '
+            'width="100%" height="480" style="min-height:320px; border:0; border-radius:1rem;" '
+            'loading="lazy" referrerpolicy="no-referrer-when-downgrade" '
+            'allowfullscreen></iframe>'
+        )
+    return render(request, 'boarding/site_page.html', {'page': page, 'embed_map': embed_map})
 
 
 def submit_inquiry(request):
