@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editorContainer.style.boxShadow = '0 1px 2px rgba(16,24,40,0.05)';
 
         // Insert wrapper into DOM (replace textarea visually)
-        textarewa.parentNode.insertBefore(container, textarea.nextSibling);
+        textarea.parentNode.insertBefore(container, textarea.nextSibling);
         container.appendChild(toolbarContainer);
         container.appendChild(editorContainer);
 

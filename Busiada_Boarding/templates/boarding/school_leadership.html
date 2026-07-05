@@ -1,0 +1,225 @@
+{% extends 'boarding/base.html' %}
+
+{% block content %}
+<section class="min-h-screen bg-[linear-gradient(135deg,#f8fbff_0%,#eef4ff_45%,#fdfcf7_100%)] py-6 sm:py-8 lg:py-10">
+  <div class="mx-auto flex min-h-[calc(100vh-3rem)] max-w-7xl flex-col px-3 sm:px-6 lg:px-8">
+    <article role="main" aria-labelledby="leadership-title" class="flex-1 rounded-[2rem] border border-slate-200/80 bg-white/85 p-4 shadow-[0_20px_70px_rgba(10,37,64,0.12)] backdrop-blur md:p-6 lg:p-8 xl:p-10">
+      <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div class="reveal-on-scroll rounded-[1.75rem] bg-[#0A2540] p-7 text-white shadow-lg sm:p-8 lg:p-10">
+          <div class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-sky-100">
+            <i class="fa-solid fa-users-gear mr-2" aria-hidden="true"></i>
+            Leadership Team
+          </div>
+          <h1 id="leadership-title" class="mt-5 text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">{{ page.title|default:'School Leadership' }}</h1>
+          <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-200 sm:text-lg">
+            Meet the dedicated leaders guiding our learners, staff, and school culture with purpose, discipline, and care.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <span class="rounded-full border border-sky-300/40 bg-sky-400/10 px-3 py-2 text-sm font-medium text-sky-100">Governance</span>
+            <span class="rounded-full border border-emerald-300/40 bg-emerald-400/10 px-3 py-2 text-sm font-medium text-emerald-100">Academics</span>
+            <span class="rounded-full border border-amber-300/40 bg-amber-400/10 px-3 py-2 text-sm font-medium text-amber-100">Student Welfare</span>
+          </div>
+        </div>
+
+        <div class="reveal-on-scroll rounded-[1.75rem] border border-slate-200 bg-slate-50 p-4 sm:p-5 lg:p-6">
+          <div class="leader-photo-placeholder overflow-hidden rounded-[1.4rem] border border-slate-200 bg-white shadow-inner">
+            <div class="leader-photo-placeholder__inner flex h-full min-h-[280px] flex-col items-center justify-center text-center text-slate-500">
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-2xl text-[#0A2540] shadow-sm">
+                <i class="fa-solid fa-camera" aria-hidden="true"></i>
+              </div>
+              <p class="mt-4 text-lg font-semibold text-slate-700">Leadership photo placeholder</p>
+              <p class="mt-1 max-w-xs text-sm text-slate-500">Upload a portrait for each leader through the admin-side app when available.</p>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between rounded-2xl border border-dashed border-slate-300 bg-white/80 px-4 py-3 text-sm text-slate-600">
+            <span>Responsive image area for desktop, tablet, and mobile</span>
+            <i class="fa-solid fa-expand text-[#0A2540]" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 grid gap-6 xl:grid-cols-2">
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-gavel" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">Governance</p>
+              <h2 class="text-xl font-bold text-amber-900">Board of Management</h2>
+            </div>
+          </div>
+          <div class="mt-5 space-y-3">
+            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Board Chair</p>
+              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
+            </div>
+            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Vice Chair</p>
+              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
+            </div>
+            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Secretary</p>
+              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-amber-800">Provides strategic leadership, oversight, and institutional accountability.</p>
+        </section>
+
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow-sm">
+          <div class="flex items-start gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-mortarboard" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-blue-700">Executive</p>
+              <h2 class="text-xl font-bold text-blue-900">Principal</h2>
+            </div>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-[88px_1fr]">
+            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-blue-100 bg-white/90">
+              <div class="flex h-full min-h-[88px] items-center justify-center text-center text-slate-400">
+                <i class="fa-solid fa-image text-lg" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="rounded-[1rem] border border-blue-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-blue-700">Chief / Head</p>
+              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Principal Name]</p>
+              <p class="mt-1 text-sm text-slate-600">[Enter Title/Designation]</p>
+            </div>
+          </div>
+          <p class="mt-4 text-sm leading-relaxed text-blue-800">Provides visionary leadership and oversees daily school operations.</p>
+        </section>
+
+      </div>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-1">
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-teal-200 bg-gradient-to-br from-teal-50 to-cyan-50 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-book" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-700">Leadership</p>
+              <h3 class="text-xl font-bold text-teal-900">Deputy Principal</h3>
+            </div>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
+            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-teal-100 bg-white/90">
+              <div class="flex h-full min-h-[72px] items-center justify-center text-slate-400"><i class="fa-solid fa-image" aria-hidden="true"></i></div>
+            </div>
+            <div class="rounded-[1rem] border border-teal-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
+              <p class="mt-1 text-sm text-slate-600">Supports school administration, coordination, and overall institutional leadership.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-star" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-yellow-700">Discipline</p>
+              <h3 class="text-xl font-bold text-yellow-900">Senior Master</h3>
+            </div>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
+            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-yellow-100 bg-white/90">
+              <div class="flex h-full min-h-[72px] items-center justify-center text-slate-400"><i class="fa-solid fa-image" aria-hidden="true"></i></div>
+            </div>
+            <div class="rounded-[1rem] border border-yellow-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
+              <p class="mt-1 text-sm text-slate-600">Leads student conduct, discipline, and pastoral care.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-purple-200 bg-gradient-to-br from-purple-50 to-violet-50 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-house" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-purple-700">Residential Life</p>
+              <h3 class="text-xl font-bold text-purple-900">Boarding Master</h3>
+            </div>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
+            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-purple-100 bg-white/90">
+              <div class="flex h-full min-h-[72px] items-center justify-center text-slate-400"><i class="fa-solid fa-image" aria-hidden="true"></i></div>
+            </div>
+            <div class="rounded-[1rem] border border-purple-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
+              <p class="mt-1 text-sm text-slate-600">Oversees hostel operations, student welfare, and residential life.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal-on-scroll rounded-[1.5rem] border border-fuchsia-200 bg-gradient-to-br from-fuchsia-50 to-pink-50 p-6 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
+              <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-fuchsia-700">Residential Life</p>
+              <h3 class="text-xl font-bold text-fuchsia-900">Boarding Assistant</h3>
+            </div>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
+            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-fuchsia-100 bg-white/90">
+              <div class="flex h-full min-h-[72px] items-center justify-center text-slate-400"><i class="fa-solid fa-image" aria-hidden="true"></i></div>
+            </div>
+            <div class="rounded-[1rem] border border-fuchsia-100 bg-white/90 p-4 shadow-sm">
+              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
+              <p class="mt-1 text-sm text-slate-600">Supports daily boarding routines, supervision, and student care.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .reveal-on-scroll { opacity:0; transform:translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal-on-scroll.visible { opacity:1; transform:translateY(0); }
+  .leader-photo-placeholder { aspect-ratio: 4 / 5; background: linear-gradient(135deg, rgba(10, 37, 64, 0.04), rgba(148, 163, 184, 0.12)); }
+  .leader-photo-placeholder--small { aspect-ratio: 1 / 1; }
+  .leader-photo-placeholder__inner { padding: 1.25rem; }
+  @media (max-width: 640px) {
+    .leader-photo-placeholder__inner { padding: 1rem; }
+  }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.reveal-on-scroll');
+    if (!items.length) {
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((item) => item.classList.add('visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    items.forEach((item) => observer.observe(item));
+  });
+</script>
+{% endblock %}

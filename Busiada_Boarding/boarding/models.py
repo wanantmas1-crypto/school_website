@@ -101,6 +101,7 @@ class SitePage(models.Model):
         JSONField = JSONField
     sections = JSONField(blank=True, null=True, default=list, help_text='Ordered list of blocks (JSON)')
     featured_image = models.ImageField(upload_to='site_pages/', blank=True, null=True)
+    background_image = models.ImageField(upload_to='site_pages/backgrounds/', blank=True, null=True, help_text='Upload a background image for the page.')
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -133,6 +134,20 @@ class SitePage(models.Model):
             except Exception:
                 pass
         super().save(*args, **kwargs)
+
+
+class HistoryImage(models.Model):
+    year = models.CharField(max_length=10)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='history/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.year} - {self.title}"
+
+    class Meta:
+        ordering = ['year', 'created_at']
 
 
 class PageImage(models.Model):
@@ -236,10 +251,99 @@ class Announcement(models.Model):
     class Meta:
         ordering = ['-date']
 
-# Signals to generate responsive images after save
+
+class Leadership(models.Model):
+    """School leadership structure with role categories and members."""
+    ROLE_CATEGORY_CHOICES = [
+        ('board', 'Board of Management'),
+        ('principal', 'Principal'),
+        ('deputy-academic', 'Deputy Principal - Academic'),
+        ('deputy-admin', 'Deputy Principal - Administration'),
+        ('senior-master', 'Senior Master'),
+        ('boarding-masters', 'Boarding Masters'),
+        ('department-heads', 'Department Heads'),
+    ]
+    
+    COLOR_CHOICES = [
+        ('amber', 'Gold/Amber'),
+        ('blue', 'Blue'),
+        ('teal', 'Teal'),
+        ('emerald', 'Emerald'),
+        ('yellow', 'Yellow/Orange'),
+        ('purple', 'Purple/Violet'),
+        ('slate', 'Slate'),
+    ]
+
+    role_category = models.CharField(max_length=100, choices=ROLE_CATEGORY_CHOICES, help_text='Leadership role category')
+    position = models.CharField(max_length=200, help_text='Position title (e.g., "Chairman", "Principal", "Head of Science")')
+    name = models.CharField(max_length=200, help_text='Full name of the leader')
+    description = models.CharField(max_length=255, blank=True, help_text='Optional position description or department')
+    order = models.PositiveIntegerField(default=0, help_text='Sort order within role category')
+    color_scheme = models.CharField(max_length=50, choices=COLOR_CHOICES, default='slate', help_text='Card color gradient')
+    is_active = models.BooleanField(default=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.position}"
+
+    class Meta:
+        ordering = ['role_category', 'order', 'name']
+        verbose_name = 'Leadership member'
+        verbose_name_plural = 'Leadership members'
+        indexes = [
+            models.Index(fields=['role_category', 'order']),
+            models.Index(fields=['is_active']),
+        ]
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .image_utils import generate_responsive_versions
+from .utils import document_upload_to, image_upload_to, video_upload_to, anthem_audio_upload_to
+
+
+class SchoolAnthem(models.Model):
+    """School anthem with lyrics and audio file for admin upload."""
+    title = models.CharField(max_length=200, default='School Anthem')
+    lyrics = models.TextField(blank=True, help_text='Full lyrics of the school anthem (supports HTML formatting)')
+    audio_file = models.FileField(
+        upload_to=anthem_audio_upload_to,
+        blank=True,
+        null=True,
+        help_text='Upload MP3 or other audio format (recommended: MP3, WAV, OGG)'
+    )
+    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'School anthem'
+        verbose_name_plural = 'School anthem'
+
+    def save(self, *args, **kwargs):
+        # sanitize HTML content in lyrics if bleach is available
+        if bleach and self.lyrics:
+            allowed_tags = [
+                'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'span', 'div',
+                'h1', 'h2', 'h3', 'h4', 'blockquote'
+            ]
+            allowed_attrs = {
+                '*': ['class', 'style'],
+            }
+            try:
+                self.lyrics = bleach.clean(self.lyrics, tags=allowed_tags, attributes=allowed_attrs, strip=True)
+            except Exception:
+                pass
+        elif self.lyrics:
+            try:
+                self.lyrics = _basic_sanitize(self.lyrics)
+            except Exception:
+                pass
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=PageImage)

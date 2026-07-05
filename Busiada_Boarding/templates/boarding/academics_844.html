@@ -1,11 +1,304 @@
-
 {% extends 'boarding/base.html' %}
 {% block content %}
-<div class="max-w-4xl mx-auto py-12">
-  <div class="content-card p-8">
-    <h1 class="text-3xl font-bold mb-4">{{ title }}</h1>
-    <body> Build strong compassion</body> 
-    <div class="prose max-w-none text-zinc-800">{{ content|safe }}</div>
-  </div>
+<style>
+  .academics-844-page {
+    color: #f8fafc;
+    min-height: 100vh;
+    padding: 2rem 0 4rem;
+    background: #f8fafc;
+  }
+
+  .academics-844-hero {
+    background: linear-gradient(135deg, #071b3b 0%, #2b2d8b 48%, #7c3aed 100%);
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .academics-844-hero h1 {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    text-shadow: 0 8px 30px rgba(2, 6, 23, 0.28);
+  }
+
+  .academics-844-hero p {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    font-size: 1.05rem;
+    color: rgba(248, 250, 252, 0.9);
+    line-height: 1.8;
+  }
+
+  .academics-844-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .academics-844-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0.8rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.16);
+  }
+
+  .academics-844-actions a:hover,
+  .academics-844-actions a:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.22);
+  }
+
+  .academics-844-actions .btn-primary {
+    background: #f8fafc;
+    color: #0f172a;
+  }
+
+  .academics-844-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.16);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+  }
+
+  .academics-844-section {
+    padding: 1rem 0 2rem;
+  }
+
+  .section-intro {
+    margin-bottom: 1rem;
+  }
+
+  .section-intro h2 {
+    color: #f8fafc;
+    font-size: 1.55rem;
+    font-weight: 700;
+  }
+
+  .section-intro p {
+    color: rgba(248, 250, 252, 0.86);
+  }
+
+  .academics-844-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .academics-844-panel {
+    flex: 1 1 280px;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    color: #0f172a;
+    box-shadow: 0 16px 44px rgba(15, 23, 42, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    min-height: 220px;
+  }
+
+  .academics-844-panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.16);
+  }
+
+  .academics-844-panel h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+
+  .academics-844-panel p {
+    margin-bottom: 0;
+    color: #475569;
+    line-height: 1.7;
+  }
+
+  .panel-form-4 {
+    background: linear-gradient(135deg, #fef2f2 0%, #fecdd3 100%);
+    border: 1px solid rgba(244, 114, 182, 0.22);
+  }
+
+  .panel-form-3 {
+    background: linear-gradient(135deg, #ecfeff 0%, #a7f3d0 100%);
+    border: 1px solid rgba(16, 185, 129, 0.22);
+  }
+
+  .forms-section-heading {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.6rem;
+  }
+
+  .academics-844-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .academics-844-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.1rem;
+    padding: 1.4rem;
+    min-height: 220px;
+    color: #0f172a;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    opacity: 0;
+    transform: translateY(16px);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  .academics-844-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .academics-844-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.16);
+  }
+
+  .academics-844-card i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 999px;
+    margin-bottom: 0.95rem;
+    background: rgba(255,255,255,0.6);
+    font-size: 1.1rem;
+  }
+
+  .academics-844-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  .academics-844-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #334155;
+  }
+
+  .card-assignments { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
+  .card-revision { background: linear-gradient(135deg, #ede9fe 0%, #c4b5fd 100%); }
+  .card-kcse { background: linear-gradient(135deg, #fefce8 0%, #fde68a 100%); }
+
+  @media (max-width: 991px) {
+    .academics-844-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="academics-844-page">
+  <section class="academics-844-hero" id="top">
+    <div class="container-fluid px-4 px-lg-5">
+      <h1>Busiada Girls High School</h1>
+      <p>Discover a vibrant 8-4-4 learning experience built around academic excellence, practical growth, and student support.</p>
+      <div class="academics-844-actions">
+        <a href="#forms" class="btn-primary">Explore Forms</a>
+        <a href="#resources" class="btn-secondary">Resources</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="academics-844-section container-fluid px-4 px-lg-5" id="forms">
+    <h2 class="forms-section-heading">What B.G.H.S Offers</h2>
+    <div class="academics-844-flex">
+      <article class="academics-844-panel panel-form-4">
+        <h3>Form 4</h3>
+        <p>Focused revision pathways, exam readiness, and structured support for learners in their final stage of the 8-4-4 cycle.</p>
+      </article>
+      <article class="academics-844-panel panel-form-3">
+        <h3>Form 3</h3>
+        <p>Balanced academic preparation with skill-building activities, subject enrichment, and confident transition into senior studies.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="academics-844-section container-fluid px-4 px-lg-5" id="resources">
+    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2 mb-3 section-intro">
+      <div>
+        <h2 class="mb-1 text-2xl font-semibold">Academic Resources</h2>
+        <p class="mb-0 text-sm">Helpful materials to support study, revision, and preparation.</p>
+      </div>
+    </div>
+
+    <div class="academics-844-cards">
+      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-assignments reveal-on-scroll">
+        <div>
+          <i class="fa-solid fa-book-open"></i>
+          <h3>Assignments</h3>
+          <p>Access weekly tasks, project guidance, and practical study prompts that keep learners on track.</p>
+        </div>
+        <span class="fw-semibold text-slate-700">Open section →</span>
+      </a>
+      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-revision reveal-on-scroll">
+        <div>
+          <i class="fa-solid fa-file-lines"></i>
+          <h3>Revision Materials</h3>
+          <p>Find concise notes, structured summaries, and revision tools tailored for exam preparation.</p>
+        </div>
+        <span class="fw-semibold text-slate-700">Open section →</span>
+      </a>
+      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-kcse reveal-on-scroll">
+        <div>
+          <i class="fa-solid fa-graduation-cap"></i>
+          <h3>Past KCSE Questions</h3>
+          <p>Practice with previous examination papers and build confidence through regular review.</p>
+        </div>
+        <span class="fw-semibold text-slate-700">Open section →</span>
+      </a>
+    </div>
+  </section>
 </div>
+
+<script>
+  (function () {
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach((card) => observer.observe(card));
+  })();
+</script>
 {% endblock %}

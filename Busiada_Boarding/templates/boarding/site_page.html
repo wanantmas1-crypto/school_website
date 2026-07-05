@@ -1,126 +1,306 @@
 {% extends 'boarding/page_template.html' %}
 
 {% block page_title %}{{ page.title }}{% endblock %}
-{% block page_subtitle %}{% if page.category %}Category: {{ page.category }}{% endif %}{% endblock %}
+{% block page_subtitle %}{% if page.category %}{{ page.category }}{% endif %}{% endblock %}
+
 {% block page_content %}
+    {% if featured_image_url %}
+    <figure class="dynamic-hero-figure dynamic-panel reveal-on-scroll mb-4 overflow-hidden border border-slate-200 bg-slate-50 shadow-sm" style="border-radius:1.35rem; box-shadow:0 24px 70px rgba(15,23,42,.12);">
+        <img
+            src="{{ featured_image_url }}"
+            {% if featured_image_srcset %}srcset="{{ featured_image_srcset }}"{% endif %}
+            sizes="100vw"
+            alt="{{ page.title }}"
+            class="img-fluid d-block w-100"
+            style="height:min(74vh, 780px); object-fit:cover; object-position:center; background:#f8fafc;"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+        >
+        <figcaption class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 border-top border-slate-200 bg-white/95 px-3 px-md-4 py-3">
+            <span class="fw-semibold text-[#0A2540]">{{ page.title }}</span>
+            <span class="text-sm text-slate-500">Featured image</span>
+        </figcaption>
+    </figure>
+    {% endif %}
+
     {% include 'boarding/page_sections.html' %}
 
-    {% if embed_map %}
-    <section class="reveal-on-scroll bg-white border border-slate-200 rounded-3xl shadow-sm p-6 sm:p-8 mt-6">
-        <div>
-            <h2 class="text-2xl font-semibold text-[#0A2540]">Our Location</h2>
-            <p class="text-sm text-slate-500">Find us on Google Maps.</p>
-        </div>
-        <div class="mt-4">
-            {{ embed_map|safe }}
-        </div>
-    </section>
-    {% endif %}
-
-    {% if page.images.exists %}
-    <section class="reveal-on-scroll bg-white border border-slate-200 rounded-3xl shadow-sm p-6 sm:p-8">
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-                <h2 class="text-2xl font-semibold text-[#0A2540]">Gallery</h2>
-                <p class="text-sm text-slate-500">Full-resolution photos displayed responsively across all screen sizes.</p>
-            </div>
-            <span class="text-sm text-slate-400">{{ page.images.count }} items</span>
-        </div>
-        <div class="gallery-grid mt-6">
-            {% for img in page.images.all %}
-            <article class="gallery-card reveal-on-scroll group">
-                <div class="gallery-frame">
-                    <img src="{{ img.image.url }}" alt="{{ img.caption|default:img.title|default:page.title }}" data-lightbox-src="{{ img.image.url }}" loading="lazy" />
+    {% if page.slug == 'admission-process' %}
+    <section class="dynamic-panel reveal-on-scroll border border-emerald-100 bg-white p-3 p-md-4 shadow-sm" style="border-radius:.5rem;">
+        <div class="container-fluid px-0">
+            <div class="row g-4 align-items-start">
+                <div class="col-sm-12 col-lg-4">
+                    <p class="mb-2 text-xs font-black uppercase tracking-[0.16em] text-rose-700">Joining Busiada Girls</p>
+                    <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-emerald-950">Next steps for joining senior school.</h2>
+                    <p class="mb-0 text-base leading-8 text-slate-600">
+                        Busiada Girls accepts learners through Grade 9 placement and transfers. The admissions process considers pathway fit, readiness and talent development.
+                    </p>
                 </div>
-                <div class="p-5 flex flex-col gap-3">
-                    <div class="flex items-center justify-between gap-4">
-                        <h3 class="text-lg font-semibold text-[#0A2540]">{{ img.title|default:'Photo' }}</h3>
-                        <span class="text-xs uppercase tracking-[0.24em] text-slate-400">{{ img.uploaded_at|date:"d M Y" }}</span>
+                <div class="col-sm-12 col-lg-8">
+                    <div class="row g-3">
+                        <article class="col-sm-12 col-md-4">
+                            <div class="h-100 border border-emerald-100 bg-emerald-50 p-4" style="border-radius:.5rem;">
+                                <span class="text-sm font-black text-emerald-700">01</span>
+                                <h3 class="mt-3 text-lg font-bold text-emerald-950">Apply</h3>
+                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Submit reports, recommendations and placement forms.</p>
+                            </div>
+                        </article>
+                        <article class="col-sm-12 col-md-4">
+                            <div class="h-100 border border-amber-100 bg-amber-50 p-4" style="border-radius:.5rem;">
+                                <span class="text-sm font-black text-amber-700">02</span>
+                                <h3 class="mt-3 text-lg font-bold text-amber-950">Interview</h3>
+                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Attend the placement interview and orientation.</p>
+                            </div>
+                        </article>
+                        <article class="col-sm-12 col-md-4">
+                            <div class="h-100 border border-rose-100 bg-rose-50 p-4" style="border-radius:.5rem;">
+                                <span class="text-sm font-black text-rose-700">03</span>
+                                <h3 class="mt-3 text-lg font-bold text-rose-950">Enroll</h3>
+                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Confirm fees, secure your place and begin.</p>
+                            </div>
+                        </article>
                     </div>
-                    {% if img.caption %}
-                    <p class="text-sm text-slate-500 italic">{{ img.caption }}</p>
-                    {% endif %}
-                    {% if img.description %}
-                    <p class="text-sm text-gray-700">{{ img.description|linebreaks }}</p>
-                    {% endif %}
                 </div>
-            </article>
-            {% endfor %}
+            </div>
         </div>
     </section>
     {% endif %}
 
-    <div id="image-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4">
-        <button id="lightbox-close" type="button" class="absolute top-4 right-4 text-white text-3xl leading-none hover:text-slate-200">&times;</button>
-        <img id="lightbox-img" src="" alt="Expanded image view" class="max-h-[90vh] max-w-full rounded-3xl shadow-2xl" />
-    </div>
+    {% if embed_map %}
+    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;">
+        <div class="container-fluid px-0">
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-end justify-content-between gap-2 mb-3">
+                <div>
+                    <h2 class="mb-1 text-2xl font-semibold text-[#0A2540]">Our Location</h2>
+                    <p class="mb-0 text-sm text-slate-500">Find us on Google Maps.</p>
+                </div>
+            </div>
+            <div class="w-100 overflow-hidden" style="border-radius:.5rem;">
+                {{ embed_map|safe }}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% include 'boarding/partials/dynamic_media_gallery.html' %}
 
     {% if page.videos.exists %}
-    <section class="reveal-on-scroll bg-white border border-slate-200 rounded-3xl shadow-sm p-6 sm:p-8">
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-                <h2 class="text-2xl font-semibold text-[#0A2540]">Videos</h2>
-                <p class="text-sm text-slate-500">Videos displayed in full-width responsive layout.</p>
+    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;" aria-labelledby="dynamic-videos-heading">
+        <div class="container-fluid px-0">
+            <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2">
+                <div>
+                    <h2 id="dynamic-videos-heading" class="mb-1 text-2xl font-semibold text-[#0A2540]">Videos</h2>
+                    <p class="mb-0 text-sm text-slate-500">Browse a clean video gallery with overlay titles and responsive preview cards.</p>
+                </div>
+                <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-600">{{ page.videos.count }} items</span>
             </div>
-            <span class="text-sm text-slate-400">{{ page.videos.count }} items</span>
-        </div>
-        <div class="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
-            {% for vid in page.videos.all %}
-            <article class="group overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <div class="overflow-hidden bg-black w-full min-h-80 sm:min-h-96 flex items-center justify-center">
-                    <video controls class="w-full h-auto object-contain">
-                        <source src="{{ vid.video.url }}" type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="p-5 flex flex-col gap-3">
-                    <div class="flex items-center justify-between gap-4">
-                        <h3 class="text-lg font-semibold text-[#0A2540]">{{ vid.title|default:'Video' }}</h3>
-                        <span class="text-xs uppercase tracking-[0.24em] text-slate-400">{{ vid.uploaded_at|date:"d M Y" }}</span>
+            <div class="row g-4 mt-3" role="list">
+                {% for vid in page.videos.all %}
+                <article class="col-sm-12 col-md-6 col-lg-4 reveal-on-scroll" role="listitem">
+                    <div class="card shadow-lg rounded-4 overflow-hidden h-100 border-0">
+                        <div class="position-relative ratio ratio-16x9 bg-black overflow-hidden">
+                            <video controls preload="metadata" playsinline muted loop class="w-100 h-100" style="object-fit:cover;">
+                                <source src="{{ vid.video.url }}" />
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="position-absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70"></div>
+                            <div class="position-absolute top-50 start-50 translate-middle text-white fs-2">
+                                <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="card-body py-3 px-3 px-md-4">
+                            <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+                                <h3 class="mb-0 text-lg fw-semibold text-[#0A2540]">{{ vid.title|default:'Video' }}</h3>
+                                <span class="text-xs text-slate-400">{{ vid.uploaded_at|date:"d M Y" }}</span>
+                            </div>
+                            {% if vid.caption %}
+                            <p class="mt-2 mb-0 text-sm text-slate-500 italic">{{ vid.caption }}</p>
+                            {% endif %}
+                            {% if vid.description %}
+                            <p class="mt-2 mb-0 text-sm text-slate-700">{{ vid.description|striptags }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                    {% if vid.caption %}
-                    <p class="text-sm text-slate-500 italic">{{ vid.caption }}</p>
-                    {% endif %}
-                    {% if vid.description %}
-                    <p class="text-sm text-gray-700">{{ vid.description|linebreaks }}</p>
-                    {% endif %}
-                </div>
-            </article>
-            {% endfor %}
+                </article>
+                {% endfor %}
+            </div>
         </div>
     </section>
     {% endif %}
 
     {% if page.documents.exists %}
-    <section class="reveal-on-scroll bg-white border border-slate-200 rounded-3xl shadow-sm p-6 sm:p-8">
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-                <h2 class="text-2xl font-semibold text-[#0A2540]">Downloads</h2>
-                <p class="text-sm text-slate-500">Each document has a clear row card, label, and upload timestamp.</p>
-            </div>
-            <span class="text-sm text-slate-400">{{ page.documents.count }} items</span>
-        </div>
-        <div class="mt-6 grid gap-4">
-            {% for document in page.documents.all %}
-            <article class="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-slate-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between">
+    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4" style="border-radius:.5rem;" aria-labelledby="dynamic-downloads-heading">
+        <div class="container-fluid px-0">
+            <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2">
                 <div>
-                    <a href="{{ document.file.url }}" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
-                        {{ document.title }}
-                    </a>
-                    {% if document.description %}
-                    <p class="text-sm text-slate-500 mt-1">{{ document.description }}</p>
-                    {% endif %}
+                    <h2 id="dynamic-downloads-heading" class="mb-1 text-2xl font-semibold text-[#0A2540]">Downloads</h2>
+                    <p class="mb-0 text-sm text-slate-500">Each document has a clear row, label, and upload timestamp.</p>
                 </div>
-                <div class="flex flex-col items-start gap-2 sm:items-end">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
-                        <i class="fa-solid fa-file-arrow-down"></i>
-                        Download
-                    </span>
-                    <span class="text-xs text-slate-400">{{ document.uploaded_at|date:"d M Y" }}</span>
-                </div>
-            </article>
-            {% endfor %}
+                <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-600">{{ page.documents.count }} items</span>
+            </div>
+            <div class="row g-3 mt-2" role="list">
+                {% for document in page.documents.all %}
+                <article class="col-12 reveal-on-scroll" role="listitem">
+                    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-3 border border-slate-200 bg-slate-50 p-3 p-md-4 transition-all duration-300 hover:shadow-xl" style="border-radius:.5rem;">
+                        <div>
+                            <a href="{{ document.file.url }}" class="text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer">
+                                {{ document.title }}
+                            </a>
+                            {% if document.description %}
+                            <p class="text-sm text-slate-500 mt-1 mb-0">{{ document.description }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-column align-items-start align-items-sm-end gap-2">
+                            <span class="d-inline-flex align-items-center gap-2 rounded-pill bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm">
+                                <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+                                Download
+                            </span>
+                            <span class="text-xs text-slate-400">{{ document.uploaded_at|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
         </div>
     </section>
     {% endif %}
+
+    <script>
+    (function () {
+        const cards = Array.from(document.querySelectorAll('[data-gallery-card]'));
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxDescription = document.getElementById('lightbox-description');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        const closeButton = document.querySelector('.gallery-lightbox-close');
+        const prevButton = document.querySelector('[data-lightbox-prev]');
+        const nextButton = document.querySelector('[data-lightbox-next]');
+        const loadMoreButton = document.querySelector('[data-gallery-load-more]');
+        const grid = document.querySelector('[data-gallery-grid]');
+        const pageSize = Number(grid?.dataset.pageSize || 12);
+        let visibleCount = pageSize;
+        let activeIndex = 0;
+        let lastFocus = null;
+        let touchStartX = 0;
+
+        if (!cards.length || !lightbox) return;
+
+        function updatePagination() {
+            cards.forEach((card, index) => {
+                card.classList.toggle('is-hidden', index >= visibleCount);
+            });
+
+            if (loadMoreButton) {
+                loadMoreButton.classList.toggle('d-none', cards.length <= visibleCount);
+            }
+        }
+
+        function getItem(index) {
+            const card = cards[index];
+            return card ? card.querySelector('[data-gallery-open]') : null;
+        }
+
+        function renderLightbox(index) {
+            const item = getItem(index);
+            if (!item || !lightboxImg) return;
+
+            activeIndex = index;
+            const title = item.dataset.title || 'Photo';
+            const caption = item.dataset.caption || '';
+            const description = item.dataset.description || '';
+
+            lightboxImg.src = item.dataset.src;
+            lightboxImg.alt = title;
+            if (lightboxTitle) lightboxTitle.textContent = title;
+            if (lightboxCaption) {
+                lightboxCaption.textContent = caption;
+                lightboxCaption.classList.toggle('d-none', !caption);
+            }
+            if (lightboxDescription) {
+                lightboxDescription.textContent = description;
+                lightboxDescription.classList.toggle('d-none', !description);
+            }
+            if (lightboxCounter) {
+                lightboxCounter.textContent = (activeIndex + 1) + ' of ' + cards.length;
+            }
+        }
+
+        function showLightbox(index, trigger) {
+            lastFocus = trigger || document.activeElement;
+            renderLightbox(index);
+            lightbox.classList.add('show');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            closeButton?.focus();
+        }
+
+        function hideLightbox() {
+            lightbox.classList.remove('show');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            if (lightboxImg) lightboxImg.src = '';
+            lastFocus?.focus?.();
+        }
+
+        function modalIsOpen() {
+            return lightbox.classList.contains('show');
+        }
+
+        function showNext(step) {
+            if (!cards.length || !modalIsOpen()) return;
+            const nextIndex = (activeIndex + step + cards.length) % cards.length;
+            renderLightbox(nextIndex);
+        }
+
+        cards.forEach((card, index) => {
+            const trigger = card.querySelector('[data-gallery-open]');
+            trigger?.addEventListener('click', () => showLightbox(index, trigger));
+        });
+
+        loadMoreButton?.addEventListener('click', () => {
+            visibleCount += pageSize;
+            updatePagination();
+        });
+
+        closeButton?.addEventListener('click', () => hideLightbox());
+        prevButton?.addEventListener('click', () => showNext(-1));
+        nextButton?.addEventListener('click', () => showNext(1));
+
+        lightbox?.addEventListener('click', (event) => {
+            if (event.target === lightbox) hideLightbox();
+        });
+
+        lightbox?.addEventListener('touchstart', (event) => {
+            touchStartX = event.changedTouches[0].clientX;
+        }, { passive: true });
+
+        lightbox?.addEventListener('touchend', (event) => {
+            const touchEndX = event.changedTouches[0].clientX;
+            const delta = touchEndX - touchStartX;
+            if (Math.abs(delta) > 50) {
+                showNext(delta < 0 ? 1 : -1);
+            }
+        }, { passive: true });
+
+        document.addEventListener('keydown', (event) => {
+            if (!modalIsOpen()) return;
+
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                showNext(1);
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                showNext(-1);
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                hideLightbox();
+            }
+        });
+
+        updatePagination();
+    })();
+    </script>
 {% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'boarding/page_template.html' %}
+
+{% block page_title %}{{ page.title }}{% endblock %}
+{% block page_subtitle %}{{ page.category }}{% endblock %}
+
+{% block page_content %}
+<section class="dynamic-panel reveal-on-scroll border-0 p-0" style="background: linear-gradient(135deg, #004e92 0%, #000428 100%); min-height: 100vh;">
+    <div class="container-fluid h-100 px-0">
+        <div class="d-flex justify-content-center align-items-center h-100 py-4 py-md-5">
+            <div class="card shadow-lg rounded-0 border-0 p-4 p-md-5 w-100 h-100" style="background: #f8f9fa;">
+                <div class="text-center mb-4">
+                    <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(0, 78, 146, .1); color: #004e92; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;">Contact Us</span>
+                    <h2 class="mb-2 text-3xl font-bold text-[#0A2540]">Reach the school office</h2>
+                    <p class="mb-0 text-sm text-slate-600">Choose the most convenient way to connect with Busiada Girls Senior School.</p>
+                </div>
+
+                <div class="row g-4" role="list" aria-label="School contact methods">
+                    {% for item in contact_details %}
+                    <div class="col-12 col-md-6">
+                        {% if item.clickable %}
+                        <a href="{{ item.href }}" target="_blank" rel="noopener noreferrer" class="contact-item text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.tooltip }}" role="listitem" aria-label="{{ item.label }} contact details" style="border-left: 4px solid {{ item.accent }};">
+                        {% else %}
+                        <div class="contact-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.tooltip }}" role="listitem" aria-label="{{ item.label }} contact details" style="border-left: 4px solid {{ item.accent }};">
+                        {% endif %}
+                        <div class="col-auto pe-3">
+                            <div class="contact-icon" style="background: {{ item.accent_bg }}; color: {{ item.accent }}; border: 1px solid {{ item.accent_border }};">
+                                <i class="{{ item.icon }}" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="d-flex flex-column gap-2 mb-1">
+                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                    <h3 class="mb-0 text-lg font-semibold text-[#0A2540]">{{ item.label }}</h3>
+                                    <span class="badge rounded-pill" style="color: {{ item.accent }}; background: {{ item.accent_bg }}; border: 1px solid {{ item.accent_border }};">{{ item.badge }}</span>
+                                </div>
+                            </div>
+                            <p class="mb-2 text-sm text-slate-600">{{ item.description }}</p>
+                            <div class="rounded-3 p-3 text-sm text-slate-700" style="background: #ffffff; border: 1px solid rgba(15, 23, 42, .08); word-break: break-word;">
+                                {{ item.value }}
+                            </div>
+                        </div>
+                    {% if item.clickable %}
+                    </a>
+                    {% else %}
+                    </div>
+                    {% endif %}
+                    </div>  <!-- closes col-12 col-md-6 -->
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem 1.1rem;
+        border-radius: 1rem;
+        background: #fff;
+        border: 1px solid rgba(15, 23, 42, .08);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+        transition: transform .2s ease, box-shadow .2s ease;
+        height: 100%;
+    }
+    .contact-item:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 14px 30px rgba(15, 23, 42, .12);
+    }
+    .contact-item:focus-visible {
+        outline: 3px solid rgba(0, 78, 146, .25);
+        outline-offset: 3px;
+    }
+    .contact-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 999px;
+        font-size: 1.15rem;
+    }
+    @media (max-width: 575.98px) {
+        .contact-item {
+            padding: .9rem;
+        }
+        .contact-icon {
+            width: 2.8rem;
+            height: 2.8rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+{% endblock %}

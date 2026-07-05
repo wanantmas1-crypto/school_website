@@ -1,0 +1,106 @@
+{% extends 'boarding/page_template.html' %}
+
+{% block page_title %}{{ anthem.title }}{% endblock %}
+{% block page_subtitle %}Busiada Girls Senior School{% endblock %}
+
+{% block page_content %}
+<section class="dynamic-panel reveal-on-scroll border-0 p-0" style="background: linear-gradient(135deg, #004e92 0%, #000428 100%); min-height: 100vh;">
+    <div class="container-fluid h-100 px-0">
+        <div class="d-flex justify-content-center align-items-center h-100 py-4 py-md-5">
+            <div class="card shadow-lg border-0 p-4 p-md-6 w-100" style="background: #f8f9fa; max-width: 900px; border-radius: 1.5rem;">
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(0, 78, 146, .1); color: #004e92; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;">
+                        <i class="fa-solid fa-music me-2"></i>Our Pride
+                    </span>
+                    <h2 class="mb-3 text-4xl font-bold text-[#0A2540]">{{ anthem.title }}</h2>
+                    <p class="mb-0 text-sm text-slate-600">Celebrating our heritage and unity</p>
+                </div>
+
+                <!-- Lyrics Section -->
+                {% if anthem.lyrics %}
+                <div class="anthem-lyrics mb-6 p-5" style="background: #ffffff; border-radius: 1rem; border-left: 6px solid #004e92;">
+                    <div class="lyrics-content text-slate-700" style="line-height: 1.8; font-size: 1.05rem;">
+                        {{ anthem.lyrics|safe }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Audio Player Section -->
+                {% if anthem.audio_file %}
+                <div class="audio-player-section p-5" style="background: linear-gradient(135deg, rgba(0, 78, 146, .08) 0%, rgba(59, 130, 246, .06) 100%); border-radius: 1rem;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <h3 class="mb-1 text-lg font-semibold text-[#0A2540]">
+                                <i class="fa-solid fa-headphones me-2" style="color: #004e92;"></i>Listen to Our Anthem
+                            </h3>
+                            <p class="mb-0 text-sm text-slate-600">Click play to hear the official school anthem recording</p>
+                        </div>
+                    </div>
+                    
+                    <audio controls class="w-100 mt-3" style="border-radius: 0.5rem;">
+                        <source src="{{ anthem.audio_file.url }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                {% else %}
+                <div class="alert alert-info d-flex align-items-center p-4" style="background: rgba(59, 130, 246, .1); border: 1px solid rgba(59, 130, 246, .3); border-radius: 1rem;">
+                    <i class="fa-solid fa-circle-info me-3" style="color: #3b82f6; font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>No audio file available</strong>
+                        <p class="mb-0 text-sm mt-1">The school anthem audio recording will be available soon. Please check back later.</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Last Updated -->
+                <div class="text-center mt-6 pt-4" style="border-top: 1px solid rgba(15, 23, 42, .1);">
+                    <p class="mb-0 text-xs text-slate-500">
+                        <i class="fa-solid fa-clock me-2"></i>Last updated: {{ anthem.updated_at|date:"F d, Y" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .lyrics-content {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .lyrics-content p {
+        margin-bottom: 1rem;
+    }
+
+    .lyrics-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    audio {
+        max-width: 100%;
+        height: 40px;
+        outline: none;
+    }
+
+    audio::-webkit-media-controls-panel {
+        background: linear-gradient(135deg, rgba(0, 78, 146, .15) 0%, rgba(59, 130, 246, .1) 100%);
+    }
+
+    @media (max-width: 768px) {
+        .anthem-lyrics {
+            padding: 1.25rem !important;
+        }
+
+        .audio-player-section {
+            padding: 1.25rem !important;
+        }
+
+        .card {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
+{% endblock %}
+

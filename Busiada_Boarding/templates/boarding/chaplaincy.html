@@ -1,0 +1,71 @@
+{% extends 'boarding/base.html' %}
+
+{% block page_title %}School Chaplaincy{% endblock %}
+
+{% block content %}
+<section class="w-full max-w-7xl mx-auto grid gap-8 py-8 lg:py-12 relative overflow-hidden" {% if page.background_image %}style="background-image: url('{{ page.background_image.url }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"{% endif %}>
+    <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
+        <div class="space-y-6">
+            <h1 class="text-4xl font-bold text-slate-900">School Chaplaincy</h1>
+            <p class="text-lg leading-8 text-slate-700">The chaplaincy team provides spiritual care, moral guidance and pastoral support for every student at Busiada Girls Senior School.</p>
+            <p class="text-base leading-7 text-slate-600">Use the admin panel to upload the page background image and add chaplaincy photos. The first section shows text on the left and a featured image on the right.</p>
+        </div>
+        <div class="rounded-[2rem] overflow-hidden bg-slate-200 min-h-[340px] flex items-center justify-center">
+            {% if section_one_image %}
+                <img src="{{ section_one_image.image.url }}" alt="{{ section_one_image.title }}" class="w-full h-full object-cover" loading="lazy" />
+            {% else %}
+                <div class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-500">Image placeholder</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] items-center">
+        <div class="space-y-6">
+            <h2 class="text-3xl font-semibold text-slate-900">Spiritual care with compassion</h2>
+            <p class="text-lg leading-8 text-slate-700">The chaplaincy supports student wellbeing through prayer, guidance and community outreach, all rooted in our school’s values.</p>
+            <p class="text-base leading-7 text-slate-600">This section is text-led and designed to introduce the core mission of the school chaplaincy team.</p>
+        </div>
+        <div class="rounded-[2rem] overflow-hidden bg-slate-200 min-h-[340px] flex items-center justify-center">
+            {% if section_two_image %}
+                <img src="{{ section_two_image.image.url }}" alt="{{ section_two_image.title }}" class="w-full h-full object-cover" loading="lazy" />
+            {% else %}
+                <div class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-500">Image placeholder</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="relative overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-12 text-center text-white">
+        <div class="space-y-6 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-semibold">Growing through connection</h2>
+            <p class="text-lg leading-8 text-slate-300">A visual section for featured chaplaincy moments, with a subtle animation effect on uploaded images.</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3 chaplaincy-transition">
+            {% for slide in transition_images %}
+                <div class="relative overflow-hidden rounded-[1.75rem] bg-slate-800 p-4 shadow-2xl">
+                    {% if slide.image %}
+                        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="chaplaincy-slide mx-auto block h-64 w-full object-cover transition-transform duration-1000 ease-in-out hover:scale-105 hover:rotate-1" loading="lazy" />
+                    {% else %}
+                        <div class="flex h-64 w-full items-center justify-center bg-slate-700 text-slate-400">Image placeholder</div>
+                    {% endif %}
+                    <div class="mt-4 text-left">
+                        <p class="font-semibold text-white">{{ slide.title }}</p>
+                        <p class="text-sm text-slate-300">{{ slide.description|default:'Chaplaincy photo' }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .chaplaincy-transition .chaplaincy-slide {
+        transform-origin: center center;
+        animation: chaplaincy-zoom-rotate 12s ease-in-out infinite;
+    }
+
+    @keyframes chaplaincy-zoom-rotate {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.08) rotate(1.25deg); }
+    }
+</style>
+{% endblock %}

@@ -26,3 +26,8 @@ def video_upload_to(instance, filename):
 def document_upload_to(instance, filename):
     fname = _hash_filename(filename)
     return os.path.join('documents', fname)
+
+
+def anthem_audio_upload_to(instance, filename):
+    fname = _hash_filename(filename)
+    return os.path.join('anthem', fname)

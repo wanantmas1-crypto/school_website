@@ -1,15 +1,23 @@
-{% if page.sections %}
-    {% for section in page.sections %}
-        {% if section.type == 'text' %}
-            <section class="prose prose-slate max-w-none text-slate-700">
-                {{ section.content|safe }}
+<div class="dynamic-page-sections container-fluid px-0">
+    {% if page.sections %}
+        <div class="row g-4">
+            {% for section in page.sections %}
+                <section class="col-12 reveal-on-scroll">
+                    <div class="prose prose-slate max-w-none w-100 text-slate-700">
+                        {% if section.type == 'text' %}
+                            {{ section.content|safe }}
+                        {% else %}
+                            {{ section|default:'' }}
+                        {% endif %}
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row">
+            <section class="col-12 reveal-on-scroll">
+                <div class="prose prose-slate max-w-none w-100 text-slate-700">{{ page.content|safe }}</div>
             </section>
-        {% else %}
-            <section class="prose prose-slate max-w-none text-slate-700">
-                {{ section|default:'' }}
-            </section>
-        {% endif %}
-    {% endfor %}
-{% else %}
-    <div class="prose prose-slate max-w-none text-slate-700">{{ page.content|safe }}</div>
-{% endif %}
+        </div>
+    {% endif %}
+</div>

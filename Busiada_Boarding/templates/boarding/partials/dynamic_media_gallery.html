@@ -1,0 +1,132 @@
+﻿{% if gallery_items %}
+<section class="dynamic-gallery reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4" style="border-radius:.5rem;" aria-labelledby="media-gallery-heading">
+    <div class="container-fluid px-0">
+        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2 mb-4">
+            <div>
+                <h2 id="media-gallery-heading" class="mb-1 text-2xl font-semibold text-[#0A2540]">Media</h2>
+                <p class="mb-0 text-sm text-slate-500">Images and videos for this page.</p>
+            </div>
+            <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-600">{{ gallery_items|length }} items</span>
+        </div>
+
+        <div class="gallery-grid" role="list">
+            {% for img in gallery_items %}
+            <article class="gallery-card reveal-on-scroll" role="listitem">
+                <a href="#" class="gallery-thumb block relative" data-lightbox-src="{{ img.src }}" data-lightbox-caption="{{ img.title }}{% if img.caption %} - {{ img.caption }}{% endif %}" data-lightbox-type="{% if img.is_video %}video{% else %}image{% endif %}" aria-label="Open {{ img.title }}">
+                    <div class="gallery-media">
+                        {% if img.is_video %}
+                        <video class="w-full h-full object-cover rounded-[1.25rem]" style="aspect-ratio:4/3;" preload="metadata" controls muted>
+                            <source src="{{ img.src }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        {% else %}
+                        <img src="{{ img.src }}" alt="{{ img.title|default:'Image' }}" class="w-full h-full object-cover rounded-[1.25rem]" style="aspect-ratio:4/3;" loading="lazy" decoding="async">
+                        {% endif %}
+
+                        <div class="gallery-overlay">
+                            <div class="gallery-caption">{{ img.title }}</div>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="gallery-meta">
+                    {% if img.category %}<span class="meta-badge bg-blue-100 text-blue-600">{{ img.category }}</span>{% endif %}
+                    {% if img.featured %}<span class="meta-badge bg-yellow-100 text-yellow-600">Featured</span>{% endif %}
+                    {% if img.year %}<span class="meta-badge bg-slate-100 text-slate-600">{{ img.year }}</span>{% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<div id="dynamic-media-lightbox" role="dialog" aria-modal="true" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:60;align-items:center;justify-content:center;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);padding:1.25rem;overflow:auto;">
+    <button class="lb-close" aria-label="Close" style="position:absolute;top:1rem;right:1rem;color:#fff;background:transparent;border:0;font-size:1.25rem;">✕</button>
+    <div class="lightbox-shell" style="width:min(100%,72rem);max-height:100%;display:flex;align-items:center;justify-content:center;padding:1rem;">
+        <figure style="width:100%;text-align:center;color:#fff;">
+            <div id="lightbox-media" style="max-height:min(90vh,760px);max-width:100%;margin:0 auto;"></div>
+            <figcaption id="lightbox-caption" style="margin-top:.5rem;color:#fff;opacity:.95;"></figcaption>
+        </figure>
+    </div>
+</div>
+
+<style>
+    :root { --gallery-gap: 1rem; }
+
+    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:var(--gallery-gap); }
+    .gallery-card { border-radius:1.25rem; border:1px solid #e6eef6; background:#f8fafc; box-shadow:0 6px 18px rgba(15,23,42,0.04); transition:transform .3s ease, box-shadow .3s ease; overflow:hidden; }
+    .gallery-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(15,23,42,0.08); }
+    .gallery-media { position:relative; width:100%; height:0; padding-bottom:75%; overflow:hidden; }
+    .gallery-media img, .gallery-media video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .gallery-overlay { position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,0.65), rgba(0,0,0,0)); opacity:0; transition:opacity .25s ease; display:flex; align-items:flex-end; }
+    .gallery-thumb:hover .gallery-overlay, .gallery-thumb:focus .gallery-overlay { opacity:1; }
+    .gallery-caption { color:#fff; padding:.75rem; font-weight:600; }
+    .gallery-meta { padding:.5rem .75rem .75rem; display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+    .meta-badge { padding:.25rem .5rem; font-size:.75rem; border-radius:999px; }
+
+    .reveal-on-scroll { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal-on-scroll.visible { opacity:1; transform:none; }
+</style>
+
+<script>
+    (function(){
+        const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } }); },{threshold:0.12});
+        document.querySelectorAll('.reveal-on-scroll').forEach(n=>io.observe(n));
+
+        const lb = document.getElementById('dynamic-media-lightbox');
+        const lbMedia = document.getElementById('lightbox-media');
+        const lbCaption = document.getElementById('lightbox-caption');
+        const lbClose = lb.querySelector('.lb-close');
+
+        function escapeHTML(s){ return s ? s.replace(/[&"'<>]/g, c=>({'&':'&amp;','"':'&quot;','\'':'&#39;','<':'&lt;','>':'&gt;'}[c])) : ''; }
+
+        function open(src,type,caption,alt){
+            lbMedia.innerHTML='';
+            if(type==='video'){
+                const v=document.createElement('video');
+                v.src=src;
+                v.controls=true;
+                v.autoplay=true;
+                v.style.maxWidth='100%';
+                v.style.maxHeight='80vh';
+                lbMedia.appendChild(v);
+            } else {
+                const i=document.createElement('img');
+                i.src=src;
+                i.alt=alt||'';
+                i.style.maxWidth='100%';
+                i.style.maxHeight='80vh';
+                lbMedia.appendChild(i);
+            }
+            lbCaption.innerHTML = escapeHTML(caption||'');
+            lb.style.display='flex';
+            lb.setAttribute('aria-hidden','false');
+            lbClose.focus();
+            document.body.style.overflow='hidden';
+        }
+
+        function close(){
+            lb.style.display='none';
+            lb.setAttribute('aria-hidden','true');
+            lbMedia.innerHTML='';
+            lbCaption.innerHTML='';
+            document.body.style.overflow='';
+        }
+
+        document.querySelectorAll('.gallery-thumb').forEach(btn=>{
+            btn.addEventListener('click',(e)=>{
+                e.preventDefault();
+                const src = btn.dataset.lightboxSrc;
+                const caption = btn.dataset.lightboxCaption || btn.querySelector('.gallery-caption')?.textContent || '';
+                const type = btn.dataset.lightboxType || 'image';
+                open(src,type,caption,btn.getAttribute('aria-label'));
+            });
+            btn.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); btn.click(); } });
+        });
+
+        lbClose.addEventListener('click',close);
+        lb.addEventListener('click',(e)=>{ if(e.target===lb) close(); });
+        document.addEventListener('keydown',(e)=>{ if(lb.style.display==='flex' && e.key==='Escape') close(); });
+    })();
+</script>
+{% endif %}

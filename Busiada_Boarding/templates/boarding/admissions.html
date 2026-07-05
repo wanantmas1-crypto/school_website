@@ -1,16 +1,13 @@
-{% extends 'boarding/base.html' %}
+{% extends 'boarding/site_page.html' %}
 
-{% block content %}
-<div class="max-w-4xl mx-auto px-6 py-16">
-    <h1 class="text-4xl font-bold mb-8">Admissions</h1>
-    
-    <div class="prose text-lg">
-        <h2>Admission Process</h2>
-        <p>We welcome applications for Form 3, Form 4 and Grade 10. Our process is fair and transparent.</p>
-    </div>
+{% block page_title %}{{ page.title|default:'Admissions' }}{% endblock %}
+{% block page_subtitle %}{% if page.category %}{{ page.category }}{% else %}Admissions{% endif %}{% endblock %}
 
-    <div class="mt-12 bg-white p-10 rounded-3xl shadow">
-        <h3 class="text-2xl font-semibold mb-6">Send Enquiry</h3>
+{% block page_content %}
+    {{ block.super }}
+
+    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;">
+        <h2 class="text-2xl font-semibold mb-4 text-[#0A2540]">Send Enquiry</h2>
         <form hx-post="{% url 'submit_inquiry' %}" hx-target="#response" class="space-y-6">
             <input type="text" name="name" placeholder="Full Name" required class="w-full p-4 border rounded-2xl">
             <input type="email" name="email" placeholder="Email" required class="w-full p-4 border rounded-2xl">
@@ -19,6 +16,5 @@
             <button type="submit" class="bg-[#0A2540] text-white px-8 py-4 rounded-2xl">Submit</button>
         </form>
         <div id="response" class="mt-6"></div>
-    </div>
-</div>
+    </section>
 {% endblock %}

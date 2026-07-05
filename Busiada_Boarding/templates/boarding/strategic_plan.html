@@ -1,0 +1,47 @@
+{% extends 'boarding/base.html' %}
+
+{% block content %}
+<section class="py-16">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <article role="main" aria-labelledby="strategic-title">
+      <div class="rounded-2xl shadow-lg overflow-hidden" style="background:linear-gradient(135deg,#06b6d4 0%,#0ea5a4 100%);">
+        <div class="p-8 md:p-12 text-white">
+          <h1 id="strategic-title" class="text-3xl font-extrabold mb-4">{{ page.title|default:'Strategic Plan' }}</h1>
+          <p class="mb-6 opacity-90">This is a template for the Strategic Plan dynamic page. Replace placeholders via Django Admin.</p>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <section role="region" aria-labelledby="vision-heading" class="bg-white/10 rounded-xl p-6">
+              <h2 id="vision-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-eye" aria-hidden="true"></i> Vision Statement</h2>
+              <p class="mt-3">[Enter Vision here]</p>
+            </section>
+
+            <section role="region" aria-labelledby="mission-heading" class="bg-white/10 rounded-xl p-6">
+              <h2 id="mission-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-compass" aria-hidden="true"></i> Mission Statement</h2>
+              <p class="mt-3">[Enter Mission here]</p>
+            </section>
+          </div>
+
+          <div class="mt-6 grid gap-6 md:grid-cols-2">
+            <section role="region" aria-labelledby="objectives-heading" class="bg-white/10 rounded-xl p-6">
+              <h3 id="objectives-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Strategic Objectives</h3>
+              <ul class="mt-3 list-disc pl-5">[List objectives here]</ul>
+            </section>
+
+            <section role="region" aria-labelledby="initiatives-heading" class="bg-white/10 rounded-xl p-6">
+              <h3 id="initiatives-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Key Initiatives</h3>
+              <p class="mt-3">[Enter initiatives here]</p>
+            </section>
+          </div>
+
+          <div class="mt-6 bg-white/10 rounded-xl p-6">
+            <h3 class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Timeline</h3>
+            <p class="mt-3">[Enter timeline here]</p>
+          </div>
+
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
