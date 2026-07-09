@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: busiada-boarding
+    env: python
+    plan: free
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn config.wsgi --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "*"
+      - key: DJANGO_SECRET_KEY
+        generator: "secret"
+      - key: DJANGO_SERVE_MEDIA
+        value: "False"

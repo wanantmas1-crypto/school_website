@@ -141,44 +141,43 @@
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         <div class="w-full rounded-[0.5rem] border border-slate-200 bg-blue-50/90 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] overflow-hidden">
             <!-- Constrain principal card to viewport height; message scrolls internally if needed -->
-            <div class="max-h-[calc(100vh-4rem)] overflow-hidden">
-                <div class="flex flex-col md:flex-row gap-6 items-start h-full">
-                    <div class="p-4 sm:p-6 lg:p-8 md:w-2/5 hidden md:block">
-                        <div class="rounded-[1.5rem] overflow-hidden border border-slate-200 bg-blue-50/80 shadow-sm">
-                                        <style>
-                                            /* Principal image responsive constraints for desktop and mobile */
-                                            .principal-image { width:auto; max-width:280px; height:auto; max-height:320px; object-fit:contain; border-radius: 2.5rem; }
-                                            .principal-fallback { width:100%; min-height:240px; border-radius: 2.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg,#ffffff,#f1f5f9); box-shadow: 0 10px 30px rgba(15,23,42,0.12); }
-                                            @media (max-width:640px) {
-                                                .principal-image { width:96px; height:96px; max-width:none; max-height:none; border-radius:9999px; }
-                                                .principal-fallback { width:140px; height:140px; border-radius:9999px; font-size:48px; }
-                                                .principal-message-start::before {
-                                                    content: '“';
-                                                    display: block;
-                                                    font-size: 56px;
-                                                    line-height: 0.6;
-                                                    color: rgba(15,23,42,0.12);
-                                                    margin-bottom: -8px;
-                                                    text-align: center;
-                                                }
-                                                .principal-message-start { padding-left: 0; text-align: center; }
-                                            }
-                                        </style>
-                                        <div class="w-full flex justify-center pt-6 pb-4">
-                                            {% if site_settings.principal_image %}
-                                                <img src="{{ site_settings.principal_image.url }}" alt="Principal portrait" class="principal-image rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">
-                                            {% else %}
-                                                <div class="principal-fallback rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">“</div>
-                                            {% endif %}
-                                        </div>
-                            <div class="p-4 sm:p-6 hidden md:block text-center">
+            <div class="overflow-visible">
+                <div class="grid gap-6 md:grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start">
+                    <aside class="hidden md:block p-4 sm:p-6 lg:p-8">
+                        <div class="flex h-full flex-col justify-between rounded-[1.5rem] overflow-hidden border border-slate-200 bg-blue-50/80 shadow-sm">
+                            <style>
+                                .principal-image { width:auto; max-width:240px; height:auto; max-height:260px; object-fit:contain; border-radius: 2.5rem; }
+                                .principal-fallback { width:100%; min-height:220px; border-radius: 2.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg,#ffffff,#f1f5f9); box-shadow: 0 10px 30px rgba(15,23,42,0.12); }
+                                @media (max-width:640px) {
+                                    .principal-image { width:84px; height:84px; max-width:none; max-height:none; border-radius:9999px; }
+                                    .principal-fallback { width:120px; height:120px; border-radius:9999px; font-size:42px; }
+                                    .principal-message-start::before {
+                                        content: '“';
+                                        display: block;
+                                        font-size: 56px;
+                                        line-height: 0.6;
+                                        color: rgba(15,23,42,0.12);
+                                        margin-bottom: -8px;
+                                        text-align: center;
+                                    }
+                                    .principal-message-start { padding-left: 0; text-align: center; }
+                                }
+                            </style>
+                            <div class="w-full flex justify-center pt-6 pb-4">
+                                {% if site_settings.principal_image %}
+                                    <img src="{{ site_settings.principal_image.url }}" alt="Principal portrait" class="principal-image rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">
+                                {% else %}
+                                    <div class="principal-fallback rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">“</div>
+                                {% endif %}
+                            </div>
+                            <div class="p-4 sm:p-6 text-center">
                                 <p class="text-xs uppercase tracking-[0.25em] text-cyan-600 font-semibold">Principal's message</p>
                                 <h2 class="mt-2 text-lg sm:text-xl font-bold text-slate-900">{{ site_settings.principal_name|default:'Principal Name' }}</h2>
                                 <p class="mt-1 text-xs text-slate-500">{{ site_settings.principal_title|default:'Principal' }}</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex flex-col justify-start p-4 sm:p-6 lg:p-8 md:w-3/5">
+                    </aside>
+                    <div class="flex flex-col justify-start p-4 sm:p-6 lg:p-8 min-w-0">
                         <div class="mb-4 text-center md:text-left">
                             <p class="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-600">Principal's message</p>
                             <h3 class="mt-2 text-2xl font-bold text-slate-900">Principal's message</h3>
@@ -192,7 +191,7 @@
                         </div>
                         <div class="border-t border-slate-200 mb-4 lg:mb-6"></div>
                         {% if site_settings.principal_message %}
-                            <div class="space-y-4 text-slate-700 leading-relaxed text-base md:text-lg text-center md:text-left overflow-auto principal-message-start" style="max-height:calc(100vh-14rem);">
+                            <div class="space-y-4 text-slate-700 leading-relaxed text-base md:text-lg text-center md:text-left overflow-visible principal-message-start">
                                 {{ site_settings.principal_message|safe }}
                             </div>
                             <div class="mt-6 text-center md:hidden">

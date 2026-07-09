@@ -2,6 +2,7 @@ import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
+from django.conf import settings
 from .models import Inquiry, SitePage, Announcement, HistoryImage
 
 
@@ -17,18 +18,30 @@ def _safe_file_url(field_file):
 
         if not name:
             return ''
+        # If the storage already exposes a usable URL (absolute or starting with media URL), return it
+        if name.startswith('http://') or name.startswith('https://'):
+            return name
+        if name.startswith(settings.MEDIA_URL):
+            return name
 
+        # Primary candidate is the stored name as-is (relative to storage)
         candidates = [name]
+        # Try common media subfolders where images/documents may be stored
         basename = os.path.basename(name)
         if basename:
             candidates.extend([
-                os.path.join('boarding.utils.image_upload_to', basename),
                 os.path.join('site_pages', basename),
+                os.path.join('site_pages', 'backgrounds', basename),
+                os.path.join('announcements', basename),
+                os.path.join('documents', basename),
             ])
 
         for candidate in candidates:
-            if default_storage.exists(candidate):
-                return default_storage.url(candidate)
+            try:
+                if default_storage.exists(candidate):
+                    return default_storage.url(candidate)
+            except Exception:
+                continue
     except Exception:
         return ''
 
@@ -105,10 +118,13 @@ def home(request):
     slides = []
     try:
         if page:
-            if getattr(page, 'featured_image', None) and getattr(page.featured_image, 'url', None):
-                slides.append(page.featured_image.url)
+            # Use safe resolver to handle moved/renamed files and storage backends
+            feat = getattr(page, 'featured_image', None)
+            feat_url = _safe_file_url(getattr(feat, 'name', None)) if feat else ''
+            if feat_url:
+                slides.append(feat_url)
             for img in page.images.all():
-                url = getattr(getattr(img, 'image', None), 'url', None)
+                url = _safe_file_url(getattr(getattr(img, 'image', None), 'name', None))
                 if url and url not in slides:
                     slides.append(url)
     except Exception:
@@ -448,16 +464,27 @@ def fee_payment(request):
 def contact_page(request):
     page = (
         SitePage.objects
-        .filter(slug='contacts', status='published')
+        .filter(slug__in=['contact', 'contacts'], status='published')
         .prefetch_related('images', 'videos', 'documents')
         .first()
     )
     if not page:
         page = (
             SitePage.objects
-            .filter(slug='contacts')
+            .filter(slug__in=['contact', 'contacts'])
             .prefetch_related('images', 'videos', 'documents')
             .first()
+        )
+
+    if not page:
+        page, _created = SitePage.objects.get_or_create(
+            slug='contact',
+            defaults={
+                'title': 'Contact Us',
+                'category': 'Contact',
+                'content': '<p>Update this page from Django Admin to manage contact details and location information.</p>',
+                'status': 'published',
+            },
         )
 
     contact_details = [
@@ -519,20 +546,20 @@ def contact_page(request):
 
 
 def school_anthem(request):
-    """Display school anthem with lyrics and audio player."""
-    from .models import SchoolAnthem
-    
-    anthem = SchoolAnthem.objects.first()
-    
-    if not anthem:
-        # Create a default one if none exists
-        anthem = SchoolAnthem.objects.create(
-            title='School Anthem',
-            lyrics='<p>[Enter lyrics here - admin can edit in Django admin]</p>',
+    page = (
+        SitePage.objects
+        .filter(slug='school-anthem', status='published')
+        .prefetch_related('images', 'videos', 'documents')
+        .first()
+    )
+    if not page:
+        page = (
+            SitePage.objects
+            .filter(slug='school-anthem')
+            .prefetch_related('images', 'videos', 'documents')
+            .first()
         )
-
-    return render(request, 'boarding/school_anthem.html', {'anthem': anthem})
-
+    return render(request, 'boarding/school_anthem.html', {'page': page})
 
 
 def strategic_plan(request):
@@ -567,23 +594,6 @@ def service_charter(request):
             .first()
         )
     return render(request, 'boarding/service_charter.html', {'page': page})
-
-
-def school_anthem(request):
-    page = (
-        SitePage.objects
-        .filter(slug='school-anthem', status='published')
-        .prefetch_related('images', 'videos', 'documents')
-        .first()
-    )
-    if not page:
-        page = (
-            SitePage.objects
-            .filter(slug='school-anthem')
-            .prefetch_related('images', 'videos', 'documents')
-            .first()
-        )
-    return render(request, 'boarding/school_anthem.html', {'page': page})
 
 
 def school_leadership(request):

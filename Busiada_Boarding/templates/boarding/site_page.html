@@ -27,43 +27,60 @@
     {% include 'boarding/page_sections.html' %}
 
     {% if page.slug == 'admission-process' %}
-    <section class="dynamic-panel reveal-on-scroll border border-emerald-100 bg-white p-3 p-md-4 shadow-sm" style="border-radius:.5rem;">
+    <section class="dynamic-panel reveal-on-scroll border border-emerald-100 bg-white p-3 p-md-4 shadow-sm" style="border-radius:.75rem;">
         <div class="container-fluid px-0">
             <div class="row g-4 align-items-start">
-                <div class="col-sm-12 col-lg-4">
+                <div class="col-12 col-lg-4">
                     <p class="mb-2 text-xs font-black uppercase tracking-[0.16em] text-rose-700">Joining Busiada Girls</p>
                     <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-emerald-950">Next steps for joining senior school.</h2>
                     <p class="mb-0 text-base leading-8 text-slate-600">
                         Busiada Girls accepts learners through Grade 9 placement and transfers. The admissions process considers pathway fit, readiness and talent development.
                     </p>
                 </div>
-                <div class="col-sm-12 col-lg-8">
-                    <div class="row g-3">
-                        <article class="col-sm-12 col-md-4">
-                            <div class="h-100 border border-emerald-100 bg-emerald-50 p-4" style="border-radius:.5rem;">
-                                <span class="text-sm font-black text-emerald-700">01</span>
-                                <h3 class="mt-3 text-lg font-bold text-emerald-950">Apply</h3>
-                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Submit reports, recommendations and placement forms.</p>
+                <div class="col-12 col-lg-8">
+                    <div class="admission-process-flow d-flex flex-column flex-md-row align-items-stretch justify-content-between gap-3 mt-4">
+                        <article class="admission-step flex-fill bg-slate-50 border border-slate-200 rounded-[1rem] p-4 shadow-sm position-relative">
+                            <div class="step-top d-flex align-items-center gap-3 mb-3">
+                                <span class="step-badge bg-emerald-100 text-emerald-800">01</span>
+                                <h3 class="mb-0 text-lg font-bold text-emerald-950">Apply</h3>
                             </div>
+                            <p class="text-sm text-slate-600">Submit reports, recommendations and placement forms to start your application.</p>
                         </article>
-                        <article class="col-sm-12 col-md-4">
-                            <div class="h-100 border border-amber-100 bg-amber-50 p-4" style="border-radius:.5rem;">
-                                <span class="text-sm font-black text-amber-700">02</span>
-                                <h3 class="mt-3 text-lg font-bold text-amber-950">Interview</h3>
-                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Attend the placement interview and orientation.</p>
+                        <div class="process-arrow d-none d-md-flex align-items-center justify-content-center flex-shrink-0">
+                            <span class="arrow-icon">→</span>
+                        </div>
+                        <article class="admission-step flex-fill bg-slate-50 border border-slate-200 rounded-[1rem] p-4 shadow-sm position-relative">
+                            <div class="step-top d-flex align-items-center gap-3 mb-3">
+                                <span class="step-badge bg-amber-100 text-amber-800">02</span>
+                                <h3 class="mb-0 text-lg font-bold text-amber-950">Interview</h3>
                             </div>
+                            <p class="text-sm text-slate-600">Attend the placement interview and orientation to discuss fit and expectations.</p>
                         </article>
-                        <article class="col-sm-12 col-md-4">
-                            <div class="h-100 border border-rose-100 bg-rose-50 p-4" style="border-radius:.5rem;">
-                                <span class="text-sm font-black text-rose-700">03</span>
-                                <h3 class="mt-3 text-lg font-bold text-rose-950">Enroll</h3>
-                                <p class="mt-2 mb-0 text-sm leading-6 text-slate-600">Confirm fees, secure your place and begin.</p>
+                        <div class="process-arrow d-none d-md-flex align-items-center justify-content-center flex-shrink-0">
+                            <span class="arrow-icon">→</span>
+                        </div>
+                        <article class="admission-step flex-fill bg-slate-50 border border-slate-200 rounded-[1rem] p-4 shadow-sm position-relative">
+                            <div class="step-top d-flex align-items-center gap-3 mb-3">
+                                <span class="step-badge bg-rose-100 text-rose-800">03</span>
+                                <h3 class="mb-0 text-lg font-bold text-rose-950">Enroll</h3>
                             </div>
+                            <p class="text-sm text-slate-600">Confirm fees, secure your place, and get ready to begin your new journey.</p>
                         </article>
                     </div>
                 </div>
             </div>
         </div>
+        <style>
+            .admission-process-flow { gap: 1rem; }
+            .admission-step { min-width: 0; }
+            .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 2.2rem; height: 2.2rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 700; }
+            .process-arrow { width: 3rem; color: #64748b; font-size: 1.75rem; }
+            .arrow-icon { display: inline-block; transform: translateX(0); transition: transform .2s ease; }
+            .process-arrow:hover .arrow-icon { transform: translateX(4px); }
+            @media (max-width: 767.98px) {
+                .process-arrow { display: none !important; }
+            }
+        </style>
     </section>
     {% endif %}
 
@@ -95,32 +112,20 @@
                 </div>
                 <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-600">{{ page.videos.count }} items</span>
             </div>
-            <div class="row g-4 mt-3" role="list">
+            <div class="video-gallery-grid mt-3" role="list">
                 {% for vid in page.videos.all %}
-                <article class="col-sm-12 col-md-6 col-lg-4 reveal-on-scroll" role="listitem">
-                    <div class="card shadow-lg rounded-4 overflow-hidden h-100 border-0">
-                        <div class="position-relative ratio ratio-16x9 bg-black overflow-hidden">
-                            <video controls preload="metadata" playsinline muted loop class="w-100 h-100" style="object-fit:cover;">
-                                <source src="{{ vid.video.url }}" />
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="position-absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70"></div>
-                            <div class="position-absolute top-50 start-50 translate-middle text-white fs-2">
-                                <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
-                            </div>
+                <article class="video-card reveal-on-scroll" role="listitem">
+                    <div class="video-card__media">
+                        <video controls preload="metadata" playsinline muted loop class="video-card__video">
+                            <source src="{{ vid.video.url }}" type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-card__overlay">
+                            <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
                         </div>
-                        <div class="card-body py-3 px-3 px-md-4">
-                            <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
-                                <h3 class="mb-0 text-lg fw-semibold text-[#0A2540]">{{ vid.title|default:'Video' }}</h3>
-                                <span class="text-xs text-slate-400">{{ vid.uploaded_at|date:"d M Y" }}</span>
-                            </div>
-                            {% if vid.caption %}
-                            <p class="mt-2 mb-0 text-sm text-slate-500 italic">{{ vid.caption }}</p>
-                            {% endif %}
-                            {% if vid.description %}
-                            <p class="mt-2 mb-0 text-sm text-slate-700">{{ vid.description|striptags }}</p>
-                            {% endif %}
-                        </div>
+                    </div>
+                    <div class="video-card__info">
+                        <h3 class="video-card__title">{{ vid.title|default:'Video' }}</h3>
                     </div>
                 </article>
                 {% endfor %}
@@ -166,6 +171,88 @@
     </section>
     {% endif %}
 
+    <style>
+        .video-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .video-card {
+            border-radius: 1.25rem;
+            border: 1px solid #e6eef6;
+            background: #f8fafc;
+            box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+            overflow: hidden;
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+        .video-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+        .video-card__media {
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            width: 100%;
+        }
+        .video-card__video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background: #000;
+        }
+        .video-card__overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.92);
+            font-size: 2rem;
+            background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.4));
+            pointer-events: none;
+        }
+        .video-card__info {
+            padding: 1rem;
+            background: #fff;
+        }
+        .video-card__title {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0A2540;
+            text-align: left;
+        }
+        .video-card__header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .video-card__title {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0A2540;
+        }
+        .video-card__date {
+            color: #64748b;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        .video-card__caption,
+        .video-card__description {
+            margin: 0;
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .video-card__caption {
+            font-style: italic;
+            color: #64748b;
+        }
+    </style>
     <script>
     (function () {
         const cards = Array.from(document.querySelectorAll('[data-gallery-card]'));
