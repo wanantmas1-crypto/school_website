@@ -15,6 +15,7 @@ services:
         generator: "secret"
       - key: DJANGO_SERVE_MEDIA
         value: "False"
+    deployCommand: "python manage.py migrate && python manage.py collectstatic --noinput && python create_admin.py"
 
 databases:
   - name: busiada-boarding-db
