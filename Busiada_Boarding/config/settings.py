@@ -132,6 +132,7 @@ CSP_STYLE_SRC = (
     "'unsafe-inline'",
     "https://cdnjs.cloudflare.com",
     "https://cdn.jsdelivr.net",
+    "https://use.fontawesome.com",
 )
 
 CSP_SCRIPT_SRC = (
@@ -144,6 +145,7 @@ CSP_SCRIPT_SRC = (
 CSP_FONT_SRC = (
     "'self'",
     "https://cdnjs.cloudflare.com",
+    "https://use.fontawesome.com",
     "data:",
 )
 
