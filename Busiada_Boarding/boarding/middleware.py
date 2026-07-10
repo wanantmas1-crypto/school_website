@@ -17,11 +17,15 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         response.setdefault('Referrer-Policy', 'no-referrer-when-downgrade')
         response.setdefault('X-XSS-Protection', '1; mode=block')
         response.setdefault('Permissions-Policy', 'geolocation=(), microphone=()')
-        # Basic CSP allowing common CDNs used in this project
+        # Build CSP from project settings so source lists stay consistent.
+        script_src = ' '.join(settings.CSP_SCRIPT_SRC)
+        style_src = ' '.join(settings.CSP_STYLE_SRC)
+        font_src = ' '.join(settings.CSP_FONT_SRC)
         csp = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; "
-            "style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; "
+            f"script-src {script_src}; "
+            f"style-src {style_src}; "
+            f"font-src {font_src}; "
             "img-src 'self' data: https:; "
             "frame-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
             "child-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
