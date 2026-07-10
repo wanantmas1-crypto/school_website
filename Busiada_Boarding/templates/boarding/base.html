@@ -13,6 +13,13 @@
             scroll-behavior: smooth;
             background: rgba(10, 37, 64, 0.04);
             overflow-x: hidden;
+            overflow-y: overlay;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        html::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
         }
         body {
             /* slightly increase background opacity for stronger surfaces */
@@ -20,8 +27,21 @@
             color: #0f172a;
             min-height: 100vh;
             overflow-x: hidden;
+            overflow-y: overlay;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
             padding-top: 5rem;
             color-scheme: light;
+        }
+        body::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
         }
 
         :root {
