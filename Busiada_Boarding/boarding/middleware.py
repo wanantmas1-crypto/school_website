@@ -2,6 +2,8 @@ from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse
 from django.conf import settings
 
+from .security import CSPNonceMiddleware
+
 try:
     from django.core.cache import cache
 except Exception:
@@ -31,10 +33,18 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         # Restrict connect-src to self and known APIs if configured
         connect_src_list = getattr(settings, 'CSP_CONNECT_SRC', ("'self'",))
         connect_src = ' '.join(connect_src_list)
+        # Inject nonce into script/style-src when available
+        nonce = getattr(request, 'csp_nonce', None)
+        script_src_final = script_src
+        style_src_final = style_src
+        if nonce:
+            script_src_final = f"'nonce-{nonce}' " + script_src
+            style_src_final = f"'nonce-{nonce}' " + style_src
+
         csp = (
             "default-src 'self'; "
-            f"script-src {script_src}; "
-            f"style-src {style_src}; "
+            f"script-src {script_src_final}; "
+            f"style-src {style_src_final}; "
             f"font-src {font_src}; "
             "img-src 'self' data: https:; "
             "frame-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "

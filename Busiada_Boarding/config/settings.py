@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'boarding.security.CSPNonceMiddleware',
     'boarding.middleware.SecurityHeadersMiddleware',
     'boarding.middleware.IpRateLimitMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -96,6 +97,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'boarding.context_processors.site_settings',
+                'boarding.context_processors.csp_nonce',
             ],
         },
     },

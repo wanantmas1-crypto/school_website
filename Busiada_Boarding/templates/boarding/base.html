@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busiada Girls Senior School</title>
+    {% if csp_nonce %}
+    <script nonce="{{ csp_nonce }}" src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <script nonce="{{ csp_nonce }}" src="https://unpkg.com/htmx.org@1.9.10"></script>
+    {% else %}
     <script src="https://cdn.tailwindcss.com"></script>
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    {% endif %}
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         html {
