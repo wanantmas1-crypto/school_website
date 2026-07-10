@@ -2,8 +2,6 @@ from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse
 from django.conf import settings
 
-from .security import CSPNonceMiddleware
-
 try:
     from django.core.cache import cache
 except Exception:
@@ -15,51 +13,25 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
         # HSTS only in production
         if not settings.DEBUG:
             response.setdefault('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
-        # Basic security headers
         response.setdefault('X-Content-Type-Options', 'nosniff')
         response.setdefault('Referrer-Policy', 'no-referrer-when-downgrade')
         response.setdefault('X-XSS-Protection', '1; mode=block')
         response.setdefault('Permissions-Policy', 'geolocation=(), microphone=()')
-        # X-Frame-Options from settings (default DENY)
-        try:
-            xframe = getattr(settings, 'X_FRAME_OPTIONS', 'DENY')
-            response.setdefault('X-Frame-Options', xframe)
-        except Exception:
-            response.setdefault('X-Frame-Options', 'DENY')
         # Build CSP from project settings so source lists stay consistent.
         script_src = ' '.join(settings.CSP_SCRIPT_SRC)
         style_src = ' '.join(settings.CSP_STYLE_SRC)
         font_src = ' '.join(settings.CSP_FONT_SRC)
-        # Restrict connect-src to self and known APIs if configured
-        connect_src_list = getattr(settings, 'CSP_CONNECT_SRC', ("'self'",))
-        connect_src = ' '.join(connect_src_list)
-        # Inject nonce into script/style-src when available
-        nonce = getattr(request, 'csp_nonce', None)
-        script_src_final = script_src
-        style_src_final = style_src
-        if nonce:
-            script_src_final = f"'nonce-{nonce}' " + script_src
-            style_src_final = f"'nonce-{nonce}' " + style_src
-
         csp = (
             "default-src 'self'; "
-            f"script-src {script_src_final}; "
-            f"style-src {style_src_final}; "
+            f"script-src {script_src}; "
+            f"style-src {style_src}; "
             f"font-src {font_src}; "
             "img-src 'self' data: https:; "
             "frame-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
             "child-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
-            f"connect-src {connect_src};"
+            "connect-src 'self' https://api.openai.com;"
         )
         response.setdefault('Content-Security-Policy', csp)
-        # Apply XSS and content type protections from settings
-        try:
-            if getattr(settings, 'SECURE_BROWSER_XSS_FILTER', False):
-                response.setdefault('X-XSS-Protection', '1; mode=block')
-            if getattr(settings, 'SECURE_CONTENT_TYPE_NOSNIFF', False):
-                response.setdefault('X-Content-Type-Options', 'nosniff')
-        except Exception:
-            pass
         return response
 
 

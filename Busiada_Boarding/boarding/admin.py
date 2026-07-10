@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.utils.text import slugify
 import time
-from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, Leadership, SchoolAnthem, HistoryImage
+from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement
 from .models import SiteSettings
 
 
@@ -112,52 +112,33 @@ class InquiryAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
 
 
-class PageImageInline(admin.StackedInline):
+class PageImageInline(admin.TabularInline):
     model = PageImage
     fk_name = 'page'
-    extra = 1
-    max_num = 15
+    template = 'admin/edit_inline/tabular.html'
+    extra = 3
     fields = ['title', 'caption', 'description', 'image', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
-    can_delete = True
 
 
-class PageVideoInline(admin.StackedInline):
+class PageVideoInline(admin.TabularInline):
     model = PageVideo
     fk_name = 'page'
-    extra = 1
-    max_num = 10
+    template = 'admin/edit_inline/tabular.html'
+    extra = 3
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
-    can_delete = True
 
 
-class DocumentInline(admin.StackedInline):
+class DocumentInline(admin.TabularInline):
     model = Document
     fk_name = 'page'
-    extra = 1
-    max_num = 20
+    template = 'admin/edit_inline/tabular.html'
+    extra = 3
     fields = ['title', 'description', 'file', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
-    can_delete = True
-
-
-@admin.register(HistoryImage)
-class HistoryImageAdmin(admin.ModelAdmin):
-    list_display = ['year', 'title', 'created_at']
-    search_fields = ['year', 'title']
-    readonly_fields = ['created_at']
-    fieldsets = (
-        ('History Slide', {
-            'fields': ('year', 'title', 'description', 'image')
-        }),
-        ('Metadata', {
-            'fields': ('created_at',),
-            'classes': ('collapse',)
-        }),
-    )
 
 
 @admin.register(SitePage)
@@ -175,7 +156,7 @@ class SitePageAdmin(admin.ModelAdmin):
             'fields': ('title', 'slug', 'category', 'status')
         }),
         ('Content', {
-            'fields': ('content', 'featured_image', 'background_image', 'sections'),
+            'fields': ('content', 'featured_image', 'sections'),
             'classes': ('wide',)
         }),
         ('Metadata', {
@@ -189,16 +170,6 @@ class SitePageAdmin(admin.ModelAdmin):
             obj.author = request.user
         super().save_model(request, obj, form, change)
 
-    def save_formset(self, request, form, formset, change):
-        """Ensure inline uploads record the uploading user."""
-        instances = formset.save(commit=False)
-        for instance in instances:
-            # Set uploaded_by when missing
-            if hasattr(instance, 'uploaded_by') and not instance.uploaded_by:
-                instance.uploaded_by = request.user
-            instance.save()
-        # handle deletions and other default behavior
-        formset.save_m2m()
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
@@ -254,47 +225,3 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         ('Branding', {'fields': ('site_name', 'tagline', 'logo')}),
         ('Principal Message', {'fields': ('principal_name', 'principal_title', 'principal_image', 'principal_message')}),
     )
-
-
-@admin.register(Leadership)
-class LeadershipAdmin(admin.ModelAdmin):
-    list_display = ['name', 'position', 'role_category', 'order', 'is_active']
-    list_filter = ['role_category', 'is_active', 'created_at']
-    search_fields = ['name', 'position', 'description']
-    readonly_fields = ['created_at', 'updated_at']
-    ordering = ['role_category', 'order', 'name']
-    
-    fieldsets = (
-        ('Leadership Info', {
-            'fields': ('name', 'position', 'role_category', 'description', 'color_scheme', 'order', 'is_active')
-        }),
-        ('Metadata', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-
-
-@admin.register(SchoolAnthem)
-class SchoolAnthmAdmin(admin.ModelAdmin):
-    list_display = ['title', 'uploaded_by', 'updated_at']
-    readonly_fields = ['created_at', 'updated_at', 'uploaded_by']
-    
-    fieldsets = (
-        ('Anthem Content', {
-            'fields': ('title', 'lyrics')
-        }),
-        ('Audio File', {
-            'fields': ('audio_file',),
-            'description': 'Upload an MP3, WAV, OGG, or other audio format. Recommended: MP3 format for best browser compatibility.'
-        }),
-        ('Metadata', {
-            'fields': ('uploaded_by', 'created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-    
-    def save_model(self, request, obj, form, change):
-        if not obj.uploaded_by:
-            obj.uploaded_by = request.user
-        super().save_model(request, obj, form, change)
