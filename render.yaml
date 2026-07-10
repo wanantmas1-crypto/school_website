@@ -4,8 +4,10 @@ services:
     env: python
     plan: free
     branch: busiada_boarding
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "cd Busiada_Boarding && python -m gunicorn Busiada_Boarding.
+    rootDir: Busiada_Boarding
+    buildCommand: "pip install -r ../requirements.txt"
+    startCommand: "python -m gunicorn Busiada_Boarding.config.wsgi --bind 0.0.0.0:$PORT"
+    envVars:
       - key: DJANGO_DEBUG
         value: "False"
       - key: DJANGO_ALLOWED_HOSTS
