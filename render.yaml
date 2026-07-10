@@ -15,7 +15,9 @@ services:
         generator: "secret"
       - key: DJANGO_SERVE_MEDIA
         value: "False"
-    deployCommand: "python manage.py migrate && python manage.py collectstatic --noinput && python create_admin.py"
+    # deployCommand temporarily removed to isolate build issues.
+    # Re-enable after confirming the build succeeds.
+    # deployCommand: "python manage.py migrate && python manage.py collectstatic --noinput && python create_admin.py"
 
 databases:
   - name: busiada-boarding-db
