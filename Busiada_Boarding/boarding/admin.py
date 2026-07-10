@@ -112,33 +112,36 @@ class InquiryAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
 
 
-class PageImageInline(admin.TabularInline):
+class PageImageInline(admin.StackedInline):
     model = PageImage
     fk_name = 'page'
-    template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 1
+    max_num = 15
     fields = ['title', 'caption', 'description', 'image', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
+    can_delete = True
 
 
-class PageVideoInline(admin.TabularInline):
+class PageVideoInline(admin.StackedInline):
     model = PageVideo
     fk_name = 'page'
-    template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 1
+    max_num = 10
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
+    can_delete = True
 
 
-class DocumentInline(admin.TabularInline):
+class DocumentInline(admin.StackedInline):
     model = Document
     fk_name = 'page'
-    template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 1
+    max_num = 20
     fields = ['title', 'description', 'file', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
+    can_delete = True
 
 
 @admin.register(HistoryImage)
@@ -186,6 +189,16 @@ class SitePageAdmin(admin.ModelAdmin):
             obj.author = request.user
         super().save_model(request, obj, form, change)
 
+    def save_formset(self, request, form, formset, change):
+        """Ensure inline uploads record the uploading user."""
+        instances = formset.save(commit=False)
+        for instance in instances:
+            # Set uploaded_by when missing
+            if hasattr(instance, 'uploaded_by') and not instance.uploaded_by:
+                instance.uploaded_by = request.user
+            instance.save()
+        # handle deletions and other default behavior
+        formset.save_m2m()
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
