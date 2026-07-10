@@ -20,21 +20,22 @@ function createAIButton() {
     // Avoid duplicate
     if (document.getElementById('ai-assist-btn')) return;
 
+    // AI features disabled for privacy — provide manual helpers only
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.id = 'ai-assist-btn';
+    btn.id = 'content-assist-btn';
     btn.className = 'button';
     btn.style.margin = '8px 0 12px 0';
-    btn.textContent = 'AI Assist: Suggest Summary & SEO';
+    btn.textContent = 'Assist: Insert Template Summary';
 
     contentEl.parentNode.insertBefore(btn, contentEl.nextSibling);
 
     const resultBox = document.createElement('textarea');
-    resultBox.id = 'ai-result-box';
+    resultBox.id = 'assist-result-box';
     resultBox.style.width = '100%';
     resultBox.style.minHeight = '140px';
     resultBox.style.marginTop = '8px';
-    resultBox.placeholder = 'AI suggestions will appear here...';
+    resultBox.placeholder = 'Use this box for notes or manual summaries...';
     contentEl.parentNode.insertBefore(resultBox, btn.nextSibling);
 
     const applyBtn = document.createElement('button');
@@ -44,29 +45,10 @@ function createAIButton() {
     applyBtn.style.display = 'block';
     resultBox.parentNode.insertBefore(applyBtn, resultBox.nextSibling);
 
-    btn.addEventListener('click', async () => {
-        btn.disabled = true;
-        btn.textContent = 'Generating...';
-        const csrftoken = getCookie('csrftoken');
-        const quill = window.__quill_editors && window.__quill_editors['id_content'];
-        const tiny = window.tinymce && window.tinymce.activeEditor;
-        const content = quill ? quill.getText() : tiny ? tiny.getContent({ format: 'text' }) : contentEl.value;
-        try {
-            const resp = await fetch('/ai/admin/suggest/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                body: JSON.stringify({ content })
-            });
-            const data = await resp.json();
-            resultBox.value = 'Summary:\n' + data.summary + '\n\nSEO Title:\n' + data.seo_title + '\n\nMeta Description:\n' + data.meta_description;
-        } catch (err) {
-            resultBox.value = 'Error: ' + err.message;
-        }
-        btn.disabled = false;
-        btn.textContent = 'AI Assist: Suggest Summary & SEO';
+    btn.addEventListener('click', () => {
+        // Insert a simple template to help editors write summaries
+        const template = 'Summary:\n- (Add a 1–2 sentence summary here)\n\nSEO Title:\n- (Short title, max 60 chars)\n\nMeta Description:\n- (Describe the page in 1–2 sentences)';
+        resultBox.value = template;
     });
 
     applyBtn.addEventListener('click', () => {

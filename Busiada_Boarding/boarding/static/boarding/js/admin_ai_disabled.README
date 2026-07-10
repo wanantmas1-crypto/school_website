@@ -1,0 +1,5 @@
+This file documents that the admin AI helper was disabled for privacy reasons.
+
+File: admin_ai.js was modified to remove external OpenAI calls and to provide a simple manual template instead.
+
+If you want to re-enable automated suggestions later, add an `OPENAI_API_KEY` to settings and restore the request behavior in `admin_ai.js` and `views_ai.py`.

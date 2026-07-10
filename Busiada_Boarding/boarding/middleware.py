@@ -29,7 +29,8 @@ class SecurityHeadersMiddleware(MiddlewareMixin):
             "img-src 'self' data: https:; "
             "frame-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
             "child-src 'self' https://www.google.com https://maps.google.com https://www.google.co.ke https://www.google.co.uk; "
-            "connect-src 'self' https://api.openai.com;"
+            # Removed OpenAI connect-src entry for privacy
+            "connect-src 'self';"
         )
         response.setdefault('Content-Security-Policy', csp)
         return response
