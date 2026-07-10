@@ -181,7 +181,7 @@ def about(request):
         )
 
     embed_map = (
-        '<iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=13&output=embed" '
+        '<iframe src="https://www.google.com/maps?q=Butula%20Busia%20County%20Kenya&z=13&output=embed" '
         'title="Busiada Girls Senior School location" '
         'width="100%" height="320" style="min-height:320px; border:0; border-radius:1rem;" '
         'loading="lazy" referrerpolicy="no-referrer-when-downgrade" '
@@ -374,7 +374,7 @@ def site_page(request, slug):
     embed_map = None
     if slug == 'location':
         embed_map = (
-            '<iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=15&output=embed" '
+            '<iframe src="https://www.google.com/maps?q=Butula%20Busia%20County%20Kenya&z=15&output=embed" '
             'title="Busiada Girls Senior School location" '
             'width="100%" height="480" style="min-height:320px; border:0; border-radius:1rem;" '
             'loading="lazy" referrerpolicy="no-referrer-when-downgrade" '

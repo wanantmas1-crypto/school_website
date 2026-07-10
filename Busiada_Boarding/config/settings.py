@@ -172,5 +172,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 SERVE_MEDIA_FILES = os.environ.get('DJANGO_SERVE_MEDIA', str(DEBUG)).lower() in ('1', 'true', 'yes', 'on')
 
+# WhiteNoise configuration for serving media files in production
+if not DEBUG:
+    if 'whitenoise.middleware.WhiteNoiseMiddleware' not in MIDDLEWARE:
+        MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+    WHITENOISE_USE_FINDERS = True
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

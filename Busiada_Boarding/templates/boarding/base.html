@@ -207,9 +207,12 @@
             .mobile-only { display: block !important; }
             .desktop-only { display: none !important; }
         }
+        @media (max-width: 720px) {
+            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
         @media (max-width: 640px) {
             .page-shell { padding: 0 0.75rem; }
-            .footer-grid { gap: 1rem; }
+            .footer-grid { gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .brand-title { font-size: 1rem; }
         }
 
@@ -776,7 +779,7 @@
             <div class="footer-column">
                 <h4 class="footer-heading font-semibold mb-2">Contact Us</h4>
                 <p class="text-white/70 footer-small">
-                    📍 Busiada, Kenya<br>
+                    📍 Butula, Busia County, Kenya<br>
                     📞 +254 700 000 000<br>
                     ✉️ info@busiadagirls.ac.ke<br>
                     💬 WhatsApp: +254 700 000 000
