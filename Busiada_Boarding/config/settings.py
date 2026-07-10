@@ -41,6 +41,18 @@ else:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
+# Additional security hardening
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = os.environ.get('DJANGO_X_FRAME_OPTIONS', 'DENY')
+# Require HTTPS for session and CSRF cookies unless explicitly overridden
+SESSION_COOKIE_SAMESITE = os.environ.get('DJANGO_SESSION_SAMESITE', 'Lax')
+CSRF_COOKIE_SAMESITE = os.environ.get('DJANGO_CSRF_SAMESITE', 'Lax')
+# Optional admin lock-down: set to comma-separated list of IPs allowed in admin
+ADMIN_ALLOWED_IPS = os.environ.get('ADMIN_ALLOWED_IPS', '')
+# Rate limiting defaults
+IP_RATE_LIMIT = int(os.environ.get('IP_RATE_LIMIT', '300'))
+
 
 # Application definition
 
@@ -147,6 +159,12 @@ CSP_FONT_SRC = (
     "https://cdnjs.cloudflare.com",
     "https://use.fontawesome.com",
     "data:",
+)
+
+# Optional connect-src sources for CSP. Keep minimal in production.
+CSP_CONNECT_SRC = (
+    "'self'",
+    # Add additional endpoints only when required, e.g. analytics or approved APIs
 )
 
 # Internationalization
