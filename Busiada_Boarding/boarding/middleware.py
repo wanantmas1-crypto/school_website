@@ -49,8 +49,17 @@ class IpRateLimitMiddleware(MiddlewareMixin):
             if cache is None:
                 return None
 
-            ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
-            key = f"ip_rl:{ip}"
+            # Extract client IP, handling X-Forwarded-For header properly
+            forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR', '')
+            if forwarded_for:
+                # Get the first IP from the comma-separated list
+                ip = forwarded_for.split(',')[0].strip()
+            else:
+                ip = request.META.get('REMOTE_ADDR', '')
+            
+            # Sanitize the IP for use as cache key (replace dots with dashes to avoid memcached issues)
+            safe_ip = ip.replace('.', '-').replace(':', '-')
+            key = f"ip_rl_{safe_ip}"
             count = cache.get(key, 0)
             limit = getattr(settings, 'IP_RATE_LIMIT', 300)  # default 300 req per minute
             if count >= limit:
