@@ -1,6 +1,6 @@
-"""Top-level compatibility package so `config.wsgi` is importable.
+"""Top-level config package stub.
 
-This forwards to the real WSGI application inside the `Busiada_Boarding` package.
+This file exists to keep the outer `config` path importable.
 """
 
 __all__ = ["wsgi"]
