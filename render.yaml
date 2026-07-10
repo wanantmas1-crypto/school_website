@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: busiada-boarding
+    name: busiada_web
     env: python
     plan: free
     branch: busiada_boarding
