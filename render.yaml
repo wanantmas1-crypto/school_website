@@ -15,7 +15,7 @@ services:
       - key: DJANGO_SECRET_KEY
         generator: "secret"
       - key: DJANGO_SERVE_MEDIA
-        value: "False"
+        value: "True"
     deployCommand: "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
 
 databases:
