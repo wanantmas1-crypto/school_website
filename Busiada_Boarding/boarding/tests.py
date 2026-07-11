@@ -53,7 +53,7 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, page.title)
         self.assertContains(response, 'Welcome to the homepage.')
 
-    def test_home_page_displays_services_we_offer_section(self):
+    def test_home_page_hides_main_navigation(self):
         SitePage.objects.create(
             slug='home',
             title='Home',
@@ -64,6 +64,23 @@ class PublicPagesTests(TestCase):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, '<nav class="site-nav')
+        self.assertNotContains(response, 'Announcements')
+        self.assertNotContains(response, 'About')
+
+    def test_home_page_displays_mission_vision_and_services_sections(self):
+        SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Our Mission')
+        self.assertContains(response, 'Our Vision')
         self.assertContains(response, 'Services We Offer')
         self.assertContains(response, 'Academics')
         self.assertContains(response, 'Co-Curricular & Talent Development')
