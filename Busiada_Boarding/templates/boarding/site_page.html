@@ -5,7 +5,7 @@
 
 {% block page_content %}
     {% if featured_image_url %}
-    <figure class="dynamic-hero-figure dynamic-panel reveal-on-scroll mb-4 overflow-hidden border border-slate-200 bg-slate-50 shadow-sm" style="border-radius:1.35rem; box-shadow:0 24px 70px rgba(15,23,42,.12);">
+    <figure class="dynamic-hero-figure dynamic-panel reveal-on-scroll mb-4 overflow-hidden border border-slate-200 bg-slate-50 shadow-sm section-shell" style="border-radius:1.35rem; box-shadow:0 24px 70px rgba(15,23,42,.12);">
         <img
             src="{{ featured_image_url }}"
             {% if featured_image_srcset %}srcset="{{ featured_image_srcset }}"{% endif %}
@@ -27,7 +27,7 @@
     {% include 'boarding/page_sections.html' %}
 
     {% if page.slug == 'admission-process' %}
-    <section class="dynamic-panel reveal-on-scroll border border-emerald-100 bg-white p-3 p-md-4 shadow-sm" style="border-radius:.75rem;">
+    <section class="dynamic-panel reveal-on-scroll section-shell border border-emerald-100 bg-white p-3 p-md-4 shadow-sm" style="border-radius:.75rem;">
         <div class="container-fluid px-0">
             <div class="row g-4 align-items-start">
                 <div class="col-12 col-lg-4">
@@ -85,7 +85,7 @@
     {% endif %}
 
     {% if embed_map %}
-    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;">
+    <section class="dynamic-panel reveal-on-scroll section-shell bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;">
         <div class="container-fluid px-0">
             <div class="d-flex flex-column flex-md-row align-items-start align-items-md-end justify-content-between gap-2 mb-3">
                 <div>
@@ -103,7 +103,7 @@
     {% include 'boarding/partials/dynamic_media_gallery.html' %}
 
     {% if page.videos.exists %}
-    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;" aria-labelledby="dynamic-videos-heading">
+    <section class="dynamic-panel reveal-on-scroll section-shell bg-white border border-slate-200 shadow-sm p-3 p-md-4 mt-4" style="border-radius:.5rem;" aria-labelledby="dynamic-videos-heading">
         <div class="container-fluid px-0">
             <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2">
                 <div>
@@ -135,7 +135,7 @@
     {% endif %}
 
     {% if page.documents.exists %}
-    <section class="dynamic-panel reveal-on-scroll bg-white border border-slate-200 shadow-sm p-3 p-md-4" style="border-radius:.5rem;" aria-labelledby="dynamic-downloads-heading">
+    <section class="dynamic-panel reveal-on-scroll section-shell bg-white border border-slate-200 shadow-sm p-3 p-md-4" style="border-radius:.5rem;" aria-labelledby="dynamic-downloads-heading">
         <div class="container-fluid px-0">
             <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2">
                 <div>

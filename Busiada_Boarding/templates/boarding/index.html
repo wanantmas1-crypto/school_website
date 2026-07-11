@@ -42,7 +42,7 @@
         {% else %}
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),_transparent_35%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]"></div>
         {% endif %}
-        <div class="absolute inset-0 bg-slate-950/65"></div>
+        <div class="absolute inset-0 bg-slate-950/50"></div>
     </div>
 
     <script>
@@ -76,9 +76,9 @@
                 {% endif %}
 
                 <div class="grid gap-4 sm:grid-cols-3 landing-cta-grid">
-                    <a href="{% url 'site_page' slug='admission-process' %}" class="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-4 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300 landing-cta-button">Admission Process</a>
-                    <a href="{% url 'school_history' %}" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-blue-100/20 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-100/30 landing-cta-button">History</a>
-                    <a href="{% url 'site_page' slug='contacts' %}" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-blue-800/80 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-700/90 landing-cta-button">Contact Us</a>
+                    <a href="{% url 'site_page' slug='admission-process' %}" class="inline-flex items-center justify-center gap-2 rounded-full bg-cyan-400 px-6 py-4 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300 landing-cta-button"><i class="bi bi-journal-text"></i><span>Admission Process</span></a>
+                    <a href="{% url 'school_history' %}" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-blue-100/20 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-100/30 landing-cta-button"><i class="bi bi-clock-history"></i><span>History</span></a>
+                    <a href="{% url 'site_page' slug='contacts' %}" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-blue-800/80 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-700/90 landing-cta-button"><i class="bi bi-envelope-paper"></i><span>Contact Us</span></a>
                 </div>
             </div>
         </div>
@@ -93,28 +93,25 @@
         </div>
 
         <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
-            <!-- Motto card (heartbeat) -->
-            <article class="surface-rose rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+            <article class="surface-rose rounded-[1.5rem] border border-slate-200/70 p-6 sm:p-7 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
                 <div class="flex items-center justify-center gap-3">
-                    <span class="motto-heart text-3xl text-rose-500" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
+                    <span class="icon-badge motto-heart" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
                     <h3 class="text-xl font-bold text-slate-900">Our Motto</h3>
                 </div>
-                <p class="text-slate-700">"Courage, Compassion, Scholarship" — we lead with heart and honour.</p>
+                <p class="text-slate-700">“Courage, Compassion, Scholarship” — we lead with heart and honour.</p>
             </article>
 
-            <!-- Vision card -->
-            <article class="surface-sky rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+            <article class="surface-sky rounded-[1.5rem] border border-slate-200/70 p-6 sm:p-7 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
                 <div class="flex items-center justify-center gap-3">
-                    <span class="text-3xl text-cyan-600" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+                    <span class="icon-badge" aria-hidden="true"><i class="bi bi-eye-fill"></i></span>
                     <h3 class="text-xl font-bold text-slate-900">Our Vision</h3>
                 </div>
                 <p class="text-slate-700">To nurture confident, compassionate leaders who shape a better world.</p>
             </article>
 
-            <!-- Mission card -->
-            <article class="surface-amber rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+            <article class="surface-amber rounded-[1.5rem] border border-slate-200/70 p-6 sm:p-7 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
                 <div class="flex items-center justify-center gap-3">
-                    <span class="text-3xl text-amber-500" aria-hidden="true"><i class="fa-solid fa-bullseye"></i></span>
+                    <span class="icon-badge" aria-hidden="true"><i class="bi bi-bullseye"></i></span>
                     <h3 class="text-xl font-bold text-slate-900">Our Mission</h3>
                 </div>
                 <p class="text-slate-700">Deliver excellent education, strong pastoral care, and opportunities for every learner to thrive.</p>
@@ -136,14 +133,14 @@
     </style>
 </section>
 <!-- Principal Message Section -->
-<section class="relative overflow-hidden bg-blue-50/80 py-8">
+<section class="relative overflow-hidden bg-blue-50/50 py-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative">
-        <div class="w-full rounded-[0.5rem] border border-slate-200 bg-blue-50/90 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] overflow-hidden">
+        <div class="w-full rounded-[1.25rem] border border-slate-200/70 bg-white/50 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] overflow-hidden">
             <!-- Constrain principal card to viewport height; message scrolls internally if needed -->
             <div class="overflow-visible">
                 <div class="grid gap-6 md:grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start">
                     <aside class="hidden md:block p-4 sm:p-6 lg:p-8">
-                        <div class="flex h-full flex-col justify-between rounded-[1.5rem] overflow-hidden border border-slate-200 bg-blue-50/80 shadow-sm">
+                        <div class="flex h-full flex-col justify-between rounded-[1.5rem] overflow-hidden border border-slate-200/70 bg-white/50 shadow-sm">
                             <style>
                                 .principal-image { width:auto; max-width:240px; height:auto; max-height:260px; object-fit:contain; border-radius: 2.5rem; }
                                 .principal-fallback { width:100%; min-height:220px; border-radius: 2.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg,#ffffff,#f1f5f9); box-shadow: 0 10px 30px rgba(15,23,42,0.12); }
@@ -178,8 +175,11 @@
                     </aside>
                     <div class="flex flex-col justify-start p-4 sm:p-6 lg:p-8 min-w-0">
                         <div class="mb-4 text-center md:text-left">
-                            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-600">Principal's message</p>
-                            <h3 class="mt-2 text-2xl font-bold text-slate-900">Principal's message</h3>
+                            <div class="inline-flex items-center gap-2 rounded-full border border-cyan-200/70 bg-cyan-50/50 px-3 py-1 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-700">
+                                <i class="bi bi-person-workspace"></i>
+                                <span>Principal's message</span>
+                            </div>
+                            <h3 class="mt-3 text-2xl font-bold text-slate-900">Guidance, care and excellence</h3>
                         </div>
                         <div class="block md:hidden w-full flex justify-center pt-2 pb-4">
                             {% if site_settings.principal_image %}
@@ -198,7 +198,7 @@
                                 <p class="mt-1 text-sm text-slate-500">{{ site_settings.principal_title|default:'Principal' }}</p>
                             </div>
                         {% else %}
-                            <div class="rounded-3xl border-2 border-dashed border-slate-300 bg-blue-50/80 p-8 text-slate-500 text-center">
+                            <div class="rounded-3xl border-2 border-dashed border-slate-300 bg-white/50 p-8 text-slate-500 text-center">
                                 <p class="text-lg font-semibold">Principal’s message will appear here.</p>
                                 <p class="mt-3 text-sm">Use the admin editor to add formatted text, headings, lists, and links.</p>
                             </div>
@@ -211,7 +211,7 @@
 </section>
 
 <!-- Services We Offer Section -->
-<section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 py-20">
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-50/50 via-cyan-50/50 to-sky-50/50 py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
             <p class="text-sm font-black uppercase tracking-[0.32em] text-cyan-600">Services We Offer</p>
@@ -228,12 +228,14 @@
                     <span class="rounded-full bg-cyan-50 px-4 py-2 text-sm font-semibold text-cyan-700">Curriculum pathways</span>
                 </div>
                 <div class="mt-8 grid gap-4 md:grid-cols-2">
-                    <a href="{% url 'academics_844' %}" class="group rounded-2xl border border-slate-200 bg-blue-50/90 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50">
+                    <a href="{% url 'academics_844' %}" class="group rounded-2xl border border-slate-200/70 bg-white/50 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50/50">
+                        <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-100/70 text-cyan-700"><i class="bi bi-mortarboard-fill"></i></div>
                         <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">8-4-4</p>
                         <h4 class="mt-3 text-lg font-semibold text-slate-900">Secondary school curriculum</h4>
                         <p class="mt-2 text-sm leading-7 text-slate-600">An established pathway with strong academic grounding and subject depth.</p>
                     </a>
-                    <a href="{% url 'academics_26333' %}" class="group rounded-2xl border border-slate-200 bg-blue-50/90 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50">
+                    <a href="{% url 'academics_26333' %}" class="group rounded-2xl border border-slate-200/70 bg-white/50 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50/50">
+                        <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-100/70 text-cyan-700"><i class="bi bi-diagram-3-fill"></i></div>
                         <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">2-6-3-3-3</p>
                         <h4 class="mt-3 text-lg font-semibold text-slate-900">Competency-based education</h4>
                         <p class="mt-2 text-sm leading-7 text-slate-600">A modern senior-school structure focused on competencies, skills and readiness.</p>
@@ -248,20 +250,20 @@
                     </div>
                 </div>
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                    <a href="{% url 'site_page' slug='games-sports' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
-                        <span class="font-semibold text-slate-900">Games & Sports</span>
+                    <a href="{% url 'site_page' slug='games-sports' %}" class="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/50 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50/50">
+                        <span class="flex items-center gap-2 font-semibold text-slate-900"><i class="bi bi-trophy-fill text-fuchsia-500"></i>Games & Sports</span>
                         <i class="fa-solid fa-arrow-right text-slate-500"></i>
                     </a>
-                    <a href="{% url 'site_page' slug='clubs-societies' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
-                        <span class="font-semibold text-slate-900">Clubs & Societies</span>
+                    <a href="{% url 'site_page' slug='clubs-societies' %}" class="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/50 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50/50">
+                        <span class="flex items-center gap-2 font-semibold text-slate-900"><i class="bi bi-people-fill text-cyan-600"></i>Clubs & Societies</span>
                         <i class="fa-solid fa-arrow-right text-slate-500"></i>
                     </a>
-                    <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
-                        <span class="font-semibold text-slate-900">Guiding & Counselling</span>
+                    <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/50 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50/50">
+                        <span class="flex items-center gap-2 font-semibold text-slate-900"><i class="bi bi-shield-fill-check text-emerald-600"></i>Guiding & Counselling</span>
                         <i class="fa-solid fa-arrow-right text-slate-500"></i>
                     </a>
-                    <a href="{% url 'performing_visual_arts' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
-                        <span class="font-semibold text-slate-900">Performing & Visual Arts</span>
+                    <a href="{% url 'performing_visual_arts' %}" class="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white/50 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50/50">
+                        <span class="flex items-center gap-2 font-semibold text-slate-900"><i class="bi bi-palette-fill text-amber-600"></i>Performing & Visual Arts</span>
                         <i class="fa-solid fa-arrow-right text-slate-500"></i>
                     </a>
                 </div>
@@ -269,13 +271,15 @@
         </div>
 
         <div class="mt-8 flex flex-wrap gap-6">
-            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200/70 bg-white/50 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-emerald-100/70 text-emerald-700"><i class="bi bi-heart-pulse-fill"></i></div>
                 <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-600">Learner Support Services</p>
                 <h3 class="mt-3 text-2xl font-bold text-slate-900">Wellbeing at the heart of school life</h3>
                 <p class="mt-4 text-sm leading-7 text-slate-600">A caring and responsive system that helps every learner thrive academically and socially.</p>
                 <a href="{% url 'student_health' %}" class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">Explore Student Health <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200/70 bg-white/50 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-amber-100/70 text-amber-700"><i class="bi bi-people-fill"></i></div>
                 <p class="text-sm font-semibold uppercase tracking-[0.25em] text-amber-600">Parental & Stakeholder Engagement</p>
                 <h3 class="mt-3 text-2xl font-bold text-slate-900">Strong partnerships with families</h3>
                 <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
@@ -284,7 +288,8 @@
                     <li>• Transparent communication through school mobile updates</li>
                 </ul>
             </div>
-            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200/70 bg-white/50 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-rose-100/70 text-rose-700"><i class="bi bi-stars"></i></div>
                 <p class="text-sm font-semibold uppercase tracking-[0.25em] text-rose-600">Additional Value-Added Services</p>
                 <h3 class="mt-3 text-2xl font-bold text-slate-900">Beyond the classroom</h3>
                 <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
@@ -309,25 +314,29 @@
     <!-- Responsive Card Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Card 1 -->
-      <div class="rounded-[1.25rem] border border-pink-200 bg-pink-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-pink-200 transition-all duration-300 p-6">
+      <div class="rounded-[1.25rem] border border-pink-200/70 bg-pink-100/50 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-pink-200/50 transition-all duration-300 p-6">
+        <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-pink-700"><i class="bi bi-shield-fill-check"></i></div>
         <h3 class="text-xl font-semibold text-pink-900 mb-4">A Secure and Caring Home</h3>
         <p class="text-pink-800">A safe, nurturing environment where girls feel at home away from home.</p>
       </div>
 
       <!-- Card 2 -->
-      <div class="rounded-[1.25rem] border border-indigo-200 bg-indigo-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-indigo-200 transition-all duration-300 p-6">
+      <div class="rounded-[1.25rem] border border-indigo-200/70 bg-indigo-100/50 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-indigo-200/50 transition-all duration-300 p-6">
+        <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-indigo-700"><i class="bi bi-book-fill"></i></div>
         <h3 class="text-xl font-semibold text-indigo-900 mb-4">Academic Excellence & Character</h3>
         <p class="text-indigo-800">We balance strong academics with values and character formation.</p>
       </div>
 
       <!-- Card 3 -->
-      <div class="rounded-[1.25rem] border border-purple-200 bg-purple-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-purple-200 transition-all duration-300 p-6">
+      <div class="rounded-[1.25rem] border border-purple-200/70 bg-purple-100/50 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-purple-200/50 transition-all duration-300 p-6">
+        <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-purple-700"><i class="bi bi-person-hearts"></i></div>
         <h3 class="text-xl font-semibold text-purple-900 mb-4">Confident Young Ladies</h3>
         <p class="text-purple-800">We develop well-rounded, confident young women ready for the future.</p>
       </div>
 
       <!-- Card 4 -->
-      <div class="rounded-[1.25rem] border border-teal-200 bg-teal-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-teal-200 transition-all duration-300 p-6">
+      <div class="rounded-[1.25rem] border border-teal-200/70 bg-teal-100/50 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-teal-200/50 transition-all duration-300 p-6">
+        <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-teal-700"><i class="bi bi-chat-dots-fill"></i></div>
         <h3 class="text-xl font-semibold text-teal-900 mb-4">Parent Engagement</h3>
         <p class="text-teal-800">Transparent communication and regular updates keep parents involved.</p>
       </div>
@@ -345,10 +354,10 @@
             <h2 class="text-3xl font-extrabold text-slate-900">Find Us — Our Location</h2>
         </div>
             <div class="grid gap-6 lg:grid-cols-2 items-stretch">
-            <div class="h-full rounded-[2rem] overflow-hidden border border-slate-200/80 bg-blue-50/90 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] backdrop-blur-sm">
+            <div class="h-full rounded-[2rem] overflow-hidden border border-slate-200/70 bg-white/50 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] backdrop-blur-sm">
                 <iframe class="w-full h-full min-h-0 border-0" src="https://maps.google.com/maps?q=Busiada%20Girls%20Secondary%20School%20Kenya&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" title="Busiada Girls Secondary School Map"></iframe>
             </div>
-            <div class="relative rounded-[2rem] border border-slate-200/80 bg-blue-50/90 p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] h-full backdrop-blur-sm overflow-hidden">
+            <div class="relative rounded-[2rem] border border-slate-200/70 bg-white/50 p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] h-full backdrop-blur-sm overflow-hidden">
                 <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.18),_transparent_30%)]"></div>
                 <div class="relative h-full flex flex-col">
                     <div>
@@ -357,13 +366,13 @@
                         <p class="text-slate-600 mb-6">An interactive map showing our campus location in Kenya. Use the map controls to zoom and pan.</p>
                     </div>
                     <div class="mt-auto grid gap-4 text-sm text-slate-700 sm:grid-cols-2">
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Country: Kenya</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">County: Busia County</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Subcounty: Butula</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Location: Busiada</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Sublocation: Busiada</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Ward: Busiada Ward</div>
-                        <div class="rounded-3xl bg-blue-50/80 p-4">Village: Busiada Village</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Country: Kenya</div>
+                        <div class="rounded-3xl bg-white/60 p-4">County: Busia County</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Subcounty: Butula</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Location: Busiada</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Sublocation: Busiada</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Ward: Busiada Ward</div>
+                        <div class="rounded-3xl bg-white/60 p-4">Village: Busiada Village</div>
                     </div>
                 </div>
             </div>

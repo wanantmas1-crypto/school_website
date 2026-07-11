@@ -3,6 +3,7 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.http import Http404
 from django.views.static import serve
+from django.views.generic.base import TemplateView
 
 
 def serve_site_page_media(request, path):
@@ -14,6 +15,7 @@ def serve_site_page_media(request, path):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     path('', include('boarding.urls')),
 ]
 

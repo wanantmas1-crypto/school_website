@@ -6,6 +6,10 @@
     <title>Busiada Girls Senior School</title>
     <script src="https://cdn.tailwindcss.com"></script>
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -25,6 +29,8 @@
             /* slightly increase background opacity for stronger surfaces */
             background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30%), radial-gradient(circle at top right, rgba(96, 165, 250, 0.22), transparent 22%), linear-gradient(180deg, rgba(235, 248, 255, 0.98), rgba(210, 235, 255, 1));
             color: #0f172a;
+            font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.7;
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: overlay;
@@ -143,6 +149,36 @@
         .text-blue-900 { color: var(--color-blue-900); }
         .border-blue-500 { border-color: var(--color-blue-500); }
         .shadow-soft { box-shadow: 0 18px 60px rgba(10, 37, 64, 0.12); }
+        .surface-rose { background: linear-gradient(135deg, rgba(254, 242, 242, 0.85), rgba(255, 247, 248, 0.7)); }
+        .surface-sky { background: linear-gradient(135deg, rgba(240, 249, 255, 0.85), rgba(224, 242, 254, 0.7)); }
+        .surface-amber { background: linear-gradient(135deg, rgba(254, 249, 195, 0.8), rgba(255, 247, 237, 0.7)); }
+        .surface-soft {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(34, 211, 238, 0.16);
+            color: #0f766e;
+            box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.2);
+        }
+        .icon-badge-soft {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.55);
+            color: #0f172a;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
 
         .bg-white,
         .bg-white\/95,
@@ -157,8 +193,7 @@
         .bg-slate-50\/95,
         .bg-slate-50\/80,
         .bg-slate-50\/70 {
-            /* Increase perceived opacity for surface cards */
-            background-color: rgba(235, 245, 255, 0.985) !important;
+            background-color: rgba(248, 250, 252, 0.5) !important;
             color: inherit;
         }
 
@@ -167,7 +202,7 @@
         .bg-white\/20,
         .bg-slate-100,
         .bg-slate-100\/80 {
-            background-color: rgba(221, 237, 255, 0.78) !important;
+            background-color: rgba(224, 242, 254, 0.5) !important;
         }
 
         .border-slate-200 {
@@ -192,6 +227,48 @@
         .responsive-card { width: 100%; overflow: hidden; border-radius: 1.5rem; }
         .text-hero { font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.05; }
         .text-lead { font-size: clamp(1rem, 2.2vw, 1.15rem); }
+        .section-title {
+            font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            font-weight: 800;
+        }
+        .section-kicker {
+            font-size: 0.82rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .section-copy {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(15, 23, 42, 0.72);
+        }
+        .content-block {
+            display: grid;
+            gap: 1rem;
+        }
+        .content-block h2,
+        .content-block h3,
+        .content-block h4 {
+            color: #0f172a;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+        .content-block h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
+        .content-block h3 { font-size: clamp(1.1rem, 1.6vw, 1.35rem); }
+        .content-block p,
+        .content-block li {
+            color: rgba(15, 23, 42, 0.74);
+            line-height: 1.8;
+        }
+        .content-block a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .content-block a:hover {
+            text-decoration: underline;
+        }
 
         @media (min-width: 640px) {
             .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -316,6 +393,46 @@
         .section-pad { padding: 3rem 0; }
         .section-pad-sm { padding: 2rem 0; }
         .section-pad-lg { padding: 4rem 0; }
+        .section-shell {
+            padding: 2.25rem 1.25rem;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.9));
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            box-shadow: 0 16px 45px rgba(15, 23, 42, 0.06);
+            backdrop-filter: blur(10px);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            color: #0f172a;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        h1 { font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 800; }
+        h2 { font-size: clamp(1.45rem, 2.2vw, 1.95rem); font-weight: 700; }
+        h3 { font-size: clamp(1.1rem, 1.6vw, 1.35rem); font-weight: 700; }
+        p { margin-bottom: 0.8rem; }
+        .btn, .form-control, .form-select {
+            border-radius: 999px;
+        }
+        .btn {
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .form-control, .form-select {
+            padding: 0.85rem 1rem;
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.18);
+        }
+        @media (min-width: 768px) {
+            .section-shell { padding: 2.75rem 2rem; }
+        }
 
         .hero-shell { display: grid; gap: 2rem; grid-template-columns: 1fr; }
         @media (min-width: 960px) { .hero-shell { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); } }
@@ -770,8 +887,8 @@
     <footer class="site-footer-mobile bg-[#0A2540] text-white py-4 reveal-on-scroll">
         <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 footer-grid">
             <div class="footer-column">
-                <h3 class="footer-heading font-bold mb-2">Busiada Girls Senior School</h3>
-                <p class="text-white/70 footer-small">Unleash Your Potential</p>
+                <h3 class="footer-heading font-bold mb-2">BGSS/BGHS</h3>
+                <p class="text-white/70 footer-small"></p>
             </div>
             <div class="footer-column">
                 <h4 class="footer-heading font-semibold mb-2">Contact Us</h4>
