@@ -626,7 +626,6 @@
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
     <!-- Navbar -->
-    {% if request.path != '/' %}
     <nav class="site-nav bg-[#0A2540] text-white fixed top-0 z-50 shadow-lg">
         <div class="nav-shell mx-auto px-3 sm:px-6">
             <div class="flex items-center justify-between gap-3 py-3 sm:py-4 min-h-[4rem]">
@@ -690,7 +689,8 @@
                 </button>
             </div>
         </div>
-    <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4">
+
+        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4">
             <div class="mobile-menu-scroll grid gap-2 py-3">
                 <a href="{% url 'home' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Home</a>
 
@@ -754,7 +754,6 @@
             </div>
         </div>
     </nav>
-        {% endif %}
 
     <main class="w-full overflow-x-hidden">
         {% block content_wrapper_start %}
