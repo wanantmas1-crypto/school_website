@@ -19,7 +19,7 @@
     <div class="absolute inset-0">
         {% if slides %}
             {% for s in slides %}
-            <div class="landing-slide" style="background-image:url('{{ s.url }}'); animation-duration: {{ hero_total_duration }}s; animation-delay: {{ s.delay }}s;"></div>
+            <div class="landing-slide js-landing-slide" data-bg-url="{{ s.url }}" data-duration="{{ hero_total_duration }}" data-delay="{{ s.delay }}"></div>
             {% endfor %}
         {% else %}
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),_transparent_35%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]"></div>
@@ -232,11 +232,11 @@
                     </div>
                     <div class="mt-auto grid gap-4 text-sm text-slate-700 sm:grid-cols-2">
                         <div class="rounded-3xl bg-slate-50 p-4">Country: Kenya</div>
-                        <div class="rounded-3xl bg-slate-50 p-4">County: Kiambu County</div>
-                        <div class="rounded-3xl bg-slate-50 p-4">Subcounty: Thika East</div>
+                        <div class="rounded-3xl bg-slate-50 p-4">County: Busia County</div>
+                        <div class="rounded-3xl bg-slate-50 p-4">Subcounty: Butula</div>
                         <div class="rounded-3xl bg-slate-50 p-4">Location: Busiada</div>
-                        <div class="rounded-3xl bg-slate-50 p-4">Sublocation: Withei</div>
-                        <div class="rounded-3xl bg-slate-50 p-4">Ward: Muthaiga Ward</div>
+                        <div class="rounded-3xl bg-slate-50 p-4">Sublocation: Busiada</div>
+                        <div class="rounded-3xl bg-slate-50 p-4">Ward: Busiada Ward</div>
                         <div class="rounded-3xl bg-slate-50 p-4">Village: Busiada Village</div>
                     </div>
                 </div>
