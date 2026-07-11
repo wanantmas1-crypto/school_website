@@ -124,9 +124,11 @@ def home(request):
 
     # Pass gallery items to the template
     gallery_items = _gallery_items_for_page(page)
+    page_content = getattr(page, 'content', '') or ''
 
     return render(request, 'boarding/index.html', {
         'page': page,
+        'page_content': page_content,
         'slides': slides_meta,
         'slide_interval': slide_interval,
         'hero_total_duration': hero_total_duration,
