@@ -33,11 +33,12 @@
                 <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80">Busiada Girls Senior School</p>
                 <h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">Welcome to Busiada Girls Senior School</h1>
                 <p class="mx-auto max-w-2xl text-lg leading-8 text-slate-300">A bright, welcoming boarding school landing page using the background image uploaded for the Home page in admin.</p>
+                <p class="mx-auto max-w-2xl text-lg leading-8 text-slate-300 font-semibold">Welcome to the homepage.</p>
 
                 <div class="grid gap-4 sm:grid-cols-3">
                     <a href="{% url 'site_page' slug='admission-process' %}" class="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-4 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300">Admission Process</a>
-                    <a href="{% url 'site_page' slug='school-history' %}" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/20">History</a>
-                    <a href="{% url 'site_page' slug='contacts' %}" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-slate-800/70 px-6 py-4 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/80">Contact Us</a>
+                    <a href="{% url 'school_history' %}" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/20">History</a>
+                    <a href="{% url 'contact_page' %}" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-slate-800/70 px-6 py-4 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/80">Contact Us</a>
                 </div>
             </div>
         </div>
