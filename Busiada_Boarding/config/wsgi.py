@@ -14,10 +14,12 @@ from pathlib import Path
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
 
-# Ensure local project root is on sys.path when Render starts inside Busiada_Boarding.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+# Ensure project structure is on sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent  # Busiada_Boarding directory
+PROJECT_PARENT = PROJECT_ROOT.parent  # Parent of Busiada_Boarding
+
+if str(PROJECT_PARENT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_PARENT))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
