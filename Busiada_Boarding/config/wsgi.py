@@ -14,12 +14,8 @@ from pathlib import Path
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
 
-# Ensure project structure is on sys.path
+# The working directory is Busiada_Boarding, and __file__ is config/wsgi.py
 PROJECT_ROOT = Path(__file__).resolve().parent.parent  # Busiada_Boarding directory
-PROJECT_PARENT = PROJECT_ROOT.parent  # Parent of Busiada_Boarding
-
-if str(PROJECT_PARENT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_PARENT))
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
