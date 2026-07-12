@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 from django.core.wsgi import get_wsgi_application
+from whitenoise import WhiteNoise
 
 # Ensure local project root is on sys.path when Render starts inside Busiada_Boarding.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -21,3 +22,4 @@ if str(PROJECT_ROOT) not in sys.path:
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = get_wsgi_application()
+application = WhiteNoise(application, root=PROJECT_ROOT / 'staticfiles', prefix='static/')

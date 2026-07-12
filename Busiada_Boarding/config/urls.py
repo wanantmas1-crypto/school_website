@@ -4,7 +4,6 @@ from django.conf import settings
 from django.http import Http404
 from django.views.static import serve
 from django.views.generic.base import TemplateView
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 def serve_site_page_media(request, path):
@@ -28,7 +27,3 @@ if settings.SERVE_MEDIA_FILES:
         # All media files (including uploaded admin content)
         re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     ]
-
-# Serve static files locally in development
-if settings.DEBUG:
-    urlpatterns += staticfiles_urlpatterns()
