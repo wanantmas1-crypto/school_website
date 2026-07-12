@@ -14,9 +14,11 @@ from whitenoise import WhiteNoise
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
+# Import Django settings to get the configured STATIC_ROOT
+from django.conf import settings
+
 django_app = get_wsgi_application()
 
-# Wrap with WhiteNoise for static file serving
-BASE_DIR = Path(__file__).resolve().parent.parent
-static_root = str(BASE_DIR / 'staticfiles')
+# Use Django's configured STATIC_ROOT for WhiteNoise
+static_root = str(settings.STATIC_ROOT)
 application = WhiteNoise(django_app, root=static_root, prefix='static/')
