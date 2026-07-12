@@ -4,45 +4,53 @@
 {% block page_subtitle %}{{ page.category|default:"Busiada Girls Senior School" }}{% endblock %}
 
 {% block page_content %}
-<section class="dynamic-panel reveal-on-scroll border-0 p-0" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); min-height: auto; padding-bottom: 3rem;">
-    <div class="container-fluid px-3 px-md-4 px-lg-5">
+<section class="dynamic-panel reveal-on-scroll border-0" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); min-height: auto;">
+    <div class="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
         <!-- Page Header -->
-        <div class="d-flex flex-column justify-content-between gap-3 mb-6 pt-4">
-            <div class="min-w-0">
-                <h2 class="section-title mb-3 text-[#0A2540]">Multiple Payment Options</h2>
-                <p class="mb-0 text-sm text-slate-600">Choose the payment method that works best for you. All methods are secure and processed immediately.</p>
-            </div>
+        <div class="mb-8">
+            <h2 class="section-title mb-3 text-slate-900">Multiple Payment Options</h2>
+            <p class="section-copy text-base">Choose the payment method that works best for you. All methods are secure and processed immediately.</p>
         </div>
 
         <!-- Payment Methods Grid -->
-        <div class="payment-grid" role="list" aria-label="School fee payment methods">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 mb-8" role="list" aria-label="School fee payment methods">
             {% for method in payment_methods %}
-            <div class="payment-item" role="listitem">
-                <div class="payment-card card shadow-sm border-0 h-100 text-center p-4" style="border: 1px solid {{ method.accent_border }}; border-left-width: 0.6rem; border-left-color: {{ method.accent }};">
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1" 
+                 style="border: 1px solid {{ method.accent_border }}; border-left: 6px solid {{ method.accent }};" role="listitem">
+                <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
+                     style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%);">
+                    
                     <!-- Icon Circle -->
-                    <div class="d-flex justify-content-center mb-4">
-                        <div class="payment-icon d-inline-flex align-items-center justify-content-center rounded-circle" 
-                             style="width: 4rem; height: 4rem; background: {{ method.accent_bg }}; border: 2px solid {{ method.accent_border }}; color: {{ method.accent }}; font-size: 1.8rem; transition: all 0.3s ease;">
+                    <div class="flex justify-center mb-4">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110" 
+                             style="width: 3.5rem; height: 3.5rem; background: {{ method.accent_bg }}; border: 2px solid {{ method.accent_border }}; color: {{ method.accent }}; font-size: 1.8rem;">
                             <i class="{{ method.icon }}" aria-hidden="true"></i>
                         </div>
                     </div>
 
                     <!-- Payment Method Title -->
-                    <h3 class="mb-2 text-lg font-semibold" style="color: {{ method.accent }};">{{ method.title }}</h3>
-                    <span class="badge rounded-pill mb-3" style="color: {{ method.accent }}; background: {{ method.accent_bg }}; border: 1px solid {{ method.accent_border }}; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-                        {{ method.label }}
-                    </span>
+                    <h3 class="text-lg font-bold mb-2 text-center" style="color: {{ method.accent }};">{{ method.title }}</h3>
+                    <div class="inline-flex justify-center w-full mb-4">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider" 
+                              style="color: {{ method.accent }}; background: {{ method.accent_bg }}; border: 1px solid {{ method.accent_border }};">
+                            {{ method.label }}
+                        </span>
+                    </div>
 
                     <!-- Value/Number Display -->
-                    <div class="payment-value p-3 mb-3 rounded-3" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
-                        <p class="mb-0 text-sm font-mono text-slate-700" style="word-break: break-word;">
+                    <div class="payment-value p-3 mb-4 rounded-xl flex-grow" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
+                        <p class="text-xs sm:text-sm font-mono text-slate-700 break-words text-center">
                             {{ method.value }}
                         </p>
                     </div>
 
                     <!-- Description -->
-                    <p class="text-sm text-slate-600 mb-3">{{ method.description }}</p>
-                    <button type="button" class="payment-action-btn btn btn-sm" title="{{ method.tooltip }}" aria-label="{{ method.tooltip }}" style="color: {{ method.accent }}; border: 1px solid {{ method.accent_border }}; background: rgba(255,255,255,0.95);">
+                    <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">{{ method.description }}</p>
+                    
+                    <!-- Action Button -->
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200" 
+                            title="{{ method.tooltip }}" aria-label="{{ method.tooltip }}" 
+                            style="color: {{ method.accent }}; border: 1px solid {{ method.accent_border }}; background: rgba(255,255,255,0.95); hover:background: {{ method.accent_bg }};">
                         {{ method.tooltip }}
                     </button>
                 </div>
@@ -51,44 +59,21 @@
         </div>
 
         <!-- Important Notice -->
-        <div class="alert alert-info d-flex align-items-start gap-3 mt-6 p-4" style="background: rgba(59, 130, 246, .1); border: 1px solid rgba(59, 130, 246, .3); border-radius: 1rem;">
-            <i class="fa-solid fa-circle-info mt-1" style="color: #3b82f6; flex-shrink: 0;"></i>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 rounded-2xl border p-4 sm:p-5" 
+             style="background: rgba(59, 130, 246, .08); border-color: rgba(59, 130, 246, .3);">
+            <i class="fa-solid fa-circle-info mt-1 flex-shrink-0 text-lg" style="color: #3b82f6;"></i>
             <div>
-                <strong class="text-slate-900">Payment Instructions</strong>
-                <p class="mb-0 text-sm text-slate-700 mt-1">Please use your student ID or admission number as the payment reference to ensure your payment is correctly credited to your account.</p>
+                <strong class="block text-slate-900 font-semibold">Payment Instructions</strong>
+                <p class="text-sm text-slate-700 mt-2">Please use your student ID or admission number as the payment reference to ensure your payment is correctly credited to your account.</p>
             </div>
         </div>
     </div>
 </section>
 
 <style>
-    .payment-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    .payment-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 22px 40px rgba(15, 23, 42, 0.18) !important;
-        border-color: rgba(15, 23, 42, 0.14) !important;
-        filter: brightness(1.03);
-    }
-
-    .payment-icon {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .payment-card:hover .payment-icon {
-        transform: scale(1.1) rotate(5deg);
-    }
-
-    .payment-grid {
-        display: grid;
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: 1.5rem;
-    }
-
     .payment-item {
         display: flex;
+        flex-direction: column;
     }
 
     .payment-card {
@@ -96,84 +81,63 @@
         flex-direction: column;
         width: 100%;
         background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        padding: 1.75rem;
     }
 
-    .payment-item:nth-child(1) .payment-card {
-        background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+    .payment-icon {
+        transition: all 0.3s ease;
     }
 
-    .payment-item:nth-child(2) .payment-card {
-        background: linear-gradient(180deg, #f5d0fe 0%, #f0abfc 100%);
+    .payment-item:hover .payment-icon {
+        transform: scale(1.12) rotate(5deg);
     }
 
-    .payment-item:nth-child(3) .payment-card {
-        background: linear-gradient(180deg, #bbf7d0 0%, #86efac 100%);
-    }
-
-    .payment-item:nth-child(4) .payment-card {
-        background: linear-gradient(180deg, #fed7aa 0%, #fdba74 100%);
-    }
-
-    .payment-item:nth-child(5) .payment-card {
-        background: linear-gradient(180deg, #c7d2fe 0%, #a5b4fc 100%);
+    .payment-card:hover {
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
     }
 
     .payment-value {
         transition: background-color 0.3s ease;
     }
 
-    .payment-card .payment-action-btn {
-        margin-top: auto;
-    }
-
     .payment-card:hover .payment-value {
-        background: #f0f4f8;
+        background: #f0f4f8 !important;
     }
 
-    @media (max-width: 575.98px) {
-        .payment-grid {
-            gap: 1rem;
-        }
+    .payment-action-btn {
+        cursor: pointer;
+    }
 
+    .payment-action-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        transition: all 0.2s ease;
+    }
+
+    /* Mobile first - single column */
+    @media (max-width: 640px) {
         .payment-item {
-            display: block;
-        }
-
-        .payment-card {
-            padding: 1.5rem !important;
-            border-radius: 1.5rem;
-        }
-
-        .payment-icon {
-            width: 3.5rem !important;
-            height: 3.5rem !important;
-            font-size: 1.5rem !important;
-        }
-
-        .payment-value {
-            padding: 1rem !important;
-        }
-
-        .payment-card .payment-action-btn {
             width: 100%;
         }
+    }
 
-        h2 {
-            font-size: 1.75rem !important;
+    /* Tablet - 2 columns */
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .payment-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media (min-width: 992px) {
+    /* Desktop - 2 columns */
+    @media (min-width: 1025px) {
         .payment-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .payment-card,
         .payment-icon,
-        .payment-value {
+        .payment-value,
+        .payment-action-btn {
             transition: none;
         }
     }

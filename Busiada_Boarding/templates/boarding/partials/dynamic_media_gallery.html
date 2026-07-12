@@ -50,9 +50,9 @@
 
 <div id="dynamic-media-lightbox" role="dialog" aria-modal="true" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:60;align-items:center;justify-content:center;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);padding:1.25rem;overflow:auto;">
     <button class="lb-close" aria-label="Close" style="position:absolute;top:1rem;right:1rem;color:#fff;background:transparent;border:0;font-size:1.25rem;">✕</button>
-    <div class="lightbox-shell" style="width:min(100%,72rem);max-height:100%;display:flex;align-items:center;justify-content:center;padding:1rem;">
+    <div class="lightbox-shell" style="width:min(100%,92rem);max-height:100%;display:flex;align-items:center;justify-content:center;padding:1rem;">
         <figure style="width:100%;text-align:center;color:#fff;">
-            <div id="lightbox-media" style="max-height:min(90vh,760px);max-width:100%;margin:0 auto;"></div>
+            <div id="lightbox-media" class="lightbox-media-frame"></div>
             <figcaption id="lightbox-caption" style="margin-top:.5rem;color:#fff;opacity:.95;"></figcaption>
         </figure>
     </div>
@@ -64,8 +64,10 @@
     .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:var(--gallery-gap); }
     .gallery-card { border-radius:1.25rem; border:1px solid #e6eef6; background:#f8fafc; box-shadow:0 6px 18px rgba(15,23,42,0.04); transition:transform .3s ease, box-shadow .3s ease; overflow:hidden; }
     .gallery-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(15,23,42,0.08); }
-    .gallery-media { position:relative; width:100%; height:0; padding-bottom:75%; overflow:hidden; }
+    .gallery-media { position:relative; width:100%; height:0; padding-bottom:56.25%; overflow:hidden; }
     .gallery-media img, .gallery-media video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .lightbox-media-frame { width:min(100%, 90vw); max-width:min(100%, 92rem); height:min(80vh, 720px); max-height:80vh; margin:0 auto; display:flex; align-items:center; justify-content:center; background:#020617; border-radius:1rem; overflow:hidden; }
+    .lightbox-media-frame img, .lightbox-media-frame video { width:100%; height:100%; object-fit:contain; display:block; background:#020617; }
     .gallery-overlay { position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.05)); opacity:0; transition:opacity .25s ease; display:flex; align-items:flex-end; padding:1rem; }
     .gallery-thumb:hover .gallery-overlay, .gallery-thumb:focus .gallery-overlay { opacity:1; }
     .gallery-caption { color:#fff; font-size:1rem; font-weight:700; line-height:1.2; text-shadow:0 1px 4px rgba(0,0,0,0.6); }
@@ -96,15 +98,17 @@
                 v.src=src;
                 v.controls=true;
                 v.autoplay=true;
-                v.style.maxWidth='100%';
-                v.style.maxHeight='80vh';
+                v.style.width='100%';
+                v.style.height='100%';
+                v.style.objectFit='contain';
                 lbMedia.appendChild(v);
             } else {
                 const i=document.createElement('img');
                 i.src=src;
                 i.alt=alt||'';
-                i.style.maxWidth='100%';
-                i.style.maxHeight='80vh';
+                i.style.width='100%';
+                i.style.height='100%';
+                i.style.objectFit='contain';
                 lbMedia.appendChild(i);
             }
             lbCaption.innerHTML = escapeHTML(caption||'');
