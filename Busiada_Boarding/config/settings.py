@@ -35,7 +35,6 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,6 +139,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Use WhiteNoise compressed manifest storage in production so collected static files
+# are served with proper caching and compression. Keep default during development.
+STATICFILES_STORAGE = os.environ.get(
+    'DJANGO_STATICFILES_STORAGE',
+    'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 
 # Media files (User uploads)
 MEDIA_URL = '/media/'
