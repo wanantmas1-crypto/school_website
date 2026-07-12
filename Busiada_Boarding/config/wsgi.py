@@ -22,4 +22,13 @@ if str(PROJECT_ROOT) not in sys.path:
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = get_wsgi_application()
-application = WhiteNoise(application, root=PROJECT_ROOT / 'staticfiles', prefix='static/')
+
+# Configure WhiteNoise for static files serving in production
+static_root = PROJECT_ROOT / 'staticfiles'
+application = WhiteNoise(
+    application, 
+    root=str(static_root),
+    prefix='static/',
+    compress=True,
+    max_age=60 * 60 * 24 * 365  # 1 year cache
+)
