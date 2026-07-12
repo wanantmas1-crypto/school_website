@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'boarding.middleware.SecurityHeadersMiddleware',
     'boarding.middleware.IpRateLimitMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
