@@ -28,7 +28,5 @@ static_root = PROJECT_ROOT / 'staticfiles'
 application = WhiteNoise(
     application, 
     root=str(static_root),
-    prefix='static/',
-    compress=True,
-    max_age=60 * 60 * 24 * 365  # 1 year cache
+    prefix='static/'
 )
