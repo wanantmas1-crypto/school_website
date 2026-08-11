@@ -84,5 +84,57 @@
 </section>
 {% endif %}
 
+<section class="home-featured-services container mx-auto px-4 pb-10 lg:px-8 lg:pb-16">
+    <div class="mx-auto max-w-4xl text-center">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#4A90C8]">Services We Offer</p>
+        <h2 class="mb-4 text-3xl font-bold tracking-tight text-[#0A2540] sm:text-4xl">A holistic education built for every learner</h2>
+        <p class="mx-auto max-w-2xl text-base leading-8 text-slate-600">Busiada Girls Senior School combines academic excellence, co-curricular growth, learner support and strong stakeholder engagement to help students thrive.</p>
+    </div>
+
+    <div class="grid gap-6 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Academics</h3>
+            <p class="text-sm leading-6 text-slate-600">Rigorous classroom programmes, tailored support and practical learning opportunities that prepare learners for success.</p>
+        </article>
+
+        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Co-Curricular & Talent Development</h3>
+            <p class="text-sm leading-6 text-slate-600">Sports, clubs, arts and leadership activities designed to grow confidence, creativity and teamwork.</p>
+        </article>
+
+        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Learner Support Services</h3>
+            <p class="text-sm leading-6 text-slate-600">Counselling, health services and academic mentoring provide the care learners need to flourish.</p>
+        </article>
+
+        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Parental & Stakeholder Engagement</h3>
+            <p class="text-sm leading-6 text-slate-600">Strong school-family partnerships and transparent communication help learners stay grounded and supported.</p>
+        </article>
+
+        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Additional Value-Added Services</h3>
+            <p class="text-sm leading-6 text-slate-600">From student health services to guiding and counselling, our programmes support the whole child.</p>
+            <div class="mt-4 space-y-2 text-sm text-slate-700">
+                <a href="/student-health/" class="font-semibold text-[#1E3A5F] hover:text-[#4A90C8]">Student Health Services</a>
+                <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="font-semibold text-[#1E3A5F] hover:text-[#4A90C8]">Guiding & Counselling</a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="home-cta container mx-auto px-4 pb-16 lg:px-8">
+    <div class="mx-auto flex flex-col gap-4 rounded-[1.35rem] border border-slate-200 bg-[#0A2540] p-8 text-white shadow-xl sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm uppercase tracking-[0.3em] text-slate-300">Take the next step</p>
+            <h3 class="mt-3 text-2xl font-bold">Ready to join Busiada?</h3>
+        </div>
+        <div class="flex flex-wrap gap-3">
+            <a href="/contact/" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0A2540] transition hover:bg-slate-100">Apply Now</a>
+            <a href="/" class="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/10">Explore Campus</a>
+        </div>
+    </div>
+</section>
+
 {% include 'boarding/partials/dynamic_media_gallery.html' %}
 {% endblock %}
