@@ -20,8 +20,8 @@
         .landing-page-subhead { font-size: clamp(1rem, 2.4vw, 1.35rem); line-height: 1.6; color: #F7F5F2; }
         .landing-page-copy { font-size: 1rem; line-height: 1.8; color: rgba(247, 245, 242, 0.94); max-width: 42rem; }
         .landing-cta-button { min-height: 3.7rem; padding-top: 1rem; padding-bottom: 1rem; }
-        .landing-support-card { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.16); backdrop-filter: blur(12px); }
-        .landing-insight-card { background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(247,245,242,0.89)); color: #1A2A44; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 25px 80px -35px rgba(10,22,40,0.55); backdrop-filter: blur(16px); }
+        .landing-support-card { background: rgba(255,255,255,0.17); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(12px); }
+        .landing-insight-card { background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,245,242,0.94)); color: #1A2A44; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 25px 80px -35px rgba(10,22,40,0.55); backdrop-filter: blur(16px); }
         @media (max-width: 768px) {
             .landing-cta-button { width: 100%; }
         }
@@ -69,10 +69,10 @@
     <div class="relative z-10 flex min-h-screen items-center">
         <div class="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
             <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-                <div class="max-w-3xl">
-                    <p class="inline-flex items-center rounded-full border border-[#D4A017]/30 bg-[#D4A017]/15 px-3 py-1 text-sm font-semibold uppercase tracking-[0.3em] text-[#D4A017] landing-school-name">Busiada Girls Senior School</p>
-                    <h1 class="mt-6 max-w-3xl font-black tracking-tight text-white landing-page-heading">Arise and Shine</h1>
-                    <p class="mt-4 max-w-2xl font-semibold landing-page-subhead">Unleash Your Potential at Busiada Girls Senior School</p>
+                <div class="max-w-3xl mx-auto text-center">
+                    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#D4A017] landing-school-name">Busiada Girls Senior School</p>
+                    <h1 class="mt-4 font-black tracking-tight text-white landing-page-heading">Unleash Your Potential</h1>
+                    <p class="mt-4 mx-auto max-w-2xl font-semibold landing-page-subhead">A transformational senior school experience for young women.</p>
                     {% if page and page.content %}
                     <div class="mt-6 max-w-2xl text-base leading-8 landing-page-copy">
                         {{ page.content|safe }}
@@ -82,8 +82,8 @@
                         <span>Courage</span><span>•</span><span>Compassion</span><span>•</span><span>Scholarship</span>
                     </div>
 
-                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                        <a href="{% url 'fee_payment' %}" class="inline-flex items-center justify-center gap-2 rounded-full bg-[#C41E3A] px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-[#C41E3A]/25 transition hover:-translate-y-0.5 hover:bg-[#A61830] landing-cta-button"><i class="fa-solid fa-file-lines"></i><span>Apply Now</span></a>
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                        <a href="{% url 'admissions' %}" class="inline-flex items-center justify-center gap-2 rounded-full bg-[#C41E3A] px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-[#C41E3A]/25 transition hover:-translate-y-0.5 hover:bg-[#A61830] landing-cta-button"><i class="fa-solid fa-file-lines"></i><span>Apply Now</span></a>
                         <a href="{% url 'site_page' slug='location' %}" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20 landing-cta-button"><i class="fa-solid fa-school"></i><span>Discover Our School</span></a>
                     </div>
 
