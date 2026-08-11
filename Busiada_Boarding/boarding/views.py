@@ -10,10 +10,13 @@ def _safe_file_url(field_file):
         return ''
 
     try:
-        if isinstance(field_file, str):
-            name = field_file
-        else:
+        if not isinstance(field_file, str):
+            url = getattr(field_file, 'url', None)
+            if url:
+                return url
             name = getattr(field_file, 'name', '') or ''
+        else:
+            name = field_file
 
         if not name:
             return ''
@@ -27,8 +30,11 @@ def _safe_file_url(field_file):
             ])
 
         for candidate in candidates:
-            if default_storage.exists(candidate):
-                return default_storage.url(candidate)
+            try:
+                if default_storage.exists(candidate):
+                    return default_storage.url(candidate)
+            except Exception:
+                continue
     except Exception:
         return ''
 

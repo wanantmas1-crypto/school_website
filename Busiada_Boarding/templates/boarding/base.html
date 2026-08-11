@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busiada Girls Senior School</title>
     <script src="https://cdn.tailwindcss.com"></script>
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
+   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
@@ -345,6 +347,19 @@
             .site-nav .md\:hidden, .site-nav .hidden { display: none !important; }
             .mobile-only { display: block !important; }
             .desktop-only { display: none !important; }
+            .social-icons a,
+            .social-icons svg,
+            .social-icons i,
+            footer svg,
+            footer i {
+                display: inline-flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+            }
         }
         @media (max-width: 640px) {
             .page-shell { padding: 0 0.75rem; }
@@ -833,7 +848,7 @@
                     <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-gradient-to-br from-[#D4A017] to-[#6B2D3C] text-sm font-black tracking-[0.25em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">BGS</div>
                     <div class="min-w-0">
                         <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
-                        <span class="brand-subtitle block text-xs text-white/70">Courage, Compassion, Scholarship</span>
+                        <span class="brand-subtitle block text-xs text-white/70">Unleash Your Potential</span>
                     </div>
                 </a>
 

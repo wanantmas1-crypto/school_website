@@ -14,7 +14,6 @@
             justify-content: center;
             padding: 2rem 1rem;
             background-color: #F8F7F4;
-            background-image: linear-gradient(180deg, rgba(26, 26, 26, 0.36), rgba(26, 26, 26, 0.26)), url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=1600&q=80');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -46,6 +45,12 @@
             color: #F8F7F4;
             text-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
         }
+        .landing-hero-copy p {
+            margin-top: 1rem;
+            font-size: 1.15rem;
+            color: rgba(248, 247, 244, 0.92);
+            max-width: 44rem;
+        }
         @media (max-width: 768px) {
             .landing-hero-shell {
                 padding: 3rem 1.25rem;
@@ -63,10 +68,21 @@
             }
         }
     </style>
-    <div class="landing-hero-shell">
+    <div class="landing-hero-shell" style="background-image: linear-gradient(180deg, rgba(26, 26, 26, 0.36), rgba(26, 26, 26, 0.26)), {% if page and page.featured_image %}url('{{ page.featured_image.url }}'){% else %}url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=1600&q=80'){% endif %};">
         <div class="landing-hero-copy">
-            <h1>Busiada Girls Senior School</h1>
+            <h1>{% if page and page.title %}{{ page.title }}{% else %}Busiada Girls Senior School{% endif %}</h1>
+            {% if page and page.category %}
+            <p>{{ page.category }}</p>
+            {% endif %}
         </div>
     </div>
 </section>
+
+{% if page %}
+<section class="home-page-content container mx-auto px-4 py-10 lg:px-8 lg:py-16">
+    {% include 'boarding/page_sections.html' %}
+</section>
+{% endif %}
+
+{% include 'boarding/partials/dynamic_media_gallery.html' %}
 {% endblock %}
