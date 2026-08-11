@@ -833,7 +833,11 @@
                     <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-gradient-to-br from-[#D4A017] to-[#6B2D3C] text-sm font-black tracking-[0.25em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">BGS</div>
                     <div class="min-w-0">
                         <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
-                            <span class="brand-subtitle block text-xs text-white/70">Unleash Your Potential</span>
+                        <span class="brand-subtitle block text-xs text-white/70">Courage, Compassion, Scholarship</span>
+                    </div>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-x-2 text-sm font-medium">
                     <div class="desktop-nav-item relative group">
                         <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="about-menu" aria-expanded="false" aria-controls="about-menu">About <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="about-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
@@ -896,14 +900,14 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-about" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'school_history' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-book-open mr-2 text-sm"></i>School History</a>
-                        <a href="{% url 'site_page' slug='location' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-location-dot mr-2 text-sm"></i>Location</a>
-                        <a href="{% url 'school_anthem' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-music mr-2 text-sm"></i>School Anthem</a>
-                        <a href="{% url 'school_leadership' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-users-gear mr-2 text-sm"></i>School Leadership</a>
-                        <a href="{% url 'strategic_plan' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-chart-line mr-2 text-sm"></i>Strategic Plan</a>
-                        <a href="{% url 'school_chaplaincy' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-church mr-2 text-sm"></i>School Chaplaincy</a>
-                        <a href="{% url 'service_charter' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-file-lines mr-2 text-sm"></i>Service Charter</a>
-                        <a href="{% url 'contact_page' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-address-book mr-2 text-sm"></i>Contacts</a>
+                        <a href="{% url 'school_history' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School History</a>
+                        <a href="{% url 'site_page' slug='location' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Location</a>
+                        <a href="{% url 'school_anthem' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Anthem</a>
+                        <a href="{% url 'school_leadership' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Leadership</a>
+                        <a href="{% url 'strategic_plan' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Strategic Plan</a>
+                        <a href="{% url 'school_chaplaincy' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Chaplaincy</a>
+                        <a href="{% url 'service_charter' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Service Charter</a>
+                        <a href="{% url 'contact_page' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Contacts</a>
                     </div>
                 </div>
 
@@ -913,9 +917,9 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-admissions" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'site_page' slug='admission-process' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-file-signature mr-2 text-sm"></i>Admission Process</a>
-                        <a href="{% url 'site_page' slug='fee-payment' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-credit-card mr-2 text-sm"></i>Fee Payment</a>
-                        <a href="{% url 'site_page' slug='admissions-office' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-building mr-2 text-sm"></i>Admissions Office</a>
+                        <a href="{% url 'site_page' slug='admission-process' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admission Process</a>
+                        <a href="{% url 'site_page' slug='fee-payment' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Fee Payment</a>
+                        <a href="{% url 'site_page' slug='admissions-office' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admissions Office</a>
                     </div>
                 </div>
 
@@ -925,8 +929,8 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-academics" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'academics_844' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-school mr-2 text-sm"></i>8-4-4</a>
-                        <a href="{% url 'academics_26333' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-graduation-cap mr-2 text-sm"></i>2-6-3-3-3</a>
+                        <a href="{% url 'academics_844' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">8-4-4</a>
+                        <a href="{% url 'academics_26333' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">2-6-3-3-3</a>
                     </div>
                 </div>
 
@@ -936,17 +940,17 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'boarding' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-bed mr-2 text-sm"></i>Departments</a>
-                        <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-hands-praying mr-2 text-sm"></i>Guiding & Counselling</a>
-                        <a href="{% url 'site_page' slug='games-sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-futbol mr-2 text-sm"></i>Games & Sports</a>
-                        <a href="{% url 'site_page' slug='clubs-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-users mr-2 text-sm"></i>Clubs & Societies</a>
-                        <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-palette mr-2 text-sm"></i>Performing & Visual Arts</a>
-                        <a href="{% url 'site_page' slug='student-welfare' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-hands-holding mr-2 text-sm"></i>Student Welfare</a>
-                        <a href="{% url 'site_page' slug='school-gallery' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-image mr-2 text-sm"></i>School Gallery</a>
+                        <a href="{% url 'boarding' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Departments</a>
+                        <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
+                        <a href="{% url 'site_page' slug='games-sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
+                        <a href="{% url 'site_page' slug='clubs-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
+                        <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Performing & Visual Arts</a>
+                        <a href="{% url 'site_page' slug='student-welfare' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Student Welfare</a>
+                        <a href="{% url 'site_page' slug='school-gallery' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Gallery</a>
                     </div>
                 </div>
 
-                <a href="{% url 'announcements' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10"><i class="fa-solid fa-bullhorn mr-2 text-sm"></i>Announcements</a>
+                <a href="{% url 'announcements' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Announcements</a>
             </div>
         </div>
     </nav>
