@@ -560,12 +560,6 @@
         .site-nav .desktop-nav-item {
             position: relative;
         }
-        .site-nav .desktop-nav-item:not(:last-child)::after {
-            content: '-';
-            color: rgba(255, 255, 255, 0.72);
-            margin: 0 0.6rem;
-            font-weight: 600;
-        }
         .page-shell {
             max-width: 1180px;
             margin: 0 auto;
@@ -893,7 +887,7 @@
                             <a href="{% url 'site_page' slug='school-gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#1E3A5F]"></i><span>School Gallery</span></a>
                         </div>
                     </div>
-                    <a href="{% url 'boarding' %}" class="desktop-nav-item px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all">Departments</a>
+                    <!-- Departments link removed per UI request -->
                     <a href="{% url 'announcements' %}" class="desktop-nav-item px-4 py-2 hover:bg-[#4A90C8] rounded-xl transition-all">Announcements</a>
                 </div>
 
@@ -955,7 +949,7 @@
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'boarding' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Departments</a>
+                        <!-- Departments link removed from mobile menu -->
                         <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
                         <a href="{% url 'site_page' slug='games-sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
                         <a href="{% url 'site_page' slug='clubs-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
