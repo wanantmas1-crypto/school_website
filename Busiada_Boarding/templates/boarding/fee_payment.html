@@ -15,24 +15,22 @@
         <!-- Payment Methods Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 mb-8" role="list" aria-label="School fee payment methods">
             {% for method in payment_methods %}
-            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1" 
-                 style="border: 1px solid {{ method.accent_border }}; border-left: 6px solid {{ method.accent }};" role="listitem">
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1 payment-item--{{ forloop.counter0 }}"
+                 role="listitem">
                 <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
                      style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%);">
                     
                     <!-- Icon Circle -->
                     <div class="flex justify-center mb-4">
-                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110" 
-                             style="width: 3.5rem; height: 3.5rem; background: {{ method.accent_bg }}; border: 2px solid {{ method.accent_border }}; color: {{ method.accent }}; font-size: 1.8rem;">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110 payment-icon payment-icon--{{ forloop.counter0 }}">
                             <i class="{{ method.icon }}" aria-hidden="true"></i>
                         </div>
                     </div>
 
                     <!-- Payment Method Title -->
-                    <h3 class="text-lg font-bold mb-2 text-center" style="color: {{ method.accent }};">{{ method.title }}</h3>
+                    <h3 class="text-lg font-bold mb-2 text-center payment-title payment-title--{{ forloop.counter0 }}">{{ method.title }}</h3>
                     <div class="inline-flex justify-center w-full mb-4">
-                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider" 
-                              style="color: {{ method.accent }}; background: {{ method.accent_bg }}; border: 1px solid {{ method.accent_border }};">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider payment-badge payment-badge--{{ forloop.counter0 }}">
                             {{ method.label }}
                         </span>
                     </div>
@@ -48,9 +46,8 @@
                     <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">{{ method.description }}</p>
                     
                     <!-- Action Button -->
-                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200" 
-                            title="{{ method.tooltip }}" aria-label="{{ method.tooltip }}" 
-                            style="color: {{ method.accent }}; border: 1px solid {{ method.accent_border }}; background: rgba(255,255,255,0.95);">
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200 payment-action-btn--{{ forloop.counter0 }}"
+                            title="{{ method.tooltip }}" aria-label="{{ method.tooltip }}">
                         {{ method.tooltip }}
                     </button>
                 </div>
@@ -85,10 +82,125 @@
 
     .payment-icon {
         transition: all 0.3s ease;
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.8rem;
     }
 
     .payment-item:hover .payment-icon {
         transform: scale(1.12) rotate(5deg);
+    }
+
+    .payment-item--0 {
+        border-color: rgba(14, 165, 233, 0.25);
+        border-left-color: #0ea5e9;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--0 {
+        background: rgba(14, 165, 233, 0.14);
+        border: 2px solid rgba(14, 165, 233, 0.25);
+        color: #0ea5e9;
+    }
+
+    .payment-title--0 {
+        color: #0ea5e9;
+    }
+
+    .payment-badge--0 {
+        color: #0ea5e9;
+        background: rgba(14, 165, 233, 0.14);
+        border: 1px solid rgba(14, 165, 233, 0.25);
+    }
+
+    .payment-action-btn--0 {
+        color: #0ea5e9;
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--1 {
+        border-color: rgba(37, 99, 235, 0.25);
+        border-left-color: #2563eb;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--1 {
+        background: rgba(37, 99, 235, 0.14);
+        border: 2px solid rgba(37, 99, 235, 0.25);
+        color: #2563eb;
+    }
+
+    .payment-title--1 {
+        color: #2563eb;
+    }
+
+    .payment-badge--1 {
+        color: #2563eb;
+        background: rgba(37, 99, 235, 0.14);
+        border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+
+    .payment-action-btn--1 {
+        color: #2563eb;
+        border: 1px solid rgba(37, 99, 235, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--2 {
+        border-color: rgba(67, 56, 202, 0.25);
+        border-left-color: #4338ca;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--2 {
+        background: rgba(67, 56, 202, 0.14);
+        border: 2px solid rgba(67, 56, 202, 0.25);
+        color: #4338ca;
+    }
+
+    .payment-title--2 {
+        color: #4338ca;
+    }
+
+    .payment-badge--2 {
+        color: #4338ca;
+        background: rgba(67, 56, 202, 0.14);
+        border: 1px solid rgba(67, 56, 202, 0.25);
+    }
+
+    .payment-action-btn--2 {
+        color: #4338ca;
+        border: 1px solid rgba(67, 56, 202, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--3 {
+        border-color: rgba(74, 144, 200, 0.25);
+        border-left-color: #4A90C8;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--3 {
+        background: rgba(74, 144, 200, 0.14);
+        border: 2px solid rgba(74, 144, 200, 0.25);
+        color: #4A90C8;
+    }
+
+    .payment-title--3 {
+        color: #4A90C8;
+    }
+
+    .payment-badge--3 {
+        color: #4A90C8;
+        background: rgba(74, 144, 200, 0.14);
+        border: 1px solid rgba(74, 144, 200, 0.25);
+    }
+
+    .payment-action-btn--3 {
+        color: #4A90C8;
+        border: 1px solid rgba(74, 144, 200, 0.25);
+        background: rgba(255,255,255,0.95);
     }
 
     .payment-card:hover {

@@ -26,9 +26,8 @@
             background: transparent;
         }
         body {
-            /* slightly increase background opacity for stronger surfaces */
-            background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.28), transparent 30%), radial-gradient(circle at top right, rgba(96, 165, 250, 0.22), transparent 22%), linear-gradient(180deg, rgba(235, 248, 255, 0.98), rgba(210, 235, 255, 1));
-            color: #0f172a;
+            background: linear-gradient(180deg, #F7F5F2 0%, #f3efe9 100%);
+            color: #1A2A44;
             font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.7;
             min-height: 100vh;
@@ -65,21 +64,15 @@
             --container-5xl: 64rem;
             --container-6xl: 72rem;
             --container-7xl: 80rem;
-            --color-blue-50: oklch(97% 0.014 254.604);
-            --color-blue-100: oklch(93.2% 0.032 255.585);
-            --color-blue-200: oklch(88.2% 0.059 254.128);
-            --color-blue-300: oklch(80.9% 0.105 251.813);
-            --color-blue-400: oklch(70.7% 0.165 254.624);
-            --color-blue-500: oklch(62.3% 0.214 259.815);
-            --color-blue-600: oklch(54.6% 0.245 262.881);
-            --color-blue-700: oklch(48.8% 0.243 264.376);
-            --color-blue-800: oklch(42.4% 0.199 265.638);
-            --color-blue-900: oklch(37.9% 0.146 265.522);
-            --color-blue-950: oklch(28.2% 0.091 267.935);
-            --color-bg: var(--color-blue-50);
-            --color-surface: #ffffff;
-            --color-text: #0f172a;
-            --color-muted: rgba(15, 23, 42, 0.72);
+            --primary-blue: #1E3A5F;
+            --secondary-sky: #4A90C8;
+            --accent-red: #C41E3A;
+            --dark-accent: #6B2D3C;
+            --background: #F7F5F2;
+            --surface: #FFFFFF;
+            --text-primary: #1A2A44;
+            --text-secondary: #5A6A7A;
+            --logo-gold: #D4A017;
         }
 
         .w-1 { width: calc(var(--spacing) * 1); }
@@ -134,27 +127,27 @@
         .size-max { width: max-content; height: max-content; }
         .size-fit { width: fit-content; height: fit-content; }
 
-        .bg-blue-50 { background: var(--color-blue-50); }
-        .bg-blue-100 { background: var(--color-blue-100); }
-        .bg-blue-200 { background: var(--color-blue-200); }
-        .bg-blue-300 { background: var(--color-blue-300); }
-        .bg-blue-400 { background: var(--color-blue-400); }
-        .bg-blue-500 { background: var(--color-blue-500); }
-        .bg-blue-600 { background: var(--color-blue-600); }
-        .bg-blue-700 { background: var(--color-blue-700); }
-        .bg-blue-800 { background: var(--color-blue-800); }
-        .bg-blue-900 { background: var(--color-blue-900); }
-        .bg-blue-950 { background: var(--color-blue-950); }
-        .text-blue-700 { color: var(--color-blue-700); }
-        .text-blue-900 { color: var(--color-blue-900); }
-        .border-blue-500 { border-color: var(--color-blue-500); }
-        .shadow-soft { box-shadow: 0 18px 60px rgba(10, 37, 64, 0.12); }
-        .surface-rose { background: linear-gradient(135deg, rgba(254, 242, 242, 0.85), rgba(255, 247, 248, 0.7)); }
-        .surface-sky { background: linear-gradient(135deg, rgba(240, 249, 255, 0.85), rgba(224, 242, 254, 0.7)); }
-        .surface-amber { background: linear-gradient(135deg, rgba(254, 249, 195, 0.8), rgba(255, 247, 237, 0.7)); }
+        .bg-blue-50 { background: linear-gradient(135deg, rgba(74, 144, 200, 0.12), rgba(255, 247, 248, 0.78)); }
+        .bg-blue-100 { background: rgba(74, 144, 200, 0.16); }
+        .bg-blue-200 { background: rgba(74, 144, 200, 0.24); }
+        .bg-blue-300 { background: rgba(74, 144, 200, 0.32); }
+        .bg-blue-400 { background: rgba(74, 144, 200, 0.4); }
+        .bg-blue-500 { background: var(--secondary-sky); }
+        .bg-blue-600 { background: var(--primary-blue); }
+        .bg-blue-700 { background: var(--primary-blue); }
+        .bg-blue-800 { background: var(--primary-blue); }
+        .bg-blue-900 { background: var(--primary-blue); }
+        .bg-blue-950 { background: var(--primary-blue); }
+        .text-blue-700 { color: var(--secondary-sky); }
+        .text-blue-900 { color: var(--primary-blue); }
+        .border-blue-500 { border-color: var(--secondary-sky); }
+        .shadow-soft { box-shadow: 0 18px 60px rgba(30, 58, 95, 0.12); }
+        .surface-rose { background: linear-gradient(135deg, rgba(196, 30, 58, 0.1), rgba(255, 247, 248, 0.8)); }
+        .surface-sky { background: linear-gradient(135deg, rgba(74, 144, 200, 0.12), rgba(240, 248, 255, 0.78)); }
+        .surface-amber { background: linear-gradient(135deg, rgba(212, 160, 23, 0.16), rgba(255, 247, 237, 0.8)); }
         .surface-soft {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(74, 144, 200, 0.16);
             backdrop-filter: blur(10px);
         }
         .icon-badge {
@@ -164,9 +157,9 @@
             width: 3rem;
             height: 3rem;
             border-radius: 9999px;
-            background: rgba(34, 211, 238, 0.16);
-            color: #0f766e;
-            box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.2);
+            background: rgba(196, 30, 58, 0.12);
+            color: #C41E3A;
+            box-shadow: inset 0 0 0 1px rgba(196, 30, 58, 0.18);
         }
         .icon-badge-soft {
             display: inline-flex;
@@ -175,9 +168,9 @@
             width: 3rem;
             height: 3rem;
             border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.55);
-            color: #0f172a;
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(255, 255, 255, 0.72);
+            color: #1E3A5F;
+            border: 1px solid rgba(74, 144, 200, 0.2);
         }
 
         @media (max-width: 640px) {
@@ -241,7 +234,7 @@
 
         .section-strong,
         .footer-surface {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(30, 64, 175, 0.95));
+            background: linear-gradient(180deg, rgba(30, 58, 95, 0.97), rgba(74, 144, 200, 0.95));
             color: white;
         }
 
@@ -254,7 +247,7 @@
         .footer-socials { display: flex; flex-wrap: wrap; gap: 0.6rem; }
         .footer-contact-list { display: grid; gap: 0.7rem; }
         .footer-contact-item { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.84); font-size: 0.92rem; line-height: 1.5; }
-        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(212, 160, 23, 0.16); color: #D4A017; flex-shrink: 0; }
+        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(196, 30, 58, 0.16); color: #C41E3A; flex-shrink: 0; }
 
         @media (min-width: 768px) {
             .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
@@ -299,12 +292,14 @@
             line-height: 1.2;
             letter-spacing: -0.02em;
             font-weight: 800;
+            color: #1E3A5F;
         }
         .section-kicker {
             font-size: 0.82rem;
             letter-spacing: 0.28em;
             text-transform: uppercase;
             font-weight: 700;
+            color: #C41E3A;
         }
         .section-copy {
             font-size: 1rem;
@@ -494,8 +489,8 @@
             border-color: rgba(148, 163, 184, 0.35);
         }
         .form-control:focus, .form-select:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.18);
+            border-color: #4A90C8;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 200, 0.18);
         }
         @media (min-width: 768px) {
             .section-shell { padding: 2.75rem 2rem; }
@@ -570,8 +565,8 @@
             z-index: 1100;
             height: 3px;
             width: 0;
-            background: linear-gradient(90deg, #38bdf8, #0ea5e9, #2563eb);
-            box-shadow: 0 0 16px rgba(14, 165, 233, 0.35);
+            background: linear-gradient(90deg, #C41E3A, #4A90C8, #1E3A5F);
+            box-shadow: 0 0 16px rgba(196, 30, 58, 0.25);
             transition: width 0.15s ease-out;
         }
         .reveal-on-scroll {
@@ -611,8 +606,8 @@
             box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
         }
         .surface-sky {
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.96), rgba(255, 255, 255, 0.98));
-            border: 1px solid rgba(14, 165, 233, 0.22);
+            background: linear-gradient(135deg, rgba(240, 248, 255, 0.96), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(74, 144, 200, 0.24);
         }
         .surface-amber {
             background: linear-gradient(135deg, rgba(254, 249, 195, 0.95), rgba(255, 255, 255, 0.98));
@@ -670,12 +665,12 @@
             transition: transform .18s ease, background-color .18s ease, color .18s ease;
         }
         .dropdown-link:hover {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            color: #0A2540;
+            background: linear-gradient(135deg, #f3f7fb 0%, #dbeaf7 100%);
+            color: #1E3A5F;
             transform: translateX(3px);
         }
         .dropdown-link:hover i {
-            color: #1d4ed8;
+            color: #C41E3A;
         }
         @keyframes dropdownFade {
             from { opacity: 0; transform: translateY(-6px); }
@@ -809,7 +804,7 @@
 <body class="bg-sky-50 text-zinc-900">
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-    <div class="site-utility-bar border-b border-white/10 bg-[#0A1628] text-white/90">
+    <div class="site-utility-bar border-b border-white/10 bg-[#1E3A5F] text-white/90">
         <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 text-sm sm:px-6 lg:px-8">
             <div class="flex flex-wrap items-center gap-3 sm:gap-5">
                 <a href="tel:+254700000000" class="inline-flex items-center gap-2 transition hover:text-white">
@@ -831,11 +826,11 @@
     </div>
 
     <!-- Navbar -->
-    <nav class="site-nav bg-[#0A1628] text-white fixed top-0 z-50 shadow-lg">
+    <nav class="site-nav bg-[#1E3A5F] text-white fixed top-0 z-50 shadow-lg">
         <div class="nav-shell mx-auto px-3 sm:px-6">
             <div class="flex items-center justify-between gap-3 py-3 sm:py-4 min-h-[4rem]">
                 <a href="{% url 'home' %}" class="brand-wrap flex items-center gap-3 hover:scale-[1.02] transition-transform">
-                    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-gradient-to-br from-[#F4D06F] to-[#D9A441] text-sm font-black tracking-[0.25em] text-[#0A2540] shadow-lg shadow-black/10 md:h-12 md:w-12">BGS</div>
+                    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-gradient-to-br from-[#D4A017] to-[#6B2D3C] text-sm font-black tracking-[0.25em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">BGS</div>
                     <div class="min-w-0">
                         <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
                         <span class="brand-subtitle block text-xs text-white/70">Courage, Compassion, Scholarship</span>
@@ -844,47 +839,47 @@
 
                 <div class="hidden lg:flex items-center gap-x-2 text-sm font-medium">
                     <div class="desktop-nav-item relative group">
-                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="about-menu" aria-expanded="false" aria-controls="about-menu">About <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="about-menu" aria-expanded="false" aria-controls="about-menu">About <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="about-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
-                            <a href="{% url 'school_history' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book-open text-sm text-[#0A2540]"></i><span>School History</span></a>
-                            <a href="{% url 'site_page' slug='location' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-location-dot text-sm text-[#0A2540]"></i><span>Location</span></a>
-                            <a href="{% url 'school_anthem' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-music text-sm text-[#0A2540]"></i><span>School Anthem</span></a>
-                            <a href="{% url 'school_leadership' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users-gear text-sm text-[#0A2540]"></i><span>School Leadership</span></a>
-                            <a href="{% url 'strategic_plan' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-chart-line text-sm text-[#0A2540]"></i><span>Strategic Plan</span></a>
-                            <a href="{% url 'school_chaplaincy' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-church text-sm text-[#0A2540]"></i><span>School Chaplaincy</span></a>
-                            <a href="{% url 'service_charter' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-lines text-sm text-[#0A2540]"></i><span>Service Charter</span></a>
-                            <a href="{% url 'contact_page' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-address-book text-sm text-[#0A2540]"></i><span>Contacts</span></a>
+                            <a href="{% url 'school_history' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book-open text-sm text-[#1E3A5F]"></i><span>School History</span></a>
+                            <a href="{% url 'site_page' slug='location' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-location-dot text-sm text-[#1E3A5F]"></i><span>Location</span></a>
+                            <a href="{% url 'school_anthem' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-music text-sm text-[#1E3A5F]"></i><span>School Anthem</span></a>
+                            <a href="{% url 'school_leadership' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users-gear text-sm text-[#1E3A5F]"></i><span>School Leadership</span></a>
+                            <a href="{% url 'strategic_plan' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-chart-line text-sm text-[#1E3A5F]"></i><span>Strategic Plan</span></a>
+                            <a href="{% url 'school_chaplaincy' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-church text-sm text-[#1E3A5F]"></i><span>School Chaplaincy</span></a>
+                            <a href="{% url 'service_charter' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-lines text-sm text-[#1E3A5F]"></i><span>Service Charter</span></a>
+                            <a href="{% url 'contact_page' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-address-book text-sm text-[#1E3A5F]"></i><span>Contacts</span></a>
                         </div>
                     </div>
                     <div class="desktop-nav-item relative group">
-                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="admissions-menu" aria-expanded="false" aria-controls="admissions-menu">Admissions <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="admissions-menu" aria-expanded="false" aria-controls="admissions-menu">Admissions <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="admissions-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
-                            <a href="{% url 'site_page' slug='admission-process' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-signature text-sm text-[#0A2540]"></i><span>Admission Process</span></a>
-                            <a href="{% url 'fee_payment' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-credit-card text-sm text-[#0A2540]"></i><span>Fee Payment</span></a>
-                            <a href="{% url 'site_page' slug='admissions-office' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-building text-sm text-[#0A2540]"></i><span>Admissions Office</span></a>
+                            <a href="{% url 'site_page' slug='admission-process' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-signature text-sm text-[#1E3A5F]"></i><span>Admission Process</span></a>
+                            <a href="{% url 'fee_payment' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-credit-card text-sm text-[#1E3A5F]"></i><span>Fee Payment</span></a>
+                            <a href="{% url 'site_page' slug='admissions-office' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-building text-sm text-[#1E3A5F]"></i><span>Admissions Office</span></a>
                         </div>
                     </div>
                     <div class="desktop-nav-item relative group">
-                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="academics-menu" aria-expanded="false" aria-controls="academics-menu">Academics <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="academics-menu" aria-expanded="false" aria-controls="academics-menu">Academics <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="academics-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
-                            <a href="{% url 'academics_844' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-school text-sm text-[#0A2540]"></i><span>8-4-4</span></a>
-                            <a href="{% url 'academics_26333' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#0A2540]"></i><span>2-6-3-3-3</span></a>
+                            <a href="{% url 'academics_844' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-school text-sm text-[#1E3A5F]"></i><span>8-4-4</span></a>
+                            <a href="{% url 'academics_26333' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#1E3A5F]"></i><span>2-6-3-3-3</span></a>
                         </div>
                     </div>
                     <div class="desktop-nav-item relative group">
-                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#1E3A8A] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="student-life-menu" aria-expanded="false" aria-controls="student-life-menu">Student Life <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="student-life-menu" aria-expanded="false" aria-controls="student-life-menu">Student Life <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="student-life-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
-                            <a href="{% url 'boarding' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bed text-sm text-[#0A2540]"></i><span>Boarding</span></a>
-                            <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-praying text-sm text-[#0A2540]"></i><span>Guiding & Counselling</span></a>
-                            <a href="{% url 'site_page' slug='games-sports' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#0A2540]"></i><span>Games & Sports</span></a>
-                            <a href="{% url 'site_page' slug='clubs-societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#0A2540]"></i><span>Clubs & Societies</span></a>
-                            <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-palette text-sm text-[#0A2540]"></i><span>Performing & Visual Arts</span></a>
-                            <a href="{% url 'site_page' slug='student-welfare' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#0A2540]"></i><span>Student Welfare</span></a>
-                            <a href="{% url 'site_page' slug='school-gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#0A2540]"></i><span>School Gallery</span></a>
+                            <a href="{% url 'boarding' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bed text-sm text-[#1E3A5F]"></i><span>Boarding</span></a>
+                            <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-praying text-sm text-[#1E3A5F]"></i><span>Guiding & Counselling</span></a>
+                            <a href="{% url 'site_page' slug='games-sports' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#1E3A5F]"></i><span>Games & Sports</span></a>
+                            <a href="{% url 'site_page' slug='clubs-societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#1E3A5F]"></i><span>Clubs & Societies</span></a>
+                            <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-palette text-sm text-[#1E3A5F]"></i><span>Performing & Visual Arts</span></a>
+                            <a href="{% url 'site_page' slug='student-welfare' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#1E3A5F]"></i><span>Student Welfare</span></a>
+                            <a href="{% url 'site_page' slug='school-gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#1E3A5F]"></i><span>School Gallery</span></a>
                         </div>
                     </div>
                     <a href="{% url 'boarding' %}" class="desktop-nav-item px-4 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all">Departments</a>
-                    <a href="{% url 'announcements' %}" class="desktop-nav-item px-4 py-2 hover:bg-[#1E3A8A] rounded-xl transition-all">Announcements</a>
+                    <a href="{% url 'announcements' %}" class="desktop-nav-item px-4 py-2 hover:bg-[#4A90C8] rounded-xl transition-all">Announcements</a>
                 </div>
 
                 <button id="menu-btn" class="inline-flex lg:hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-xl text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label="Open menu" aria-expanded="false" type="button">
@@ -972,23 +967,23 @@
         {% endblock %}
     </main>
 
-    <footer class="site-footer-mobile bg-[#0A1628] text-white py-3 sm:py-4 reveal-on-scroll">
+    <footer class="site-footer-mobile bg-[#1E3A5F] text-white py-3 sm:py-4 reveal-on-scroll">
         <div class="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8">
             <div class="footer-grid">
                 <div class="footer-card">
                     <h3 class="footer-heading font-semibold text-[#D4A017]">Social Media</h3>
                     <p class="footer-small text-white/70">Follow our latest updates, events, and stories from the school community.</p>
                     <div class="footer-socials mt-1">
-                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
                             <i class="fa-brands fa-facebook-f"></i>
                         </a>
-                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
-                        <a href="https://x.com" target="_blank" aria-label="X" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://x.com" target="_blank" aria-label="X" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
                             <i class="fa-brands fa-x-twitter"></i>
                         </a>
-                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
                     </div>
