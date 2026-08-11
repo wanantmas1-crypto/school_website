@@ -246,53 +246,46 @@
         }
 
         .page-shell { max-width: min(1180px, 100%); margin: 0 auto; padding: 0 1.25rem; }
-        .footer-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-        .footer-column { display: grid; gap: 0.85rem; }
+        .footer-grid { display: grid; gap: 0.9rem; grid-template-columns: 1fr; }
+        .footer-card { display: grid; gap: 0.7rem; padding: 0.9rem 1rem; border-radius: 1rem; border: 1px solid rgba(212, 160, 23, 0.2); background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); }
         .footer-small { font-size: 0.88rem; line-height: 1.5; }
         .footer-heading { font-size: 1rem; }
         .footer-icon { width: 2rem; height: 2rem; }
-    .footer-socials { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .footer-contact-list { display: grid; gap: 0.8rem; }
-    .footer-contact-item { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.84); }
-    .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 2.1rem; height: 2.1rem; border-radius: 9999px; background: rgba(212, 160, 23, 0.16); color: #D4A017; flex-shrink: 0; }
+        .footer-socials { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .footer-contact-list { display: grid; gap: 0.7rem; }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.84); font-size: 0.92rem; line-height: 1.5; }
+        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(212, 160, 23, 0.16); color: #D4A017; flex-shrink: 0; }
 
+        @media (min-width: 768px) {
+            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        }
         @media (max-width: 767.98px) {
             .site-footer-mobile {
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 1000;
-                padding: 0.7rem 0.75rem 0.8rem;
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                box-shadow: 0 -10px 30px rgba(2, 8, 23, 0.22);
-                backdrop-filter: blur(10px);
+                position: relative;
+                inset: auto;
+                z-index: auto;
+                padding: 0.85rem 0.95rem 1rem;
+                box-shadow: none;
+                border-radius: 0;
             }
-            .site-footer-mobile .footer-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 0.65rem;
-            }
-            .site-footer-mobile .footer-column:first-child {
-                display: none;
-            }
-            .site-footer-mobile .footer-column {
-                gap: 0.45rem;
+            .site-footer-mobile .footer-card {
+                padding: 0.85rem 0.9rem;
             }
             .site-footer-mobile .footer-heading {
-                font-size: 0.78rem;
+                font-size: 0.95rem;
                 margin-bottom: 0;
             }
-            .site-footer-mobile .footer-small {
-                font-size: 0.72rem;
-                line-height: 1.4;
+            .site-footer-mobile .footer-small,
+            .site-footer-mobile .footer-contact-item {
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
+            .site-footer-mobile .footer-socials {
+                gap: 0.55rem;
             }
             .site-footer-mobile .footer-icon {
-                width: 1.7rem;
-                height: 1.7rem;
-            }
-            .site-footer-mobile .text-center {
-                display: none;
+                width: 1.8rem;
+                height: 1.8rem;
             }
         }
         .site-nav { position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; }
@@ -979,31 +972,31 @@
         {% endblock %}
     </main>
 
-    <footer class="site-footer-mobile bg-[#0A1628] text-white py-5 sm:py-6 reveal-on-scroll">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="grid gap-4 md:grid-cols-[1.05fr_0.95fr]">
-                <div class="rounded-[1.25rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+    <footer class="site-footer-mobile bg-[#0A1628] text-white py-3 sm:py-4 reveal-on-scroll">
+        <div class="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8">
+            <div class="footer-grid">
+                <div class="footer-card">
                     <h3 class="footer-heading font-semibold text-[#D4A017]">Social Media</h3>
-                    <p class="mt-2 text-sm leading-6 text-white/70">Follow our latest updates, events, and stories from the school community.</p>
-                    <div class="footer-socials mt-4">
-                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                    <p class="footer-small text-white/70">Follow our latest updates, events, and stories from the school community.</p>
+                    <div class="footer-socials mt-1">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
                             <i class="fa-brands fa-facebook-f"></i>
                         </a>
-                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
-                        <a href="https://x.com" target="_blank" aria-label="X" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://x.com" target="_blank" aria-label="X" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
                             <i class="fa-brands fa-x-twitter"></i>
                         </a>
-                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
+                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#D4A017] hover:text-[#0A1628]">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
                     </div>
                 </div>
 
-                <div class="rounded-[1.25rem] border border-white/10 bg-white/5 p-4 sm:p-5">
+                <div class="footer-card">
                     <h3 class="footer-heading font-semibold text-[#D4A017]">Contact Us</h3>
-                    <ul class="footer-contact-list mt-3 text-sm">
+                    <ul class="footer-contact-list">
                         <li class="footer-contact-item">
                             <span class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></span>
                             <span><span class="block font-medium text-white">Location</span><span class="mt-0.5 block text-white/70">Busiada, Kenya</span></span>
@@ -1024,7 +1017,7 @@
                 </div>
             </div>
 
-            <div class="mt-5 border-t border-white/10 pt-4 text-center text-xs text-white/55">
+            <div class="mt-3 border-t border-white/10 pt-3 text-center text-[0.72rem] text-white/60">
                 © 2026 Busiada Girls Senior School. All Rights Reserved.
             </div>
         </div>
