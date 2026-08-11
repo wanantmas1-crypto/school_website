@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,8 +7,47 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
-    'django-insecure-9x%0n_9^h9f_pz6r+u8s7q!jz5v@t3q2w4e6r7y8u0i1o2p3a4s5d6f7g8h9'
+    'django-insecure-9x%0n_9^h9f_pz6r7g8h9'
 )
+
+# Cloudinary configuration
+try:
+    import cloudinary
+except ImportError:
+    cloudinary = None
+
+try:
+    import cloudinary_storage
+except ImportError:
+    cloudinary_storage = None
+
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+
+# Use provided Cloudinary credentials if environment variables are not explicitly set
+CLOUDINARY_URL = CLOUDINARY_URL or 'cloudinary://623378971952863:Gx4on-vb1YMgiaEdu-ZbcGteQbg@lbppchjw'
+CLOUDINARY_CLOUD_NAME = CLOUDINARY_CLOUD_NAME or 'lbppchjw'
+CLOUDINARY_API_KEY = CLOUDINARY_API_KEY or '623378971952863'
+CLOUDINARY_API_SECRET = CLOUDINARY_API_SECRET or 'Gx4on-vb1YMgiaEdu-ZbcGteQbg'
+
+if cloudinary:
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+    )
+
+if cloudinary and cloudinary_storage:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    print('Cloudinary storage enabled: using Cloudinary media storage')
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    if not cloudinary:
+        print('Cloudinary package not installed: using local filesystem storage')
+    elif not cloudinary_storage:
+        print('django-cloudinary-storage package not installed: using local filesystem storage')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
@@ -84,11 +122,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str((BASE_DIR / 'db.sqlite3').resolve()).replace('\\', '/'),
-        conn_max_age=600,
-        ssl_require=False,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -113,8 +150,7 @@ CSP_STYLE_SRC = (
     "'unsafe-inline'",
     "https://cdnjs.cloudflare.com",
     "https://cdn.jsdelivr.net",
-    "https://fonts.googleapis.com",
-    "https://use.fontawesome.com",
+    "https://cdn.quilljs.com",
 )
 
 CSP_SCRIPT_SRC = (
@@ -122,14 +158,12 @@ CSP_SCRIPT_SRC = (
     "'unsafe-inline'",
     "https://unpkg.com",
     "https://cdn.tailwindcss.com",
+    "https://cdn.quilljs.com",
 )
 
 CSP_FONT_SRC = (
     "'self'",
     "https://cdnjs.cloudflare.com",
-    "https://cdn.jsdelivr.net",
-    "https://fonts.gstatic.com",
-    "https://use.fontawesome.com",
     "data:",
 )
 
@@ -146,13 +180,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Use WhiteNoise compressed manifest storage in production so collected static files
-# are served with proper caching and compression. Keep default during development.
-STATICFILES_STORAGE = os.environ.get(
-    'DJANGO_STATICFILES_STORAGE',
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-)
 
 # Media files (User uploads)
 MEDIA_URL = '/media/'
