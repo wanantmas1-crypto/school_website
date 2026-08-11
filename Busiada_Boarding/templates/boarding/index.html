@@ -136,5 +136,62 @@
     </div>
 </section>
 
+<section class="home-mission container mx-auto px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl text-center">
+        <p class="text-sm font-semibold uppercase text-[#4A90C8]">Our Purpose</p>
+        <h2 class="mt-3 text-2xl font-bold text-[#0A2540]">{% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% else %}Busiada Girls Senior School{% endif %} — Mission & Vision</h2>
+        <div class="mt-4 text-slate-700 max-w-3xl mx-auto">
+            <p class="mb-3">{% if site_settings and site_settings.principal_message %}{{ site_settings.principal_message|safe }}{% else %}Our mission is to provide a supportive, high-quality education that fosters academic excellence, leadership and service.{% endif %}</p>
+            <p class="text-sm text-slate-600">{% if page and page.category %}{{ page.category }}{% else %}We aim to develop responsible, resilient and resourceful learners prepared for the global community.{% endif %}</p>
+        </div>
+    </div>
+</section>
+
+<section class="home-principal container mx-auto px-4 py-10 lg:px-8">
+    <div class="mx-auto max-w-5xl grid gap-8 grid-cols-1 md:grid-cols-3 items-center">
+        <div class="md:col-span-2">
+            <h3 class="text-xl font-semibold text-[#1E3A5F]">Principal's Message</h3>
+            <div class="mt-3 text-slate-700">
+                {% if site_settings and site_settings.principal_message %}
+                    {{ site_settings.principal_message|safe }}
+                {% else %}
+                    <p>Welcome to Busiada Girls Senior School. We are committed to nurturing every learner's potential through strong pastoral care and academic rigour.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            {% if site_settings and site_settings.principal_image %}
+                <img src="{{ site_settings.principal_image.url }}" alt="Principal" class="mx-auto rounded-lg w-44 h-44 object-cover" />
+            {% else %}
+                <div class="mx-auto w-44 h-44 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">Principal</div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="home-why container mx-auto px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+        <h3 class="text-2xl font-bold text-[#0A2540]">Why Choose Us</h3>
+        <p class="mt-3 text-slate-600">We combine strong academic programmes with co-curricular opportunities, excellent pastoral care and a community-focused approach.</p>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+            <li class="rounded p-4 border bg-white">Experienced, caring staff focused on learner outcomes</li>
+            <li class="rounded p-4 border bg-white">Balanced academics and co-curricular excellence</li>
+            <li class="rounded p-4 border bg-white">Safe boarding and day facilities with health services</li>
+            <li class="rounded p-4 border bg-white">Strong partnerships with families and stakeholders</li>
+        </ul>
+    </div>
+</section>
+
+<section class="home-map container mx-auto px-4 py-12 lg:px-8">
+    <div class="mx-auto max-w-5xl text-center">
+        <h3 class="text-xl font-semibold text-[#1E3A5F]">Our Location</h3>
+        <p class="mt-2 text-slate-600">Find us on the map or open in Google Maps.</p>
+        <div class="mt-4" style="height:320px;">
+            <iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=13&output=embed" width="100%" height="320" style="border:0;border-radius:.75rem;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+
 {% include 'boarding/partials/dynamic_media_gallery.html' %}
+{% endblock %}
 {% endblock %}
