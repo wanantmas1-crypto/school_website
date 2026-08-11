@@ -73,6 +73,22 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, '/student-health/')
         self.assertContains(response, '/page/guiding-and-counselling/')
 
+    def test_home_page_features_modern_ctas_and_contact_bar(self):
+        SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Apply Now')
+        self.assertContains(response, 'Explore Campus')
+        self.assertContains(response, 'site-utility-bar')
+        self.assertContains(response, 'WhatsApp')
+
     def test_about_page_contains_location_map_link(self):
         response = self.client.get('/about/')
 
@@ -173,6 +189,16 @@ class SecurityHeadersTests(TestCase):
         csp = response.headers.get('Content-Security-Policy', '')
         self.assertIn('frame-src', csp)
         self.assertIn('https://www.google.com', csp)
+
+    def test_csp_allows_google_fonts_and_icon_fonts(self):
+        response = self.client.get('/about/')
+
+        self.assertEqual(response.status_code, 200)
+        csp = response.headers.get('Content-Security-Policy', '')
+        self.assertIn('https://fonts.googleapis.com', csp)
+        self.assertIn('https://fonts.gstatic.com', csp)
+        self.assertIn('https://use.fontawesome.com', csp)
+        self.assertIn('https://cdn.jsdelivr.net', csp)
 
 
 class AcademicsPageTests(TestCase):
