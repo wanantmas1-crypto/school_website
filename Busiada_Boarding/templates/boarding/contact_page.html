@@ -17,34 +17,34 @@
                 <div class="row g-4" role="list" aria-label="School contact methods">
                     {% for item in contact_details %}
                     <div class="col-12 col-md-6">
-                        {% if item.clickable %}
-                        <a href="{{ item.href }}" target="_blank" rel="noopener noreferrer" class="contact-item text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.tooltip }}" role="listitem" aria-label="{{ item.label }} contact details" style="border-left: 4px solid {{ item.accent }};">
-                        {% else %}
-                        <div class="contact-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.tooltip }}" role="listitem" aria-label="{{ item.label }} contact details" style="border-left: 4px solid {{ item.accent }};">
-                        {% endif %}
-                        <div class="col-auto pe-3">
-                            <div class="contact-icon" style="background: {{ item.accent_bg }}; color: {{ item.accent }}; border: 1px solid {{ item.accent_border }};">
-                                <i class="{{ item.icon }}" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 min-w-0">
-                            <div class="d-flex flex-column gap-2 mb-1">
-                                <div class="d-flex align-items-center justify-content-between gap-2">
-                                    <h3 class="mb-0 text-lg font-semibold text-[#0A2540]">{{ item.label }}</h3>
-                                    <span class="badge rounded-pill" style="color: {{ item.accent }}; background: {{ item.accent_bg }}; border: 1px solid {{ item.accent_border }};">{{ item.badge }}</span>
+                        <article class="contact-item rounded-3 p-4 h-100 border border-slate-200 bg-white" role="listitem" style="border-left: 4px solid {{ item.accent }};">
+                            <div class="d-flex align-items-start gap-3 mb-3">
+                                <div class="contact-icon" style="background: {{ item.accent_bg }}; color: {{ item.accent }}; border: 1px solid {{ item.accent_border }};">
+                                    <i class="{{ item.icon }}" aria-hidden="true"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+                                        <h3 class="mb-0 text-lg font-semibold text-[#0A2540]">{{ item.label }}</h3>
+                                        <span class="badge rounded-pill" style="color: {{ item.accent }}; background: {{ item.accent_bg }}; border: 1px solid {{ item.accent_border }};">{{ item.badge }}</span>
+                                    </div>
+                                    <p class="mb-3 text-sm text-slate-600">{{ item.description }}</p>
                                 </div>
                             </div>
-                            <p class="mb-2 text-sm text-slate-600">{{ item.description }}</p>
-                            <div class="rounded-3 p-3 text-sm text-slate-700" style="background: #ffffff; border: 1px solid rgba(15, 23, 42, .08); word-break: break-word;">
+                            <div class="rounded-3 p-3 text-sm text-slate-700 bg-slate-50 border border-slate-200">
+                                {% if item.clickable %}
+                                <a href="{{ item.href }}" target="_blank" rel="noopener noreferrer" class="text-slate-700 hover:text-slate-900">{{ item.value }}</a>
+                                {% else %}
                                 {{ item.value }}
+                                {% endif %}
                             </div>
-                        </div>
-                    {% if item.clickable %}
-                    </a>
-                    {% else %}
+                        </article>
                     </div>
-                    {% endif %}
-                    </div>  <!-- closes col-12 col-md-6 -->
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="rounded-3xl border border-slate-200 bg-white p-8 text-slate-700">
+                            <p>Content will be updated soon.</p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>

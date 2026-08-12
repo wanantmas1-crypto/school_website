@@ -16,7 +16,13 @@
     {% else %}
         <div class="row">
             <section class="col-12 reveal-on-scroll">
-                <div class="prose prose-slate max-w-none w-100 text-slate-700">{{ page.content|safe }}</div>
+                <div class="prose prose-slate max-w-none w-100 text-slate-700">
+                    {% if page.content %}
+                        {{ page.content|safe }}
+                    {% else %}
+                        <p>Content will be updated soon.</p>
+                    {% endif %}
+                </div>
             </section>
         </div>
     {% endif %}
