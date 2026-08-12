@@ -90,7 +90,7 @@ class SitePage(models.Model):
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=200)
     category = models.CharField(max_length=100, blank=True, help_text='Optional category or department for this page')
-    content = models.TextField()
+    content = models.TextField(blank=True, null=True)
     # Ordered blocks for flexible page building. Each block is a dict with a `type` and block-specific keys.
     # Example: [{"type": "text", "title": "Intro", "content": "<p>...</p>"}, ...]
     try:
