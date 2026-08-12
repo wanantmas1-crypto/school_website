@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 
@@ -101,6 +102,40 @@ class PublicPagesTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Announcements')
+
+    @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT, MEDIA_URL='/media/')
+    def test_announcements_page_excludes_missing_image_urls(self):
+        announcement = Announcement.objects.create(
+            title='Broken Image Announcement',
+            content='Image is missing.',
+            is_active=True,
+        )
+        announcement.image.name = 'announcements/missing-file.jpg'
+        announcement.save()
+
+        response = self.client.get('/announcements/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Broken Image Announcement')
+        self.assertNotContains(response, 'announcements/missing-file.jpg')
+        self.assertNotContains(response, 'data-lightbox-src="/media/announcements/missing-file.jpg"')
+        self.assertNotContains(response, 'src="/media/announcements/missing-file.jpg"')
+
+    @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT, MEDIA_URL='/media/')
+    def test_announcements_page_renders_valid_image_url(self):
+        image_content = ContentFile(b'\x47\x49\x46\x38\x39\x61', name='announcement.gif')
+        announcement = Announcement.objects.create(
+            title='Valid Image Announcement',
+            content='Image is present.',
+            image=SimpleUploadedFile('announcement.gif', image_content.read(), content_type='image/gif'),
+            is_active=True,
+        )
+
+        response = self.client.get('/announcements/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Valid Image Announcement')
+        self.assertContains(response, '/media/announcements/announcement.gif')
 
     def test_site_navigation_uses_sticky_header_with_updated_about_links(self):
         response = self.client.get('/')

@@ -3,42 +3,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
 from .models import Inquiry, SitePage, Announcement, HistoryImage
+from .utils import safe_file_url
 
 
 def _safe_file_url(field_file):
-    if not field_file:
-        return ''
-
-    try:
-        if not isinstance(field_file, str):
-            url = getattr(field_file, 'url', None)
-            if url:
-                return url
-            name = getattr(field_file, 'name', '') or ''
-        else:
-            name = field_file
-
-        if not name:
-            return ''
-
-        candidates = [name]
-        basename = os.path.basename(name)
-        if basename:
-            candidates.extend([
-                os.path.join('boarding.utils.image_upload_to', basename),
-                os.path.join('site_pages', basename),
-            ])
-
-        for candidate in candidates:
-            try:
-                if default_storage.exists(candidate):
-                    return default_storage.url(candidate)
-            except Exception:
-                continue
-    except Exception:
-        return ''
-
-    return ''
+    return safe_file_url(field_file)
 
 
 def _gallery_items_for_page(page):
@@ -111,10 +80,11 @@ def home(request):
     slides = []
     try:
         if page:
-            if getattr(page, 'featured_image', None) and getattr(page.featured_image, 'url', None):
-                slides.append(page.featured_image.url)
+            featured_url = _safe_file_url(getattr(page, 'featured_image', None))
+            if featured_url:
+                slides.append(featured_url)
             for img in page.images.all():
-                url = getattr(getattr(img, 'image', None), 'url', None)
+                url = _safe_file_url(getattr(img, 'image', None))
                 if url and url not in slides:
                     slides.append(url)
     except Exception:
@@ -186,6 +156,7 @@ def school_history(request):
         history_images.append({
             'object': image,
             'delay': i * 8,
+            'image_url': _safe_file_url(getattr(image, 'image', None)),
         })
 
     return render(request, 'boarding/history.html', {
@@ -227,8 +198,17 @@ def school_chaplaincy(request):
     section_two_image = images[1] if len(images) > 1 else None
     transition_images = images[2:5] or images[:3]
 
+    page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
+    if section_one_image:
+        section_one_image.image_url = _safe_file_url(getattr(section_one_image, 'image', None))
+    if section_two_image:
+        section_two_image.image_url = _safe_file_url(getattr(section_two_image, 'image', None))
+    for slide in transition_images:
+        slide.image_url = _safe_file_url(getattr(slide, 'image', None))
+
     return render(request, 'boarding/chaplaincy.html', {
         'page': page,
+        'page_background_image_url': page_background_image_url,
         'section_one_image': section_one_image,
         'section_two_image': section_two_image,
         'transition_images': transition_images,
@@ -622,4 +602,6 @@ def school_leadership(request):
 
 def announcements(request):
     announcements = Announcement.objects.filter(is_active=True)
+    for announcement in announcements:
+        announcement.safe_image_url = _safe_file_url(getattr(announcement, 'image', None))
     return render(request, 'boarding/announcements.html', {'announcements': announcements})

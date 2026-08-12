@@ -15,10 +15,10 @@
         <div class="announcements-gallery" role="list">
           {% for announcement in announcements %}
           <article role="listitem" class="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg reveal-on-scroll">
-            {% if announcement.image %}
+            {% if announcement.safe_image_url %}
             <figure class="relative overflow-hidden bg-slate-100" style="aspect-ratio:4/3;">
-              <a href="#" class="announcement-thumb group relative w-full h-full p-0 block focus:outline-none" data-lightbox-src="{{ announcement.image.url }}" data-lightbox-caption="{{ announcement.title }}" aria-label="Open image for {{ announcement.title }}">
-                <img src="{{ announcement.image.url }}" alt="{{ announcement.title }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-400 ease-out group-hover:scale-105" />
+              <a href="#" class="announcement-thumb group relative w-full h-full p-0 block focus:outline-none" data-lightbox-src="{{ announcement.safe_image_url }}" data-lightbox-caption="{{ announcement.title }}" aria-label="Open image for {{ announcement.title }}">
+                <img src="{{ announcement.safe_image_url }}" alt="{{ announcement.title }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-400 ease-out group-hover:scale-105" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
                   <p class="font-semibold text-white text-sm line-clamp-2">{{ announcement.title }}</p>
                 </div>

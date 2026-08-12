@@ -1,3 +1,4 @@
+from django.utils.safestring import mark_safe
 from django.contrib import admin
 from django import forms
 from django.utils.text import slugify
@@ -26,6 +27,7 @@ class SitePageAdminForm(forms.ModelForm):
         js = [
             'https://cdn.quilljs.com/1.3.6/quill.js',
             'boarding/js/quill_init.js',
+            'boarding/js/admin_image_preview.js',
             'boarding/js/inline_ordering.js',
         ]
         css = {
@@ -98,6 +100,7 @@ class SiteSettingsAdminForm(forms.ModelForm):
         js = [
             'https://cdn.quilljs.com/1.3.6/quill.js',
             'boarding/js/quill_init.js',
+            'boarding/js/admin_image_preview.js',
         ]
         css = {
             'all': [
@@ -176,7 +179,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ['title', 'category', 'is_active', 'is_featured', 'date', 'event_date']
     list_filter = ['is_active', 'is_featured', 'category', 'date']
     search_fields = ['title', 'subtitle', 'content']
-    readonly_fields = ['date']
+    readonly_fields = ['date', 'image_preview']
     fieldsets = (
         ('Announcement', {
             'fields': (
@@ -191,6 +194,16 @@ class AnnouncementAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+    def image_preview(self, obj):
+        if obj and getattr(obj, 'image'):
+            try:
+                url = obj.image.url
+            except Exception:
+                url = None
+            if url:
+                return mark_safe(f"<img src=\"{url}\" style=\"max-height:180px; max-width:320px; object-fit:contain; border-radius:6px;\" />")
+        return ''
+    image_preview.short_description = 'Current image'
 
 
 @admin.register(Document)
@@ -220,8 +233,41 @@ class DocumentAdmin(admin.ModelAdmin):
 class SiteSettingsAdmin(admin.ModelAdmin):
     form = SiteSettingsAdminForm
     list_display = ['site_name', 'tagline']
-    readonly_fields = []
+    readonly_fields = ['logo_preview', 'principal_image_preview']
     fieldsets = (
         ('Branding', {'fields': ('site_name', 'tagline', 'logo')}),
         ('Principal Message', {'fields': ('principal_name', 'principal_title', 'principal_image', 'principal_message')}),
     )
+
+    def logo_preview(self, obj):
+        if obj and getattr(obj, 'logo'):
+            try:
+                url = obj.logo.url
+            except Exception:
+                url = None
+            if url:
+                return mark_safe(f"<img src=\"{url}\" style=\"max-height:120px; max-width:220px; object-fit:contain; border-radius:6px;\" />")
+        return ''
+    logo_preview.short_description = 'Current logo'
+
+    def principal_image_preview(self, obj):
+        if obj and getattr(obj, 'principal_image'):
+            try:
+                url = obj.principal_image.url
+            except Exception:
+                url = None
+            if url:
+                return mark_safe(f"<img src=\"{url}\" style=\"max-height:160px; max-width:160px; object-fit:cover; border-radius:6px;\" />")
+        return ''
+    principal_image_preview.short_description = 'Principal image'
+
+    def image_preview(self, obj):
+        if obj and getattr(obj, 'image'):
+            try:
+                url = obj.image.url
+            except Exception:
+                url = None
+            if url:
+                return mark_safe(f"<img src=\"{url}\" style=\"max-height:180px; max-width:320px; object-fit:contain; border-radius:6px;\" />")
+        return ''
+    image_preview.short_description = 'Current image'

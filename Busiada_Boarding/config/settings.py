@@ -39,15 +39,12 @@ if cloudinary:
         api_secret=CLOUDINARY_API_SECRET,
     )
 
-if cloudinary and cloudinary_storage:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    print('Cloudinary storage enabled: using Cloudinary media storage')
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    if not cloudinary:
-        print('Cloudinary package not installed: using local filesystem storage')
-    elif not cloudinary_storage:
-        print('django-cloudinary-storage package not installed: using local filesystem storage')
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+if not cloudinary:
+    print('Cloudinary package not installed: ensure cloudinary is installed for media storage')
+elif not cloudinary_storage:
+    print('django-cloudinary-storage package not installed: ensure django-cloudinary-storage is installed for media storage')
+print('Cloudinary storage enabled: using Cloudinary media storage')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
