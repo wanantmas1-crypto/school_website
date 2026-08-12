@@ -4,193 +4,373 @@
 {% block content_wrapper_end %}{% endblock %}
 
 {% block content %}
-<section class="landing-hero bg-[#F8F7F4] min-h-screen overflow-hidden text-[#1A1A1A]">
+{% with slides=slides|default:None %}
+<section class="relative min-h-screen overflow-hidden text-white">
     <style>
-        .landing-hero {
-            position: relative;
-            min-height: calc(100vh - 5rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-            background-color: #F8F7F4;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        .landing-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transform-origin:center; animation-name:slideShow; animation-timing-function:ease-in-out; animation-iteration-count:infinite; }
+        @keyframes slideShow {
+            0% { opacity:0; transform:scale(1); }
+            12% { opacity:1; transform:scale(1.03); }
+            78% { opacity:1; transform:scale(1.06); }
+            90% { opacity:0; transform:scale(1.12); }
+            100% { opacity:0; transform:scale(1.12); }
         }
-        .landing-hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(10, 10, 10, 0.34);
-        }
-        .landing-hero-shell {
-            position: relative;
-            z-index: 1;
-            width: min(100%, 86rem);
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .landing-hero-copy h1 {
-            margin: 0;
-            font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
-            font-size: clamp(3.5rem, 10vw, 7.5rem);
-            font-weight: 900;
-            line-height: 0.9;
-            letter-spacing: -0.05em;
-            color: #F8F7F4;
-            text-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
-        }
-        .landing-hero-copy p {
-            margin-top: 1rem;
-            font-size: 1.15rem;
-            color: rgba(248, 247, 244, 0.92);
-            max-width: 44rem;
-        }
+        /* Increase school name size on small devices for better legibility */
+        .landing-school-name { font-size: 1rem; }
+        .landing-page-heading { font-size: clamp(3rem, 7vw, 4.5rem); line-height: 1.02; }
+        .landing-page-copy { font-size: 1.15rem; line-height: 1.9; }
+        .landing-cta-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .landing-cta-button { min-height: 3.75rem; padding-top: 1.1rem; padding-bottom: 1.1rem; }
         @media (max-width: 768px) {
-            .landing-hero-shell {
-                padding: 3rem 1.25rem;
-            }
-            .landing-hero-copy h1 {
-                font-size: clamp(2.5rem, 13vw, 5rem);
-            }
+            .landing-cta-grid { grid-template-columns: 1fr; }
+            .landing-cta-button { width: 100%; }
         }
-        @media (max-width: 480px) {
-            .landing-hero-shell {
-                padding: 2rem 0.75rem;
-            }
-            .landing-hero-copy h1 {
-                font-size: clamp(2rem, 16vw, 4rem);
-            }
+        @media (max-width: 640px) {
+            .landing-school-name { font-size: 1.1rem; }
+            .landing-page-heading { font-size: 3.2rem; }
+            .landing-page-copy { font-size: 1.2rem; line-height: 2; }
+            .principal-image { max-height: 200px; }
+            .principal-fallback { width: 100px; height: 100px; font-size: 38px; }
+            .principal-message-start { padding-left: 0.5rem; }
         }
     </style>
-    <div class="landing-hero-shell" style="background-image: linear-gradient(180deg, rgba(26, 26, 26, 0.36), rgba(26, 26, 26, 0.26)), {% if page and page.featured_image %}url('{{ page.featured_image.url }}'){% else %}url('https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=1600&q=80'){% endif %};">
-        <div class="landing-hero-copy">
-            <h1>{% if page and page.title %}{{ page.title }}{% else %}Busiada Girls Senior School{% endif %}</h1>
-            {% if page and page.category %}
-            <p>{{ page.category }}</p>
-            {% endif %}
-        </div>
-    </div>
-</section>
-
-{% if page %}
-<section class="home-page-content container mx-auto px-4 py-10 lg:px-8 lg:py-16">
-    {% include 'boarding/page_sections.html' %}
-</section>
-{% endif %}
-
-<section class="home-featured-services container mx-auto px-4 pb-10 lg:px-8 lg:pb-16">
-    <div class="mx-auto max-w-4xl text-center">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#4A90C8]">Services We Offer</p>
-        <h2 class="mb-4 text-3xl font-bold tracking-tight text-[#0A2540] sm:text-4xl">A holistic education built for every learner</h2>
-        <p class="mx-auto max-w-2xl text-base leading-8 text-slate-600">Busiada Girls Senior School combines academic excellence, co-curricular growth, learner support and strong stakeholder engagement to help students thrive.</p>
+    <div class="absolute inset-0">
+        {% if slides %}
+            {% for s in slides %}
+            <div class="landing-slide js-landing-slide" data-bg-url="{{ s.url }}" data-duration="{{ hero_total_duration }}" data-delay="{{ s.delay }}"></div>
+            {% endfor %}
+        {% else %}
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),_transparent_35%),linear-gradient(180deg,#020617_0%,#0f172a_100%)]"></div>
+        {% endif %}
+        <div class="absolute inset-0 bg-slate-950/65"></div>
     </div>
 
-    <div class="grid gap-6 pt-10 sm:grid-cols-2 lg:grid-cols-3">
-        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Academics</h3>
-            <p class="text-sm leading-6 text-slate-600">Rigorous classroom programmes, tailored support and practical learning opportunities that prepare learners for success.</p>
-        </article>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.js-landing-slide').forEach(function (slide) {
+                var bgUrl = slide.dataset.bgUrl;
+                var duration = slide.dataset.duration;
+                var delay = slide.dataset.delay;
+                if (bgUrl) {
+                    slide.style.backgroundImage = 'url("' + bgUrl + '")';
+                }
+                if (duration) {
+                    slide.style.animationDuration = duration + 's';
+                }
+                if (delay) {
+                    slide.style.animationDelay = delay + 's';
+                }
+            });
+        });
+    </script>
 
-        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Co-Curricular & Talent Development</h3>
-            <p class="text-sm leading-6 text-slate-600">Sports, clubs, arts and leadership activities designed to grow confidence, creativity and teamwork.</p>
-        </article>
-
-        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Learner Support Services</h3>
-            <p class="text-sm leading-6 text-slate-600">Counselling, health services and academic mentoring provide the care learners need to flourish.</p>
-        </article>
-
-        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Parental & Stakeholder Engagement</h3>
-            <p class="text-sm leading-6 text-slate-600">Strong school-family partnerships and transparent communication help learners stay grounded and supported.</p>
-        </article>
-
-        <article class="rounded-[1.15rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <h3 class="mb-3 text-xl font-semibold text-[#1E3A5F]">Additional Value-Added Services</h3>
-            <p class="text-sm leading-6 text-slate-600">From student health services to guiding and counselling, our programmes support the whole child.</p>
-            <div class="mt-4 space-y-2 text-sm text-slate-700">
-                <a href="/student-health/" class="font-semibold text-[#1E3A5F] hover:text-[#4A90C8]">Student Health Services</a>
-                <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="font-semibold text-[#1E3A5F] hover:text-[#4A90C8]">Guiding & Counselling</a>
-            </div>
-        </article>
-    </div>
-</section>
-
-<section class="home-cta container mx-auto px-4 pb-16 lg:px-8">
-    <div class="mx-auto flex flex-col gap-4 rounded-[1.35rem] border border-slate-200 bg-[#0A2540] p-8 text-white shadow-xl sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <p class="text-sm uppercase tracking-[0.3em] text-slate-300">Take the next step</p>
-            <h3 class="mt-3 text-2xl font-bold">Ready to join Busiada?</h3>
-        </div>
-        <div class="flex flex-wrap gap-3">
-            <a href="/contact/" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#0A2540] transition hover:bg-slate-100">Apply Now</a>
-            <a href="/" class="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/10">Explore Campus</a>
-        </div>
-    </div>
-</section>
-
-<section class="home-mission container mx-auto px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-5xl text-center">
-        <p class="text-sm font-semibold uppercase text-[#4A90C8]">Our Purpose</p>
-        <h2 class="mt-3 text-2xl font-bold text-[#0A2540]">{% if site_settings and site_settings.site_name %}{{ site_settings.site_name }}{% else %}Busiada Girls Senior School{% endif %} — Mission & Vision</h2>
-        <div class="mt-4 text-slate-700 max-w-3xl mx-auto">
-            <p class="mb-3">{% if site_settings and site_settings.principal_message %}{{ site_settings.principal_message|safe }}{% else %}Our mission is to provide a supportive, high-quality education that fosters academic excellence, leadership and service.{% endif %}</p>
-            <p class="text-sm text-slate-600">{% if page and page.category %}{{ page.category }}{% else %}We aim to develop responsible, resilient and resourceful learners prepared for the global community.{% endif %}</p>
-        </div>
-    </div>
-</section>
-
-<section class="home-principal container mx-auto px-4 py-10 lg:px-8">
-    <div class="mx-auto max-w-5xl grid gap-8 grid-cols-1 md:grid-cols-3 items-center">
-        <div class="md:col-span-2">
-            <h3 class="text-xl font-semibold text-[#1E3A5F]">Principal's Message</h3>
-            <div class="mt-3 text-slate-700">
-                {% if site_settings and site_settings.principal_message %}
-                    {{ site_settings.principal_message|safe }}
-                {% else %}
-                    <p>Welcome to Busiada Girls Senior School. We are committed to nurturing every learner's potential through strong pastoral care and academic rigour.</p>
+    <div class="relative z-10 flex min-h-screen items-center">
+        <div class="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+            <div class="space-y-8 text-center">
+                <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/80 landing-school-name">Busiada Girls Senior School</p>
+                <h1 class="text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl landing-page-heading">Welcome to Busiada Girls Senior School</h1>
+                <p class="mx-auto max-w-2xl text-lg leading-8 text-slate-300 landing-page-copy">A bright, welcoming boarding school landing page using the background image uploaded for the Home page in admin.</p>
+                {% if page and page.content %}
+                <div class="mx-auto max-w-2xl text-base leading-7 text-slate-200/90">
+                    {{ page.content|safe }}
+                </div>
                 {% endif %}
+
+                <div class="grid gap-4 sm:grid-cols-3 landing-cta-grid">
+                    <a href="{% url 'site_page' slug='admission-process' %}" class="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-4 text-sm font-semibold text-[#0A2540] shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300 landing-cta-button">Admission Process</a>
+                    <a href="{% url 'school_history' %}" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-blue-100/20 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-100/30 landing-cta-button">History</a>
+                    <a href="{% url 'site_page' slug='contacts' %}" class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-blue-800/80 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-700/90 landing-cta-button">Contact Us</a>
+                </div>
             </div>
         </div>
-        <div class="text-center">
-            {% if site_settings and site_settings.principal_image %}
-                <img src="{{ site_settings.principal_image.url }}" alt="Principal" class="mx-auto rounded-lg w-44 h-44 object-cover" />
-            {% else %}
-                <div class="mx-auto w-44 h-44 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">Principal</div>
-            {% endif %}
+    </div>
+</section>
+<!-- Motto / Vision / Mission Section -->
+<section class="relative py-12 bg-[linear-gradient(135deg,rgba(248,250,252,0.96),rgba(240,249,255,0.95))]">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-600 font-semibold">Our Identity</p>
+            <h2 class="mt-2 text-3xl font-extrabold text-slate-900">Motto, Vision & Mission</h2>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-3">
+            <!-- Motto card (heartbeat) -->
+            <article class="surface-rose rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="motto-heart text-3xl text-rose-500" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
+                    <h3 class="text-xl font-bold text-slate-900">Our Motto</h3>
+                </div>
+                <p class="text-slate-700">"Courage, Compassion, Scholarship" — we lead with heart and honour.</p>
+            </article>
+
+            <!-- Vision card -->
+            <article class="surface-sky rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="text-3xl text-cyan-600" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+                    <h3 class="text-xl font-bold text-slate-900">Our Vision</h3>
+                </div>
+                <p class="text-slate-700">To nurture confident, compassionate leaders who shape a better world.</p>
+            </article>
+
+            <!-- Mission card -->
+            <article class="surface-amber rounded-2xl p-6 flex flex-col items-center justify-center gap-4 text-center shadow-sm">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="text-3xl text-amber-500" aria-hidden="true"><i class="fa-solid fa-bullseye"></i></span>
+                    <h3 class="text-xl font-bold text-slate-900">Our Mission</h3>
+                </div>
+                <p class="text-slate-700">Deliver excellent education, strong pastoral care, and opportunities for every learner to thrive.</p>
+            </article>
+        </div>
+    </div>
+
+    <style>
+        .motto-heart { display:inline-flex; align-items:center; justify-content:center; }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.25); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.25); }
+            70% { transform: scale(1); }
+        }
+        .motto-heart i { animation: heartbeat 1.6s ease-in-out infinite; color: #ef4444; }
+        @media (prefers-reduced-motion: reduce) { .motto-heart i { animation: none; } }
+    </style>
+</section>
+<!-- Principal Message Section -->
+<section class="relative overflow-hidden bg-blue-50/80 py-8">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+        <div class="w-full rounded-[0.5rem] border border-slate-200 bg-blue-50/90 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] overflow-hidden">
+            <!-- Constrain principal card to viewport height; message scrolls internally if needed -->
+            <div class="overflow-visible">
+                <div class="grid gap-6 md:grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start">
+                    <aside class="hidden md:block p-4 sm:p-6 lg:p-8">
+                        <div class="flex h-full flex-col justify-between rounded-[1.5rem] overflow-hidden border border-slate-200 bg-blue-50/80 shadow-sm">
+                            <style>
+                                .principal-image { width:auto; max-width:240px; height:auto; max-height:260px; object-fit:contain; border-radius: 2.5rem; }
+                                .principal-fallback { width:100%; min-height:220px; border-radius: 2.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg,#ffffff,#f1f5f9); box-shadow: 0 10px 30px rgba(15,23,42,0.12); }
+                                @media (max-width:640px) {
+                                    .principal-image { width:84px; height:84px; max-width:none; max-height:none; border-radius:9999px; }
+                                    .principal-fallback { width:120px; height:120px; border-radius:9999px; font-size:42px; }
+                                    .principal-message-start::before {
+                                        content: '“';
+                                        display: block;
+                                        font-size: 56px;
+                                        line-height: 0.6;
+                                        color: rgba(15,23,42,0.12);
+                                        margin-bottom: -8px;
+                                        text-align: center;
+                                    }
+                                    .principal-message-start { padding-left: 0; text-align: center; }
+                                }
+                            </style>
+                            <div class="w-full flex justify-center pt-6 pb-4">
+                                {% if site_settings.principal_image %}
+                                    <img src="{{ site_settings.principal_image.url }}" alt="Principal portrait" class="principal-image rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">
+                                {% else %}
+                                    <div class="principal-fallback rounded-full md:rounded-[1.5rem] transition-transform duration-200 hover:-translate-y-1">“</div>
+                                {% endif %}
+                            </div>
+                            <div class="p-4 sm:p-6 text-center">
+                                <p class="text-xs uppercase tracking-[0.25em] text-cyan-600 font-semibold">Principal's message</p>
+                                <h2 class="mt-2 text-lg sm:text-xl font-bold text-slate-900">{{ site_settings.principal_name|default:'Principal Name' }}</h2>
+                                <p class="mt-1 text-xs text-slate-500">{{ site_settings.principal_title|default:'Principal' }}</p>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="flex flex-col justify-start p-4 sm:p-6 lg:p-8 min-w-0">
+                        <div class="mb-4 text-center md:text-left">
+                            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-600">Principal's message</p>
+                            <h3 class="mt-2 text-2xl font-bold text-slate-900">Principal's message</h3>
+                        </div>
+                        <div class="block md:hidden w-full flex justify-center pt-2 pb-4">
+                            {% if site_settings.principal_image %}
+                                <img src="{{ site_settings.principal_image.url }}" alt="Principal portrait" class="principal-image rounded-full transition-transform duration-200 hover:-translate-y-1">
+                            {% else %}
+                                <div class="principal-fallback rounded-full transition-transform duration-200 hover:-translate-y-1">“</div>
+                            {% endif %}
+                        </div>
+                        <div class="border-t border-slate-200 mb-4 lg:mb-6"></div>
+                        {% if site_settings.principal_message %}
+                            <div class="space-y-4 text-slate-700 leading-relaxed text-base md:text-lg text-center md:text-left overflow-visible principal-message-start">
+                                {{ site_settings.principal_message|safe }}
+                            </div>
+                            <div class="mt-6 text-center md:hidden">
+                                <h2 class="text-lg font-bold text-slate-900">{{ site_settings.principal_name|default:'Principal Name' }}</h2>
+                                <p class="mt-1 text-sm text-slate-500">{{ site_settings.principal_title|default:'Principal' }}</p>
+                            </div>
+                        {% else %}
+                            <div class="rounded-3xl border-2 border-dashed border-slate-300 bg-blue-50/80 p-8 text-slate-500 text-center">
+                                <p class="text-lg font-semibold">Principal’s message will appear here.</p>
+                                <p class="mt-3 text-sm">Use the admin editor to add formatted text, headings, lists, and links.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="home-why container mx-auto px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-5xl">
-        <h3 class="text-2xl font-bold text-[#0A2540]">Why Choose Us</h3>
-        <p class="mt-3 text-slate-600">We combine strong academic programmes with co-curricular opportunities, excellent pastoral care and a community-focused approach.</p>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-            <li class="rounded p-4 border bg-white">Experienced, caring staff focused on learner outcomes</li>
-            <li class="rounded p-4 border bg-white">Balanced academics and co-curricular excellence</li>
-            <li class="rounded p-4 border bg-white">Safe boarding and day facilities with health services</li>
-            <li class="rounded p-4 border bg-white">Strong partnerships with families and stakeholders</li>
-        </ul>
-    </div>
-</section>
+<!-- Services We Offer Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50 py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <p class="text-sm font-black uppercase tracking-[0.32em] text-cyan-600">Services We Offer</p>
+            <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">A complete school experience shaped for learning, wellbeing and growth.</h2>
+            <p class="mt-4 text-lg leading-8 text-slate-600">From academic excellence to co-curricular discovery and family partnership, every part of school life is designed to support confident, capable learners.</p>
+        </div>
 
-<section class="home-map container mx-auto px-4 py-12 lg:px-8">
-    <div class="mx-auto max-w-5xl text-center">
-        <h3 class="text-xl font-semibold text-[#1E3A5F]">Our Location</h3>
-        <p class="mt-2 text-slate-600">Find us on the map or open in Google Maps.</p>
-        <div class="mt-4" style="height:320px;">
-            <iframe src="https://www.google.com/maps?q=Busiada%20Girls%20Senior%20School%20Kenya&z=13&output=embed" width="100%" height="320" style="border:0;border-radius:.75rem;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="mt-10 grid gap-8 xl:grid-cols-[1.15fr_0.85fr]">
+            <div class="rounded-[2rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)] sm:p-8 lg:p-10">
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-900">Academics</h3>
+                    </div>
+                    <span class="rounded-full bg-cyan-50 px-4 py-2 text-sm font-semibold text-cyan-700">Curriculum pathways</span>
+                </div>
+                <div class="mt-8 grid gap-4 md:grid-cols-2">
+                    <a href="{% url 'academics_844' %}" class="group rounded-2xl border border-slate-200 bg-blue-50/90 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50">
+                        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">8-4-4</p>
+                        <h4 class="mt-3 text-lg font-semibold text-slate-900">Secondary school curriculum</h4>
+                        <p class="mt-2 text-sm leading-7 text-slate-600">An established pathway with strong academic grounding and subject depth.</p>
+                    </a>
+                    <a href="{% url 'academics_26333' %}" class="group rounded-2xl border border-slate-200 bg-blue-50/90 p-5 transition hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-50">
+                        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">2-6-3-3-3</p>
+                        <h4 class="mt-3 text-lg font-semibold text-slate-900">Competency-based education</h4>
+                        <p class="mt-2 text-sm leading-7 text-slate-600">A modern senior-school structure focused on competencies, skills and readiness.</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="rounded-[2rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)] sm:p-8 lg:p-10">
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-900">Co-Curricular & Talent Development</h3>
+                    </div>
+                </div>
+                <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                    <a href="{% url 'site_page' slug='games-sports' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
+                        <span class="font-semibold text-slate-900">Games & Sports</span>
+                        <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                    </a>
+                    <a href="{% url 'site_page' slug='clubs-societies' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
+                        <span class="font-semibold text-slate-900">Clubs & Societies</span>
+                        <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                    </a>
+                    <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
+                        <span class="font-semibold text-slate-900">Guiding & Counselling</span>
+                        <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                    </a>
+                    <a href="{% url 'performing_visual_arts' %}" class="flex items-center justify-between rounded-2xl border border-slate-200 bg-blue-50/80 px-5 py-4 transition hover:border-fuchsia-300 hover:bg-fuchsia-50">
+                        <span class="font-semibold text-slate-900">Performing & Visual Arts</span>
+                        <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-6">
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-600">Learner Support Services</p>
+                <h3 class="mt-3 text-2xl font-bold text-slate-900">Wellbeing at the heart of school life</h3>
+                <p class="mt-4 text-sm leading-7 text-slate-600">A caring and responsive system that helps every learner thrive academically and socially.</p>
+                <a href="{% url 'student_health' %}" class="mt-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">Explore Student Health <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-amber-600">Parental & Stakeholder Engagement</p>
+                <h3 class="mt-3 text-2xl font-bold text-slate-900">Strong partnerships with families</h3>
+                <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+                    <li>• Regular parent-teacher meetings and progress reports</li>
+                    <li>• Active Parents-Teachers Association (PTA)</li>
+                    <li>• Transparent communication through school mobile updates</li>
+                </ul>
+            </div>
+            <div class="flex-[1_1_280px] rounded-[1.75rem] border border-slate-200 bg-blue-50/90 p-7 shadow-[0_20px_60px_-34px_rgba(15,23,42,0.3)]">
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-rose-600">Additional Value-Added Services</p>
+                <h3 class="mt-3 text-2xl font-bold text-slate-900">Beyond the classroom</h3>
+                <ul class="mt-4 space-y-2 text-sm leading-7 text-slate-600">
+                    <li>• Leadership and entrepreneurship training</li>
+                    <li>• ICT and digital literacy programmes</li>
+                    <li>• International exchange and exposure opportunities where applicable</li>
+                    <li>• University and career placement support</li>
+                </ul>
+            </div>
         </div>
     </div>
 </section>
 
-{% include 'boarding/partials/dynamic_media_gallery.html' %}
+<!-- Why Parents Choose Us Section -->
+<section class="bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 py-16">
+  <div class="container mx-auto px-6 text-center">
+    <!-- Heading -->
+    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-10">
+      Why Parents Choose Our Girls’ Boarding School
+    </h2>
+
+    <!-- Responsive Card Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Card 1 -->
+      <div class="rounded-[1.25rem] border border-pink-200 bg-pink-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-pink-200 transition-all duration-300 p-6">
+        <h3 class="text-xl font-semibold text-pink-900 mb-4">A Secure and Caring Home</h3>
+        <p class="text-pink-800">A safe, nurturing environment where girls feel at home away from home.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="rounded-[1.25rem] border border-indigo-200 bg-indigo-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-indigo-200 transition-all duration-300 p-6">
+        <h3 class="text-xl font-semibold text-indigo-900 mb-4">Academic Excellence & Character</h3>
+        <p class="text-indigo-800">We balance strong academics with values and character formation.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="rounded-[1.25rem] border border-purple-200 bg-purple-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-purple-200 transition-all duration-300 p-6">
+        <h3 class="text-xl font-semibold text-purple-900 mb-4">Confident Young Ladies</h3>
+        <p class="text-purple-800">We develop well-rounded, confident young women ready for the future.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="rounded-[1.25rem] border border-teal-200 bg-teal-100 shadow-md hover:-translate-y-2 hover:shadow-xl hover:bg-teal-200 transition-all duration-300 p-6">
+        <h3 class="text-xl font-semibold text-teal-900 mb-4">Parent Engagement</h3>
+        <p class="text-teal-800">Transparent communication and regular updates keep parents involved.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Campus Life Gallery section removed -->
+
+<section class="relative overflow-hidden bg-gradient-to-br from-cyan-100/65 via-orange-100/38 to-slate-50 py-12">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.20),_transparent_40%),radial-gradient(circle_at_bottom_right,_rgba(251,146,60,0.16),_transparent_35%)]"></div>
+    <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-600 font-semibold">Map</p>
+            <h2 class="text-3xl font-extrabold text-slate-900">Find Us — Our Location</h2>
+        </div>
+            <div class="grid gap-6 lg:grid-cols-2 items-stretch">
+            <div class="h-full rounded-[2rem] overflow-hidden border border-slate-200/80 bg-blue-50/90 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] backdrop-blur-sm">
+                <iframe class="w-full h-full min-h-0 border-0" src="https://maps.google.com/maps?q=Busiada%20Girls%20Secondary%20School%20Kenya&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" title="Busiada Girls Secondary School Map"></iframe>
+            </div>
+            <div class="relative rounded-[2rem] border border-slate-200/80 bg-blue-50/90 p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.12)] h-full backdrop-blur-sm overflow-hidden">
+                <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.18),_transparent_30%)]"></div>
+                <div class="relative h-full flex flex-col">
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.35em] text-fuchsia-500 font-semibold mb-4">Location</p>
+                        <h2 class="text-2xl font-bold text-slate-900 mb-3">Busiada Girls Secondary School</h2>
+                        <p class="text-slate-600 mb-6">An interactive map showing our campus location in Kenya. Use the map controls to zoom and pan.</p>
+                    </div>
+                    <div class="mt-auto grid gap-4 text-sm text-slate-700 sm:grid-cols-2">
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Country: Kenya</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">County: Kiambu County</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Subcounty: Thika East</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Location: Busiada</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Sublocation: Withei</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Ward: Muthaiga Ward</div>
+                        <div class="rounded-3xl bg-blue-50/80 p-4">Village: Busiada Village</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endwith %}
 {% endblock %}
