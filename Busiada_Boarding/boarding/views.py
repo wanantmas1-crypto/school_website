@@ -76,36 +76,14 @@ def home(request):
     if not page:
         page = SitePage.objects.filter(slug='home').first()
 
-    # Build a list of slides with per-slide delay: prefer featured_image, then page images
-    slides = []
-    try:
-        if page:
-            featured_url = _safe_file_url(getattr(page, 'featured_image', None))
-            if featured_url:
-                slides.append(featured_url)
-            for img in page.images.all():
-                url = _safe_file_url(getattr(img, 'image', None))
-                if url and url not in slides:
-                    slides.append(url)
-    except Exception:
-        slides = []
-
-    slide_interval = 12
-    # Build slides metadata with per-slide delay (seconds)
-    slides_meta = []
-    for i, url in enumerate(slides):
-        slides_meta.append({'url': url, 'delay': i * slide_interval})
-
-    hero_total_duration = max(len(slides) * slide_interval, 12)
+    page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
 
     # Pass gallery items to the template
     gallery_items = _gallery_items_for_page(page)
 
     return render(request, 'boarding/index.html', {
         'page': page,
-        'slides': slides_meta,
-        'slide_interval': slide_interval,
-        'hero_total_duration': hero_total_duration,
+        'page_background_image_url': page_background_image_url,
         'gallery_items': gallery_items,
     })
 
