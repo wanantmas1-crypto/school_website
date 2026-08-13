@@ -104,6 +104,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Cloudinary media storage
+    'cloudinary',
+    'cloudinary_storage',
+
     # Your App
     'boarding',
 ]

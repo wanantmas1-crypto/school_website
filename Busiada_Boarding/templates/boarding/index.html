@@ -160,8 +160,8 @@
                             <h3 class="mt-2 text-2xl font-bold text-slate-900">Principal's message</h3>
                         </div>
                         <div class="block md:hidden w-full flex justify-center pt-2 pb-4">
-                            {% if site_settings.principal_image %}
-                                <img src="{{ site_settings.principal_image.url }}" alt="Principal portrait" class="principal-image rounded-full transition-transform duration-200 hover:-translate-y-1">
+                            {% if site_settings.principal_image_url %}
+                                <img src="{{ site_settings.principal_image_url }}" alt="Principal portrait" class="principal-image rounded-full transition-transform duration-200 hover:-translate-y-1">
                             {% else %}
                                 <div class="principal-fallback rounded-full transition-transform duration-200 hover:-translate-y-1">“</div>
                             {% endif %}
