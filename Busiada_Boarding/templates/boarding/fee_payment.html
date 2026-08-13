@@ -4,7 +4,7 @@
 {% block page_subtitle %}{{ page.category|default:"Busiada Girls Senior School" }}{% endblock %}
 
 {% block page_content %}
-<section class="dynamic-panel reveal-on-scroll border-0" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); min-height: auto;">
+<section class="dynamic-panel reveal-on-scroll border-0" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); min-height: auto; display: block;">
         <div class="w-full px-3 sm:px-5 lg:px-8 py-4 sm:py-6 lg:py-10">
         <!-- Page Header -->
         <div class="mb-6 sm:mb-8">
@@ -279,6 +279,14 @@
 
     .payment-card:hover .payment-value {
         background: #f0f4f8 !important;
+    }
+
+    /* Ensure content is visible on mobile immediately (fix for reveal-on-scroll) */
+    @media (max-width: 768px) {
+        .dynamic-panel.reveal-on-scroll {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
     }
 
     /* Small phones (320px - 480px) */
