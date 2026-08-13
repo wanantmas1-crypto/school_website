@@ -153,6 +153,7 @@ class HistoryImage(models.Model):
 class PageImage(models.Model):
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=image_upload_to)
+    external_url = models.URLField(blank=True, null=True, help_text='Optional external image URL (Cloudinary or other CDN)')
     title = models.CharField(max_length=200, blank=True)
     caption = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
@@ -165,6 +166,15 @@ class PageImage(models.Model):
         if self.title:
             return f"{self.page.title} - {self.title}"
         return f"Image for {self.page.title}"
+
+    def display_url(self):
+        """Return an external URL if provided, otherwise resolve stored file URL."""
+        if self.external_url:
+            return self.external_url
+        try:
+            return safe_file_url(self.image)
+        except Exception:
+            return ''
 
     class Meta:
         ordering = ['order', 'uploaded_at']
@@ -188,6 +198,7 @@ class PageImage(models.Model):
 class PageVideo(models.Model):
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='videos')
     video = models.FileField(upload_to=video_upload_to)
+    external_url = models.URLField(blank=True, null=True, help_text='Optional external video URL (YouTube, Cloudinary, etc.)')
     title = models.CharField(max_length=200, blank=True)
     caption = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
@@ -201,6 +212,15 @@ class PageVideo(models.Model):
             return f"{self.page.title} - {self.title}"
         return f"Video for {self.page.title}"
 
+    def display_url(self):
+        """Return external video URL if present, otherwise stored file URL."""
+        if self.external_url:
+            return self.external_url
+        try:
+            return safe_file_url(self.video)
+        except Exception:
+            return ''
+
     class Meta:
         ordering = ['order', 'uploaded_at']
         verbose_name = 'Page video'
@@ -211,6 +231,7 @@ class Document(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     file = models.FileField(upload_to=document_upload_to)
+    external_url = models.URLField(blank=True, null=True, help_text='Optional external document URL (Cloudinary or other CDN)')
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='documents', null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -218,6 +239,14 @@ class Document(models.Model):
 
     def __str__(self):
         return self.title
+
+    def display_url(self):
+        if self.external_url:
+            return self.external_url
+        try:
+            return safe_file_url(self.file)
+        except Exception:
+            return ''
 
     class Meta:
         ordering = ['-uploaded_at']

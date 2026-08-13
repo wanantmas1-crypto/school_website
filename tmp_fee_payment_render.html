@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busiada Girls Senior School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html {
+            scroll-behavior: smooth;
+            background: rgba(10, 37, 64, 0.04);
+            overflow-x: hidden;
+            overflow-y: overlay;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        html::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        body {
+            background: linear-gradient(180deg, #F7F5F2 0%, #f3efe9 100%);
+            color: #1A2A44;
+            font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: overlay;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            padding-top: 5rem;
+            color-scheme: light;
+        }
+        body::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+        body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+
+        :root {
+            --spacing: 1rem;
+            --container-3xs: 16rem;
+            --container-2xs: 18rem;
+            --container-xs: 20rem;
+            --container-sm: 24rem;
+            --container-md: 28rem;
+            --container-lg: 32rem;
+            --container-xl: 36rem;
+            --container-2xl: 42rem;
+            --container-3xl: 48rem;
+            --container-4xl: 56rem;
+            --container-5xl: 64rem;
+            --container-6xl: 72rem;
+            --container-7xl: 80rem;
+            --primary-blue: #1E3A5F;
+            --secondary-sky: #4A90C8;
+            --accent-red: #C41E3A;
+            --dark-accent: #6B2D3C;
+            --background: #F7F5F2;
+            --surface: #FFFFFF;
+            --text-primary: #1A2A44;
+            --text-secondary: #5A6A7A;
+            --logo-gold: #D4A017;
+        }
+
+        .w-1 { width: calc(var(--spacing) * 1); }
+        .w-2 { width: calc(var(--spacing) * 2); }
+        .w-3 { width: calc(var(--spacing) * 3); }
+        .w-4 { width: calc(var(--spacing) * 4); }
+        .w-5 { width: calc(var(--spacing) * 5); }
+        .w-6 { width: calc(var(--spacing) * 6); }
+        .w-8 { width: calc(var(--spacing) * 8); }
+        .w-10 { width: calc(var(--spacing) * 10); }
+        .w-12 { width: calc(var(--spacing) * 12); }
+        .w-1\/2 { width: calc(50%); }
+        .w-1\/3 { width: calc(33.3333%); }
+        .w-2\/3 { width: calc(66.6667%); }
+        .w-1\/4 { width: calc(25%); }
+        .w-3\/4 { width: calc(75%); }
+        .w-1\/5 { width: calc(20%); }
+        .w-2\/5 { width: calc(40%); }
+        .w-3\/5 { width: calc(60%); }
+        .w-4\/5 { width: calc(80%); }
+        .w-1\/6 { width: calc(16.6667%); }
+        .w-5\/6 { width: calc(83.3333%); }
+        .w-3xs { width: var(--container-3xs); }
+        .w-2xs { width: var(--container-2xs); }
+        .w-xs { width: var(--container-xs); }
+        .w-sm { width: var(--container-sm); }
+        .w-md { width: var(--container-md); }
+        .w-lg { width: var(--container-lg); }
+        .w-xl { width: var(--container-xl); }
+        .w-2xl { width: var(--container-2xl); }
+        .w-3xl { width: var(--container-3xl); }
+        .w-4xl { width: var(--container-4xl); }
+        .w-5xl { width: var(--container-5xl); }
+        .w-6xl { width: var(--container-6xl); }
+        .w-7xl { width: var(--container-7xl); }
+        .w-auto { width: auto; }
+        .w-px { width: 1px; }
+        .w-full { width: 100%; }
+        .w-screen { width: 100vw; }
+        .w-min { width: min-content; }
+        .w-max { width: max-content; }
+        .w-fit { width: fit-content; }
+        .size-1 { width: calc(var(--spacing) * 1); height: calc(var(--spacing) * 1); }
+        .size-2 { width: calc(var(--spacing) * 2); height: calc(var(--spacing) * 2); }
+        .size-3 { width: calc(var(--spacing) * 3); height: calc(var(--spacing) * 3); }
+        .size-4 { width: calc(var(--spacing) * 4); height: calc(var(--spacing) * 4); }
+        .size-6 { width: calc(var(--spacing) * 6); height: calc(var(--spacing) * 6); }
+        .size-full { width: 100%; height: 100%; }
+        .size-auto { width: auto; height: auto; }
+        .size-px { width: 1px; height: 1px; }
+        .size-min { width: min-content; height: min-content; }
+        .size-max { width: max-content; height: max-content; }
+        .size-fit { width: fit-content; height: fit-content; }
+
+        .bg-blue-50 { background: linear-gradient(135deg, rgba(74, 144, 200, 0.12), rgba(255, 247, 248, 0.78)); }
+        .bg-blue-100 { background: rgba(74, 144, 200, 0.16); }
+        .bg-blue-200 { background: rgba(74, 144, 200, 0.24); }
+        .bg-blue-300 { background: rgba(74, 144, 200, 0.32); }
+        .bg-blue-400 { background: rgba(74, 144, 200, 0.4); }
+        .bg-blue-500 { background: var(--secondary-sky); }
+        .bg-blue-600 { background: var(--primary-blue); }
+        .bg-blue-700 { background: var(--primary-blue); }
+        .bg-blue-800 { background: var(--primary-blue); }
+        .bg-blue-900 { background: var(--primary-blue); }
+        .bg-blue-950 { background: var(--primary-blue); }
+        .text-blue-700 { color: var(--secondary-sky); }
+        .text-blue-900 { color: var(--primary-blue); }
+        .border-blue-500 { border-color: var(--secondary-sky); }
+        .shadow-soft { box-shadow: 0 18px 60px rgba(30, 58, 95, 0.12); }
+        .surface-rose { background: linear-gradient(135deg, rgba(196, 30, 58, 0.1), rgba(255, 247, 248, 0.8)); }
+        .surface-sky { background: linear-gradient(135deg, rgba(74, 144, 200, 0.12), rgba(240, 248, 255, 0.78)); }
+        .surface-amber { background: linear-gradient(135deg, rgba(212, 160, 23, 0.16), rgba(255, 247, 237, 0.8)); }
+        .surface-soft {
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(74, 144, 200, 0.16);
+            backdrop-filter: blur(10px);
+        }
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(196, 30, 58, 0.12);
+            color: #C41E3A;
+            box-shadow: inset 0 0 0 1px rgba(196, 30, 58, 0.18);
+        }
+        .icon-badge-soft {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.72);
+            color: #1E3A5F;
+            border: 1px solid rgba(74, 144, 200, 0.2);
+        }
+
+        @media (max-width: 640px) {
+            .icon-badge,
+            .icon-badge-soft {
+                width: 2.75rem;
+                height: 2.75rem;
+                flex-shrink: 0;
+            }
+            .icon-badge i,
+            .icon-badge-soft i {
+                font-size: 1rem;
+            }
+        }
+
+        i.bi,
+        i[class*="fa-"] {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-style: normal;
+            vertical-align: -0.125em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        i.bi {
+            font-size: 1.05em;
+        }
+
+        .bg-white,
+        .bg-white\/95,
+        .bg-white\/90,
+        .bg-white\/85,
+        .bg-white\/80,
+        .bg-white\/70,
+        .bg-white\/60,
+        .bg-white\/50,
+        .bg-slate-50,
+        .bg-slate-50\/90,
+        .bg-slate-50\/95,
+        .bg-slate-50\/80,
+        .bg-slate-50\/70 {
+            background-color: rgba(248, 250, 252, 0.5) !important;
+            color: inherit;
+        }
+
+        .bg-white\/10,
+        .bg-white\/5,
+        .bg-white\/20,
+        .bg-slate-100,
+        .bg-slate-100\/80 {
+            background-color: rgba(224, 242, 254, 0.5) !important;
+        }
+
+        .border-slate-200 {
+            border-color: rgba(147, 197, 253, 0.45) !important;
+        }
+
+        .section-strong,
+        .footer-surface {
+            background: linear-gradient(180deg, rgba(30, 58, 95, 0.97), rgba(74, 144, 200, 0.95));
+            color: white;
+        }
+
+        .page-shell { max-width: min(1180px, 100%); margin: 0 auto; padding: 0 1.25rem; }
+        .footer-grid { display: grid; gap: 0.9rem; grid-template-columns: 1fr; }
+        .footer-card { display: grid; gap: 0.7rem; padding: 0.9rem 1rem; border-radius: 1rem; border: 1px solid rgba(212, 160, 23, 0.2); background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04)); }
+        .footer-small { font-size: 0.88rem; line-height: 1.5; }
+        .footer-heading { font-size: 1rem; }
+        .footer-icon { width: 2rem; height: 2rem; }
+        .footer-socials { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .footer-contact-list { display: grid; gap: 0.7rem; }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.84); font-size: 0.92rem; line-height: 1.5; }
+        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(196, 30, 58, 0.16); color: #C41E3A; flex-shrink: 0; }
+
+        @media (min-width: 768px) {
+            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        }
+        @media (max-width: 767.98px) {
+            .site-footer-mobile {
+                position: relative;
+                inset: auto;
+                z-index: auto;
+                padding: 0.85rem 0.95rem 1rem;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .site-footer-mobile .footer-card {
+                padding: 0.85rem 0.9rem;
+            }
+            .site-footer-mobile .footer-heading {
+                font-size: 0.95rem;
+                margin-bottom: 0;
+            }
+            .site-footer-mobile .footer-small,
+            .site-footer-mobile .footer-contact-item {
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
+            .site-footer-mobile .footer-socials {
+                gap: 0.55rem;
+            }
+            .site-footer-mobile .footer-icon {
+                width: 1.8rem;
+                height: 1.8rem;
+            }
+        }
+        .site-nav { position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; }
+        .site-nav-inner { width: min(1180px, 100%); margin: 0 auto; padding: 0 1.25rem; }
+        .responsive-img { width: 100%; max-width: 100%; height: auto; display: block; }
+        .responsive-card { width: 100%; overflow: hidden; border-radius: 1.5rem; }
+        .text-hero { font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.05; }
+        .text-lead { font-size: clamp(1rem, 2.2vw, 1.15rem); }
+        .section-title {
+            font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            font-weight: 800;
+            color: #1E3A5F;
+        }
+        .section-kicker {
+            font-size: 0.82rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #C41E3A;
+        }
+        .section-copy {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(15, 23, 42, 0.72);
+        }
+        .content-block {
+            display: grid;
+            gap: 1rem;
+        }
+        .content-block h2,
+        .content-block h3,
+        .content-block h4 {
+            color: #0f172a;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+        .content-block h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
+        .content-block h3 { font-size: clamp(1.1rem, 1.6vw, 1.35rem); }
+        .content-block p,
+        .content-block li {
+            color: rgba(15, 23, 42, 0.74);
+            line-height: 1.8;
+        }
+        .content-block a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .content-block a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 640px) {
+            .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+            .footer-grid { gap: 1.25rem; }
+        }
+        @media (max-width: 1024px) {
+            .nav-shell, .page-shell { padding-left: 1rem; padding-right: 1rem; }
+        }
+        @media (max-width: 768px) {
+            .site-nav .md\:hidden, .site-nav .hidden { display: none !important; }
+            .mobile-only { display: block !important; }
+            .desktop-only { display: none !important; }
+            .social-icons a,
+            .social-icons svg,
+            .social-icons i,
+            footer svg,
+            footer i {
+                display: inline-flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+                min-height: 28px !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .page-shell { padding: 0 0.75rem; }
+            .footer-grid { gap: 1rem; }
+            .brand-title { font-size: 1rem; }
+        }
+
+        .static-nav { position: sticky; top: 0; background: rgba(10, 37, 64, 0.92); backdrop-filter: blur(10px); }
+        .footer-surface { background: var(--color-blue-900); color: white; }
+        .footer-surface a { color: rgba(255,255,255,0.85); }
+        .footer-surface a:hover { color: #ffffff; }
+
+        .layout-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .layout-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr); }
+        }
+        @media (min-width: 1280px) {
+            .layout-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+        }
+
+        .break-100 { width: 100%; }
+        .break-90 { width: 90%; }
+        .break-80 { width: 80%; }
+        .break-70 { width: 70%; }
+        .break-60 { width: 60%; }
+        .break-50 { width: 50%; }
+
+        .screen-xs { max-width: 320px; }
+        .screen-sm { max-width: 480px; }
+        .screen-md { max-width: 768px; }
+        .screen-lg { max-width: 1024px; }
+        .screen-xl { max-width: 1280px; }
+        .screen-2xl { max-width: 1536px; }
+        .screen-3xl { max-width: 1792px; }
+
+        .section-surface { background: var(--color-blue-50); }
+        .section-strong { background: var(--color-blue-900); color: white; }
+
+        .btn-primary { background: var(--color-blue-600); color: #fff; border: 1px solid transparent; }
+        .btn-primary:hover { background: var(--color-blue-700); }
+        .btn-secondary { background: #ffffff; color: var(--color-blue-900); border: 1px solid var(--color-blue-200); }
+
+        .text-slate-700 { color: rgba(15, 23, 42, 0.75); }
+        .text-slate-500 { color: rgba(100, 116, 139, 0.72); }
+        .border-soft { border-color: rgba(148, 163, 184, 0.18); }
+
+        .max-w-screen-sm { max-width: 36rem; }
+        .max-w-screen-md { max-width: 48rem; }
+        .max-w-screen-lg { max-width: 64rem; }
+        .max-w-screen-xl { max-width: 80rem; }
+        .max-w-screen-2xl { max-width: 96rem; }
+
+        .p-safe { padding: env(safe-area-inset-top, 1rem) env(safe-area-inset-right, 1rem) env(safe-area-inset-bottom, 1rem) env(safe-area-inset-left, 1rem); }
+
+        .fill-container { width: 100%; min-height: 100vh; }
+
+        .image-block { width: 100%; height: auto; max-height: 80vh; object-fit: cover; }
+        .card-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+        .card-grid-lg { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+        .card-grid-sm { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+
+        .responsive-cta { width: min(100%, 18rem); }
+
+        .nav-gap { gap: 1rem; }
+        .nav-link { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .nav-link:hover { text-decoration: none; }
+
+        .img-cover { object-fit: cover; width: 100%; height: 100%; }
+        .img-contain { object-fit: contain; width: 100%; height: 100%; }
+
+        .stack { display: flex; flex-direction: column; gap: 1rem; }
+        .stack-center { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+
+        .text-xxs { font-size: 0.72rem; }
+        .text-xs { font-size: 0.78rem; }
+        .text-sm { font-size: 0.9rem; }
+        .text-base { font-size: 1rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+
+        .button-responsive { min-width: 8rem; width: fit-content; padding: 0.75rem 1.25rem; }
+
+        .footer-column { display: grid; gap: 1rem; }
+
+        .nav-sticky { position: sticky; top: 0; left: 0; right: 0; z-index: 1000; }
+        .nav-overlay { background: rgba(10, 37, 64, 0.92); border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+        .headline-wide { max-width: 70ch; }
+        .text-soft { color: rgba(15, 23, 42, 0.68); }
+        .text-strong { color: var(--color-blue-900); }
+        .text-accent { color: var(--color-blue-600); }
+
+        .border-radius-xl { border-radius: 1.5rem; }
+        .border-radius-lg { border-radius: 1.25rem; }
+        .border-radius-md { border-radius: 1rem; }
+        .border-radius-sm { border-radius: 0.75rem; }
+
+        .gap-wide { gap: 1.5rem; }
+        .gap-tight { gap: 0.75rem; }
+
+        .section-pad { padding: 3rem 0; }
+        .section-pad-sm { padding: 2rem 0; }
+        .section-pad-lg { padding: 4rem 0; }
+        .section-shell {
+            padding: 2.25rem 1.25rem;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.9));
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            box-shadow: 0 16px 45px rgba(15, 23, 42, 0.06);
+            backdrop-filter: blur(10px);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+            color: #0f172a;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        h1 { font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 800; }
+        h2 { font-size: clamp(1.45rem, 2.2vw, 1.95rem); font-weight: 700; }
+        h3 { font-size: clamp(1.1rem, 1.6vw, 1.35rem); font-weight: 700; }
+        p { margin-bottom: 0.8rem; }
+        .btn, .form-control, .form-select {
+            border-radius: 999px;
+        }
+        .btn {
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .form-control, .form-select {
+            padding: 0.85rem 1rem;
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #4A90C8;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 200, 0.18);
+        }
+        @media (min-width: 768px) {
+            .section-shell { padding: 2.75rem 2rem; }
+        }
+
+        .hero-shell { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+        @media (min-width: 960px) { .hero-shell { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); } }
+
+        .footer-links { display: grid; gap: 0.75rem; }
+        .footer-links a { color: rgba(255,255,255,0.82); }
+
+        .nav-shell {
+            width: 100%;
+            max-width: 100%;
+        }
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            width: 100%;
+            display: block;
+            will-change: transform;
+        }
+
+        body > .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .brand-wrap {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+        .brand-title {
+            display: block;
+            line-height: 1.15;
+            word-break: break-word;
+        }
+        .brand-subtitle {
+            display: block;
+        }
+        @media (max-width: 640px) {
+            .brand-title { font-size: 0.98rem; }
+            .brand-subtitle { display: none; }
+        }
+        .mobile-menu-scroll {
+            width: 100%;
+        }
+        .site-nav .desktop-nav-item {
+            position: relative;
+        }
+        .page-shell {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: calc(100vh - 5rem);
+            padding-top: 1.5rem;
+            padding-bottom: 3rem;
+        }
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1100;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(90deg, #C41E3A, #4A90C8, #1E3A5F);
+            box-shadow: 0 0 16px rgba(196, 30, 58, 0.25);
+            transition: width 0.15s ease-out;
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .panel-card,
+        .content-card,
+        .nav-dropdown-trigger,
+        .mobile-nav-toggle,
+        .dropdown-link,
+        .footer-icon {
+            transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease;
+        }
+        .panel-card:hover,
+        .content-card:hover,
+        .nav-dropdown-trigger:hover,
+        .mobile-nav-toggle:hover,
+        .dropdown-link:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+        }
+        .panel-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.98));
+        }
+        .panel-card:hover {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.995), rgba(224, 242, 254, 0.98));
+        }
+        .content-card {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+        }
+        .surface-sky {
+            background: linear-gradient(135deg, rgba(240, 248, 255, 0.96), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(74, 144, 200, 0.24);
+        }
+        .surface-amber {
+            background: linear-gradient(135deg, rgba(254, 249, 195, 0.95), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(245, 158, 11, 0.24);
+        }
+        .surface-rose {
+            background: linear-gradient(135deg, rgba(255, 237, 242, 0.95), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(244, 114, 182, 0.24);
+        }
+        .surface-violet {
+            background: linear-gradient(135deg, rgba(237, 233, 254, 0.95), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(139, 92, 246, 0.24);
+        }
+        .surface-emerald {
+            background: linear-gradient(135deg, rgba(220, 252, 231, 0.95), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(16, 185, 129, 0.24);
+        }
+        .surface-slate {
+            background: linear-gradient(135deg, rgba(241, 245, 249, 0.95), rgba(255, 255, 255, 0.98));
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+        .footer-icon:hover {
+            transform: rotate(-4deg) scale(1.08);
+        }
+        .site-footer-mobile {
+            transition: opacity .3s ease, transform .3s ease;
+        }
+        @media (max-width: 768px) {
+            .site-footer-mobile {
+                opacity: 0;
+                transform: translateY(16px);
+                pointer-events: none;
+            }
+            .site-footer-mobile.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+        }
+        .scroll-fade {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .scroll-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .dropdown-menu {
+            min-width: 15rem;
+            animation: dropdownFade .18s ease;
+        }
+        .dropdown-link {
+            border-radius: 0.9rem;
+            transition: transform .18s ease, background-color .18s ease, color .18s ease;
+        }
+        .dropdown-link:hover {
+            background: linear-gradient(135deg, #f3f7fb 0%, #dbeaf7 100%);
+            color: #1E3A5F;
+            transform: translateX(3px);
+        }
+        .dropdown-link:hover i {
+            color: #C41E3A;
+        }
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+
+        }
+        /* Hero slideshow effects */
+.landing-slide {
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+    animation: kenburns 12s ease-in-out infinite;
+}
+
+.landing-slide.opacity-100 {
+    opacity: 1;
+}
+
+@keyframes kenburns {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+/* Dark gradient shading */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.15),
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.65)
+        );
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Wind movement */
+.wind-effect {
+    animation: windFlow 10s ease-in-out infinite alternate;
+}
+
+@keyframes windFlow {
+    from {
+        transform: translateX(-10px);
+    }
+    to {
+        transform: translateX(10px);
+    }
+}
+
+.particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.particles::before,
+.particles::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 2px);
+    background-size: 50px 50px;
+    animation: drift 30s linear infinite;
+}
+
+.particles::after {
+    animation-direction: reverse;
+    opacity: .5;
+}
+
+@keyframes drift {
+    from {
+        transform: translateY(0) translateX(0);
+    }
+    to {
+        transform: translateY(-120px) translateX(60px);
+    }
+}
+@keyframes floatBlob {
+    0% {
+        transform: translate(0,0);
+    }
+    50% {
+        transform: translate(30px,-20px);
+    }
+    100% {
+        transform: translate(-20px,20px);
+    }
+}
+
+.floating-blob {
+    animation: floatBlob 15s ease-in-out infinite alternate;
+}
+.hero-aurora {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255,0,128,.25), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(0,255,255,.25), transparent 35%),
+        radial-gradient(circle at 60% 80%, rgba(255,255,0,.15), transparent 30%);
+    animation: auroraMove 20s linear infinite;
+}
+
+@keyframes auroraMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-30px); }
+    100% { transform: translateX(30px); }
+}
+    </style>
+</head>
+<body class="bg-sky-50 text-zinc-900">
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <div class="site-utility-bar border-b border-white/10 bg-[#1E3A5F] text-white/90">
+        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2.5 text-sm sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center gap-3 sm:gap-5">
+                <a href="tel:+254700000000" class="inline-flex items-center gap-2 transition hover:text-white">
+                    <i class="fa-solid fa-phone text-[0.9rem]"></i><span>+254 700 000 000</span>
+                </a>
+                <a href="mailto:info@busiadagirls.ac.ke" class="inline-flex items-center gap-2 transition hover:text-white">
+                    <i class="fa-solid fa-envelope text-[0.9rem]"></i><span>info@busiadagirls.ac.ke</span>
+                </a>
+                <a href="https://wa.me/254700000000" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 transition hover:text-white">
+                    <i class="fa-brands fa-whatsapp text-[0.95rem]"></i><span>WhatsApp</span>
+                </a>
+            </div>
+            <div class="flex items-center gap-2 text-white/80">
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" class="rounded-full border border-white/10 p-2 transition hover:border-white/30 hover:bg-white/10"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" class="rounded-full border border-white/10 p-2 transition hover:border-white/30 hover:bg-white/10"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" class="rounded-full border border-white/10 p-2 transition hover:border-white/30 hover:bg-white/10"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="site-nav bg-[#1E3A5F] text-white fixed top-0 z-50 shadow-lg">
+        <div class="nav-shell mx-auto px-3 sm:px-6">
+            <div class="flex items-center justify-between gap-3 py-3 sm:py-4 min-h-[4rem]">
+                <a href="/" class="brand-wrap flex items-center gap-3 hover:scale-[1.02] transition-transform">
+                    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-white/20 bg-gradient-to-br from-[#D4A017] to-[#6B2D3C] text-sm font-black tracking-[0.25em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">BGS</div>
+                    <div class="min-w-0">
+                        <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
+                        <span class="brand-subtitle block text-xs text-white/70">Unleash Your Potential</span>
+                    </div>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-x-2 text-sm font-medium">
+                    <div class="desktop-nav-item relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="about-menu" aria-expanded="false" aria-controls="about-menu">About <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="about-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="/history/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book-open text-sm text-[#1E3A5F]"></i><span>School History</span></a>
+                            <a href="/page/location/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-location-dot text-sm text-[#1E3A5F]"></i><span>Location</span></a>
+                            <a href="/school-anthem/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-music text-sm text-[#1E3A5F]"></i><span>School Anthem</span></a>
+                            <a href="/school-leadership/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users-gear text-sm text-[#1E3A5F]"></i><span>School Leadership</span></a>
+                            <a href="/strategic-plan/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-chart-line text-sm text-[#1E3A5F]"></i><span>Strategic Plan</span></a>
+                            <a href="/school-chaplaincy/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-church text-sm text-[#1E3A5F]"></i><span>School Chaplaincy</span></a>
+                            <a href="/service-charter/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-lines text-sm text-[#1E3A5F]"></i><span>Service Charter</span></a>
+                            <a href="/contact/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-address-book text-sm text-[#1E3A5F]"></i><span>Contacts</span></a>
+                        </div>
+                    </div>
+                    <div class="desktop-nav-item relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="admissions-menu" aria-expanded="false" aria-controls="admissions-menu">Admissions <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="admissions-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="/page/admission-process/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-signature text-sm text-[#1E3A5F]"></i><span>Admission Process</span></a>
+                            <a href="/fees/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-credit-card text-sm text-[#1E3A5F]"></i><span>Fee Payment</span></a>
+                        </div>
+                    </div>
+                    <div class="desktop-nav-item relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="academics-menu" aria-expanded="false" aria-controls="academics-menu">Academics <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="academics-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="/academics/8-4-4/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-school text-sm text-[#1E3A5F]"></i><span>The Highschool</span></a>
+                            <a href="/academics/2-6-3-3-3/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#1E3A5F]"></i><span>Senior School</span></a>
+                        </div>
+                    </div>
+                    <div class="desktop-nav-item relative group">
+                        <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="student-life-menu" aria-expanded="false" aria-controls="student-life-menu">Student Life <i class="fa-solid fa-chevron-down text-xs"></i></button>
+                        <div id="student-life-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
+                            <a href="/boarding/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bed text-sm text-[#1E3A5F]"></i><span>Boarding</span></a>
+                            <a href="/page/guiding-and-counselling/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-praying text-sm text-[#1E3A5F]"></i><span>Guiding & Counselling</span></a>
+                            <a href="/page/games-sports/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#1E3A5F]"></i><span>Games & Sports</span></a>
+                            <a href="/page/clubs-societies/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#1E3A5F]"></i><span>Clubs & Societies</span></a>
+                            <a href="/page/performing-visual-arts/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-palette text-sm text-[#1E3A5F]"></i><span>Performing & Visual Arts</span></a>
+                            <a href="/page/student-welfare/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#1E3A5F]"></i><span>Student Welfare</span></a>
+                            <a href="/page/school-gallery/" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#1E3A5F]"></i><span>School Gallery</span></a>
+                        </div>
+                    </div>
+                    <!-- Departments link removed per UI request -->
+                    <a href="/announcements/" class="desktop-nav-item px-4 py-2 hover:bg-[#4A90C8] rounded-xl transition-all">Announcements</a>
+                </div>
+
+                <button id="menu-btn" class="inline-flex lg:hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-xl text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label="Open menu" aria-expanded="false" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4">
+            <div class="mobile-menu-scroll grid gap-2 py-3">
+                <a href="/" class="block px-4 py-3 rounded-xl hover:bg-white/10">Home</a>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-about" aria-expanded="false">
+                        <span>About</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-about" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="/history/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School History</a>
+                        <a href="/page/location/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Location</a>
+                        <a href="/school-anthem/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Anthem</a>
+                        <a href="/school-leadership/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Leadership</a>
+                        <a href="/strategic-plan/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Strategic Plan</a>
+                        <a href="/school-chaplaincy/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Chaplaincy</a>
+                        <a href="/service-charter/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Service Charter</a>
+                        <a href="/contact/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Contacts</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-admissions" aria-expanded="false">
+                        <span>Admissions</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-admissions" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="/page/admission-process/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admission Process</a>
+                        <a href="/page/fee-payment/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Fee Payment</a>
+                    </div>
+                </div>
+
+                    <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-academics" aria-expanded="false">
+                        <span>Academics</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-academics" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <a href="/academics/8-4-4/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">8-4-4</a>
+                        <a href="/academics/2-6-3-3-3/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">2-6-3-3-3</a>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-white/6">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-student-life" aria-expanded="false">
+                        <span>Student Life</span>
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
+                        <!-- Departments link removed from mobile menu -->
+                        <a href="/page/guiding-and-counselling/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
+                        <a href="/page/games-sports/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
+                        <a href="/page/clubs-societies/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
+                        <a href="/page/performing-visual-arts/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Performing & Visual Arts</a>
+                        <a href="/page/student-welfare/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Student Welfare</a>
+                        <a href="/page/school-gallery/" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Gallery</a>
+                    </div>
+                </div>
+
+                <a href="/announcements/" class="block px-4 py-3 rounded-xl hover:bg-white/10">Announcements</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full overflow-x-hidden">
+        
+
+            
+<style>
+    .dynamic-page-fluid {
+        position: relative;
+        width: 100%;
+        min-height: calc(100vh - 4rem);
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(232, 245, 255, .95), rgba(245, 250, 255, .9)),
+            radial-gradient(circle at 18% 22%, rgba(14, 165, 233, .18), transparent 28%),
+            radial-gradient(circle at 88% 8%, rgba(16, 185, 129, .14), transparent 24%);
+    }
+
+    .dynamic-page-fluid.dynamic-page-has-video {
+        background: #061320;
+    }
+
+    .dynamic-page-bg-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        object-fit: cover;
+        opacity: .46;
+        transform: scale(1.01);
+        filter: saturate(1.08) contrast(1.04);
+    }
+
+    .dynamic-page-video-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(180deg, rgba(6, 19, 32, .82), rgba(6, 19, 32, .36) 45%, rgba(6, 19, 32, .82)),
+            linear-gradient(90deg, rgba(6, 19, 32, .72), rgba(6, 19, 32, .18), rgba(6, 19, 32, .62));
+        pointer-events: none;
+    }
+
+    .dynamic-page-inner {
+        position: relative;
+        z-index: 1;
+    }
+
+    .dynamic-panel {
+        width: 100%;
+    }
+
+    .dynamic-page-hero {
+        border-bottom: 1px solid rgba(148, 163, 184, .28);
+        background: rgba(255, 255, 255, .9);
+        backdrop-filter: blur(14px);
+    }
+
+    .dynamic-page-has-video .dynamic-page-hero {
+        color: #fff;
+        background: rgba(6, 19, 32, .6);
+        border-bottom-color: rgba(255, 255, 255, .18);
+    }
+
+    .dynamic-page-has-video .dynamic-page-title,
+    .dynamic-page-has-video .dynamic-page-subtitle {
+        color: #fff;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, .38);
+    }
+
+    .dynamic-page-content {
+        border-radius: 0;
+        max-width: 1480px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, .98);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 24px 80px rgba(15, 23, 42, .12);
+    }
+
+    .dynamic-page-has-video .dynamic-page-content {
+        background: rgba(255, 255, 255, .94);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, .24);
+    }
+
+    .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity .65s ease, transform .65s ease;
+    }
+
+    .reveal-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .dynamic-page-bg-video {
+            display: none;
+        }
+
+        .reveal-on-scroll {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+</style>
+
+<div class="dynamic-page-fluid ">
+    
+
+    <div class="dynamic-page-inner container-fluid px-0">
+        <header class="dynamic-page-hero container-fluid px-3 px-md-4 px-xl-5 py-4 py-lg-5 reveal-on-scroll">
+            <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-end justify-content-between gap-3 w-100">
+                <div class="min-w-0">
+                    <h1 class="dynamic-page-title mb-2 text-3xl md:text-5xl font-bold tracking-tight text-[#0A2540]">Fee Payment</h1>
+                    <p class="dynamic-page-subtitle mb-0 text-sm md:text-base text-slate-500">Admissions</p>
+                </div>
+                
+                <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-700">Admissions</span>
+                
+            </div>
+        </header>
+
+        <main class="container-fluid px-0">
+            <div class="content-card dynamic-page-content p-3 p-sm-4 p-lg-5 px-xl-6 space-y-8 reveal-on-scroll">
+                
+<section class="dynamic-panel reveal-on-scroll border-0" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); min-height: auto;">
+        <div class="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h2 class="section-title mb-3 text-slate-900 text-3xl sm:text-4xl font-bold">Multiple Payment Options</h2>
+            <p class="section-copy text-sm sm:text-base">Choose the payment method that works best for you. All methods are secure and processed immediately.</p>
+        </div>
+
+        <!-- Payment Methods Grid -->
+        <div class="payment-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 mb-8" role="list" aria-label="School fee payment methods">
+            
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1 payment-item--0"
+                 role="listitem">
+                 <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
+                     style="--accent: #0ea5e9; --accent-bg: rgba(14,165,233,0.12); --accent-border: rgba(14,165,233,0.22); background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%); border-left-width: 6px; border-left-style: solid; border-left-color: var(--accent);">
+                    
+                    <!-- Icon Circle -->
+                    <div class="flex justify-center mb-4">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110 payment-icon payment-icon--0">
+                            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Title -->
+                    <h3 class="text-lg font-bold mb-2 text-center payment-title payment-title--0">Mobile Money</h3>
+                    <div class="inline-flex justify-center w-full mb-4">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider payment-badge payment-badge--0">
+                            M-Pesa
+                        </span>
+                    </div>
+
+                    <!-- Value/Number Display -->
+                    <div class="payment-value p-3 mb-4 rounded-xl flex-grow" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
+                        <p class="text-xs sm:text-sm font-mono text-slate-700 break-words text-center">
+                            Paybill: 123456
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">Use your mobile wallet to pay quickly.</p>
+                    
+                    <!-- Action Button -->
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200 payment-action-btn--0"
+                            title="Copy details" aria-label="Copy details">
+                        Copy details
+                    </button>
+                </div>
+            </div>
+            
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1 payment-item--1"
+                 role="listitem">
+                 <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
+                     style="--accent: #16a34a; --accent-bg: rgba(16,163,127,0.08); --accent-border: rgba(16,163,127,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%); border-left-width: 6px; border-left-style: solid; border-left-color: var(--accent);">
+                    
+                    <!-- Icon Circle -->
+                    <div class="flex justify-center mb-4">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110 payment-icon payment-icon--1">
+                            <i class="fa-solid fa-university" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Title -->
+                    <h3 class="text-lg font-bold mb-2 text-center payment-title payment-title--1">Bank Transfer</h3>
+                    <div class="inline-flex justify-center w-full mb-4">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider payment-badge payment-badge--1">
+                            Bank
+                        </span>
+                    </div>
+
+                    <!-- Value/Number Display -->
+                    <div class="payment-value p-3 mb-4 rounded-xl flex-grow" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
+                        <p class="text-xs sm:text-sm font-mono text-slate-700 break-words text-center">
+                            A/C: 00112233
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">Use bank transfer with the reference.</p>
+                    
+                    <!-- Action Button -->
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200 payment-action-btn--1"
+                            title="Bank details" aria-label="Bank details">
+                        Bank details
+                    </button>
+                </div>
+            </div>
+            
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1 payment-item--2"
+                 role="listitem">
+                 <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
+                     style="--accent: #f97316; --accent-bg: rgba(249,115,22,0.08); --accent-border: rgba(249,115,22,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%); border-left-width: 6px; border-left-style: solid; border-left-color: var(--accent);">
+                    
+                    <!-- Icon Circle -->
+                    <div class="flex justify-center mb-4">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110 payment-icon payment-icon--2">
+                            <i class="fa-solid fa-credit-card" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Title -->
+                    <h3 class="text-lg font-bold mb-2 text-center payment-title payment-title--2">Card</h3>
+                    <div class="inline-flex justify-center w-full mb-4">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider payment-badge payment-badge--2">
+                            Visa/Master
+                        </span>
+                    </div>
+
+                    <!-- Value/Number Display -->
+                    <div class="payment-value p-3 mb-4 rounded-xl flex-grow" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
+                        <p class="text-xs sm:text-sm font-mono text-slate-700 break-words text-center">
+                            Online
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">Pay by card via secure gateway.</p>
+                    
+                    <!-- Action Button -->
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200 payment-action-btn--2"
+                            title="Pay online" aria-label="Pay online">
+                        Pay online
+                    </button>
+                </div>
+            </div>
+            
+            <div class="payment-item group relative rounded-2xl overflow-hidden border transition duration-300 hover:shadow-lg hover:-translate-y-1 payment-item--3"
+                 role="listitem">
+                 <div class="payment-card p-5 sm:p-6 h-full flex flex-col"
+                     style="--accent: #6366f1; --accent-bg: rgba(99,102,241,0.08); --accent-border: rgba(99,102,241,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%); border-left-width: 6px; border-left-style: solid; border-left-color: var(--accent);">
+                    
+                    <!-- Icon Circle -->
+                    <div class="flex justify-center mb-4">
+                        <div class="inline-flex items-center justify-center rounded-full transition duration-300 group-hover:scale-110 payment-icon payment-icon--3">
+                            <i class="fa-brands fa-paypal" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Title -->
+                    <h3 class="text-lg font-bold mb-2 text-center payment-title payment-title--3">PayPal</h3>
+                    <div class="inline-flex justify-center w-full mb-4">
+                        <span class="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider payment-badge payment-badge--3">
+                            PayPal
+                        </span>
+                    </div>
+
+                    <!-- Value/Number Display -->
+                    <div class="payment-value p-3 mb-4 rounded-xl flex-grow" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, .08);">
+                        <p class="text-xs sm:text-sm font-mono text-slate-700 break-words text-center">
+                            PayPal
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-sm text-slate-600 mb-4 text-center leading-relaxed">Pay via PayPal</p>
+                    
+                    <!-- Action Button -->
+                    <button type="button" class="payment-action-btn w-full py-2.5 px-4 rounded-lg font-semibold text-sm transition duration-200 payment-action-btn--3"
+                            title="Pay with PayPal" aria-label="Pay with PayPal">
+                        Pay with PayPal
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Important Notice -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 rounded-2xl border p-4 sm:p-5" 
+             style="background: rgba(59, 130, 246, .08); border-color: rgba(59, 130, 246, .3);">
+            <i class="fa-solid fa-circle-info mt-1 flex-shrink-0 text-lg" style="color: #3b82f6;"></i>
+            <div>
+                <strong class="block text-slate-900 font-semibold">Payment Instructions</strong>
+                <p class="text-sm text-slate-700 mt-2">Please use your student ID or admission number as the payment reference to ensure your payment is correctly credited to your account.</p>
+            </div>
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 class="text-2xl font-bold text-slate-900 mb-3">Payment support and next steps</h3>
+            <p class="text-sm text-slate-700 leading-relaxed">Select the best payment option for your family, then use the reference details shown to ensure the payment is posted correctly. If you need support, contact the school office through the Contacts page.</p>
+            <ul class="mt-4 space-y-3 text-sm text-slate-700 list-disc list-inside">
+                <li>Use the Paybill or Till number for mobile payments.</li>
+                <li>Enter the student ID or admission number as the payment reference.</li>
+                <li>For bank transfers, include the school name and learner details.</li>
+                <li>Keep your payment receipt and confirm with the school office.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style>
+    .payment-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .payment-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    /* Grid wrapper used by the template - mobile-first single column */
+    .payment-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+    }
+
+    /* Make grid and cards compact so multiple methods fit in the viewport */
+    .payment-grid {
+        max-height: calc(100vh - 160px);
+        align-items: start;
+        grid-auto-rows: 1fr;
+    }
+
+    .payment-card {
+        height: 100%;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    /* Prevent large value blocks from expanding cards */
+    .payment-value p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+    }
+
+    .payment-action-btn {
+        white-space: nowrap;
+    }
+
+    .payment-icon {
+        transition: all 0.3s ease;
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.8rem;
+        background: var(--accent-bg);
+        border: 2px solid var(--accent-border);
+        color: var(--accent);
+    }
+
+    .payment-item:hover .payment-icon {
+        transform: scale(1.12) rotate(5deg);
+    }
+
+    .payment-item--0 {
+        border-color: rgba(14, 165, 233, 0.25);
+        border-left-color: #0ea5e9;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--0 {
+        background: rgba(14, 165, 233, 0.14);
+        border: 2px solid rgba(14, 165, 233, 0.25);
+        color: #0ea5e9;
+    }
+
+    .payment-title--0 {
+        color: #0ea5e9;
+    }
+
+    .payment-badge--0 {
+        color: #0ea5e9;
+        background: rgba(14, 165, 233, 0.14);
+        border: 1px solid rgba(14, 165, 233, 0.25);
+    }
+
+    .payment-action-btn--0 {
+        color: #0ea5e9;
+        border: 1px solid rgba(14, 165, 233, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--1 {
+        border-color: rgba(37, 99, 235, 0.25);
+        border-left-color: #2563eb;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--1 {
+        background: rgba(37, 99, 235, 0.14);
+        border: 2px solid rgba(37, 99, 235, 0.25);
+        color: #2563eb;
+    }
+
+    .payment-title--1 {
+        color: #2563eb;
+    }
+
+    .payment-badge--1 {
+        color: #2563eb;
+        background: rgba(37, 99, 235, 0.14);
+        border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+
+    .payment-action-btn--1 {
+        color: #2563eb;
+        border: 1px solid rgba(37, 99, 235, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--2 {
+        border-color: rgba(67, 56, 202, 0.25);
+        border-left-color: #4338ca;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--2 {
+        background: rgba(67, 56, 202, 0.14);
+        border: 2px solid rgba(67, 56, 202, 0.25);
+        color: #4338ca;
+    }
+
+    .payment-title--2 {
+        color: #4338ca;
+    }
+
+    .payment-badge--2 {
+        color: #4338ca;
+        background: rgba(67, 56, 202, 0.14);
+        border: 1px solid rgba(67, 56, 202, 0.25);
+    }
+
+    .payment-action-btn--2 {
+        color: #4338ca;
+        border: 1px solid rgba(67, 56, 202, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-item--3 {
+        border-color: rgba(74, 144, 200, 0.25);
+        border-left-color: #4A90C8;
+        border-left-width: 6px;
+    }
+
+    .payment-icon--3 {
+        background: rgba(74, 144, 200, 0.14);
+        border: 2px solid rgba(74, 144, 200, 0.25);
+        color: #4A90C8;
+    }
+
+    .payment-title--3 {
+        color: #4A90C8;
+    }
+
+    .payment-badge--3 {
+        color: #4A90C8;
+        background: rgba(74, 144, 200, 0.14);
+        border: 1px solid rgba(74, 144, 200, 0.25);
+    }
+
+    .payment-action-btn--3 {
+        color: #4A90C8;
+        border: 1px solid rgba(74, 144, 200, 0.25);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-card:hover {
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
+    }
+
+    /* Color helpers that use per-card CSS variables */
+    .payment-card .payment-title {
+        color: var(--accent);
+    }
+
+    .payment-badge {
+        color: var(--accent);
+        background: var(--accent-bg);
+        border: 1px solid var(--accent-border);
+    }
+
+    .payment-action-btn {
+        color: var(--accent);
+        border: 1px solid var(--accent-border);
+        background: rgba(255,255,255,0.95);
+    }
+
+    .payment-value {
+        transition: background-color 0.3s ease;
+    }
+
+    .payment-card:hover .payment-value {
+        background: #f0f4f8 !important;
+    }
+
+    .payment-action-btn {
+        cursor: pointer;
+    }
+
+    .payment-action-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        transition: all 0.2s ease;
+    }
+
+    /* Mobile first - single column */
+    @media (max-width: 640px) {
+        /* show two compact columns on small screens to avoid vertical scrolling */
+        .payment-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+            max-height: calc(100vh - 140px);
+        }
+        .payment-item {
+            width: 100%;
+        }
+    }
+
+    /* Tablet - 2 columns */
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .payment-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* Desktop - 2 columns */
+    @media (min-width: 1025px) {
+        .payment-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .payment-icon,
+        .payment-value,
+        .payment-action-btn {
+            transition: none;
+        }
+    }
+
+    /* Very small screens - compact layout */
+    @media (max-width: 420px) {
+        .payment-card {
+            padding: 12px !important;
+            border-radius: 12px !important;
+        }
+        .payment-icon {
+            width: 48px !important;
+            height: 48px !important;
+            font-size: 1.25rem !important;
+        }
+        .payment-title {
+            font-size: 1.05rem !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .payment-value p {
+            font-size: 0.9rem !important;
+        }
+        .payment-action-btn {
+            padding: 12px 14px !important;
+            font-size: 1rem !important;
+            border-radius: 10px !important;
+        }
+        /* Hide long support block on very small screens to reduce scroll
+           Users can still access contact info from header/footer */
+        .mt-8.rounded-2xl {
+            display: none !important;
+        }
+        /* Reduce gaps */
+        .payment-grid {
+            gap: 0.75rem !important;
+        }
+    }
+
+    /* Very aggressive compacting for tiny displays */
+    @media (max-width: 420px) {
+        .payment-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.4rem !important;
+            max-height: calc(100vh - 120px) !important;
+        }
+        .payment-card {
+            padding: 6px !important;
+            border-radius: 8px !important;
+            min-height: 0 !important;
+        }
+        .payment-icon {
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 1rem !important;
+        }
+        .payment-title {
+            font-size: 0.9rem !important;
+            margin-bottom: 0 !important;
+        }
+        .payment-value p {
+            font-size: 0.75rem !important;
+        }
+        .payment-action-btn {
+            padding: 6px 8px !important;
+            font-size: 0.75rem !important;
+        }
+        /* Hide descriptions to save vertical space */
+        .payment-card .text-sm.text-slate-600 {
+            display: none !important;
+        }
+        /* Reduce header size */
+        .section-title { font-size: 1.1rem !important; }
+        .section-copy { display: none !important; }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize tooltips if needed
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const items = document.querySelectorAll('.reveal-on-scroll');
+
+        if (!items.length || !('IntersectionObserver' in window)) {
+            items.forEach((item) => item.classList.add('visible'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        items.forEach((item) => observer.observe(item));
+    })();
+</script>
+
+
+        
+    </main>
+
+    <footer class="site-footer-mobile bg-[#1E3A5F] text-white py-3 sm:py-4 reveal-on-scroll">
+        <div class="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8">
+            <div class="footer-grid">
+                <div class="footer-card">
+                    <h3 class="footer-heading font-semibold text-[#D4A017]">Social Media</h3>
+                    <p class="footer-small text-white/70">Follow our latest updates, events, and stories from the school community.</p>
+                    <div class="footer-socials mt-1">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com" target="_blank" aria-label="X" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://wa.me/254700000000" target="_blank" aria-label="WhatsApp" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-[#C41E3A] hover:text-white">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-card">
+                    <h3 class="footer-heading font-semibold text-[#D4A017]">Contact Us</h3>
+                    <ul class="footer-contact-list">
+                        <li class="footer-contact-item">
+                            <span class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></span>
+                            <span><span class="block font-medium text-white">Location</span><span class="mt-0.5 block text-white/70">Busiada, Kenya</span></span>
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="footer-contact-icon"><i class="fa-solid fa-phone"></i></span>
+                            <span><span class="block font-medium text-white">Phone</span><span class="mt-0.5 block text-white/70">+254 700 000 000</span></span>
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></span>
+                            <span><span class="block font-medium text-white">Email</span><span class="mt-0.5 block text-white/70">info@busiadagirls.ac.ke</span></span>
+                        </li>
+                        <li class="footer-contact-item">
+                            <span class="footer-contact-icon"><i class="fa-brands fa-whatsapp"></i></span>
+                            <span><span class="block font-medium text-white">WhatsApp</span><span class="mt-0.5 block text-white/70">+254 700 000 000</span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-3 border-t border-white/10 pt-3 text-center text-[0.72rem] text-white/60">
+                © 2026 Busiada Girls Senior School. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    
+
+   <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.getElementById('scroll-progress');
+    const revealItems = document.querySelectorAll('.reveal-on-scroll');
+    const footer = document.querySelector('footer.site-footer-mobile');
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const willOpen = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(willOpen));
+            menuBtn.innerHTML = willOpen
+                ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+        });
+    }
+
+    const dropdownTriggers = document.querySelectorAll('.nav-dropdown-trigger');
+    const dropdownMenus = document.querySelectorAll('[data-dropdown-menu]');
+    const mobileNavToggles = document.querySelectorAll('.mobile-nav-toggle');
+
+    function closeMobileDropdowns() {
+        mobileNavToggles.forEach((button) => {
+            const targetId = button.getAttribute('data-mobile-target');
+            const panel = document.getElementById(targetId);
+            if (panel) {
+                panel.classList.add('hidden');
+            }
+            button.setAttribute('aria-expanded', 'false');
+            button.querySelector('i')?.classList.remove('fa-chevron-up');
+            button.querySelector('i')?.classList.add('fa-chevron-down');
+        });
+    }
+
+    function closeAllDropdowns() {
+        dropdownMenus.forEach((menu) => menu.classList.add('hidden'));
+        dropdownTriggers.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+    }
+
+    dropdownTriggers.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const target = button.getAttribute('data-dropdown-target');
+            const menu = document.getElementById(target);
+
+            if (!menu) return;
+
+            const isOpen = !menu.classList.contains('hidden');
+
+            closeAllDropdowns();
+
+            if (!isOpen) {
+                menu.classList.remove('hidden');
+                button.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    mobileNavToggles.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const targetId = button.getAttribute('data-mobile-target');
+            const panel = document.getElementById(targetId);
+            const icon = button.querySelector('i');
+
+            if (!panel) return;
+
+            const isOpen = !panel.classList.contains('hidden');
+            closeMobileDropdowns();
+
+            if (!isOpen) {
+                panel.classList.remove('hidden');
+                button.setAttribute('aria-expanded', 'true');
+                icon?.classList.remove('fa-chevron-down');
+                icon?.classList.add('fa-chevron-up');
+            }
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.relative.group')) {
+            closeAllDropdowns();
+        }
+        if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobile-menu')) {
+            closeMobileDropdowns();
+        }
+        if (mobileMenu && !event.target.closest('#mobile-menu') && !event.target.closest('#menu-btn')) {
+            mobileMenu.classList.add('hidden');
+            if (menuBtn) {
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+            }
+        }
+    });
+
+    if (progressBar) {
+        const updateProgress = () => {
+            const scrollTop = window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            progressBar.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+        };
+        updateProgress();
+        window.addEventListener('scroll', updateProgress, { passive: true });
+    }
+
+    if (footer && window.innerWidth < 768) {
+        const toggleFooterVisibility = () => {
+            footer.classList.toggle('is-visible', window.scrollY > 120);
+        };
+        toggleFooterVisibility();
+        window.addEventListener('scroll', toggleFooterVisibility, { passive: true });
+    }
+
+    if (revealItems.length) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        revealItems.forEach((item) => revealObserver.observe(item));
+    }
+
+    const slides = document.querySelectorAll('.landing-slide');
+
+    if (slides.length > 1) {
+        let current = 0;
+
+        setInterval(() => {
+            slides[current].classList.remove('opacity-100');
+            slides[current].classList.add('opacity-0');
+
+            current = (current + 1) % slides.length;
+
+            slides[current].classList.remove('opacity-0');
+            slides[current].classList.add('opacity-100');
+        }, 6000);
+    }
+});
+</script>
+</body>
+
+</div>
+</html>

@@ -119,7 +119,7 @@ class PageImageInline(admin.TabularInline):
     model = PageImage
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 0
     fields = ['title', 'caption', 'description', 'image', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
@@ -129,7 +129,7 @@ class PageVideoInline(admin.TabularInline):
     model = PageVideo
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 0
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
@@ -139,7 +139,7 @@ class DocumentInline(admin.TabularInline):
     model = Document
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
-    extra = 3
+    extra = 0
     fields = ['title', 'description', 'file', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
 

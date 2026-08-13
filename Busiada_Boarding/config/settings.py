@@ -11,16 +11,6 @@ SECRET_KEY = os.environ.get(
 )
 
 # Cloudinary configuration
-try:
-    import cloudinary
-except ImportError:
-    cloudinary = None
-
-try:
-    import cloudinary_storage
-except ImportError:
-    cloudinary_storage = None
-
 CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
@@ -32,6 +22,23 @@ CLOUDINARY_CLOUD_NAME = CLOUDINARY_CLOUD_NAME or 'lbppchjw'
 CLOUDINARY_API_KEY = CLOUDINARY_API_KEY or '623378971952863'
 CLOUDINARY_API_SECRET = CLOUDINARY_API_SECRET or 'Gx4on-vb1YMgiaEdu-ZbcGteQbg'
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+    'API_KEY': CLOUDINARY_API_KEY,
+    'API_SECRET': CLOUDINARY_API_SECRET,
+    'SECURE': True,
+}
+
+try:
+    import cloudinary
+except ImportError:
+    cloudinary = None
+
+try:
+    import cloudinary_storage
+except ImportError:
+    cloudinary_storage = None
+
 if cloudinary:
     cloudinary.config(
         cloud_name=CLOUDINARY_CLOUD_NAME,
@@ -39,12 +46,31 @@ if cloudinary:
         api_secret=CLOUDINARY_API_SECRET,
     )
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STORAGES = {
+    'default': {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
+
+if cloudinary_storage:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    STORAGES['default'] = {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    }
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 if not cloudinary:
     print('Cloudinary package not installed: ensure cloudinary is installed for media storage')
 elif not cloudinary_storage:
     print('django-cloudinary-storage package not installed: ensure django-cloudinary-storage is installed for media storage')
-print('Cloudinary storage enabled: using Cloudinary media storage')
+else:
+    print('Cloudinary storage enabled: using Cloudinary media storage')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
