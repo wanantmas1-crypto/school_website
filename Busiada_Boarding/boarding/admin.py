@@ -159,8 +159,9 @@ class SitePageAdmin(admin.ModelAdmin):
             'fields': ('title', 'slug', 'category', 'status')
         }),
         ('Content', {
-            'fields': ('content', 'featured_image', 'sections'),
-            'classes': ('wide',)
+            'fields': ('content', 'featured_image', 'background_image', 'sections'),
+            'classes': ('wide',),
+            'description': 'featured_image is used in page galleries and carousels. background_image is used as the animated page background.'
         }),
         ('Metadata', {
             'fields': ('author', 'created_at', 'updated_at'),
