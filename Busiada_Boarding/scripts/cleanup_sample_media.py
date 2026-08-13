@@ -13,7 +13,8 @@ try:
 except NameError:
     THIS_DIR = os.getcwd()
 MEDIA_DIR = os.path.abspath(os.path.join(THIS_DIR, '..', 'media'))
-TARGET_DIRS = ['site_pages', 'announcements', 'videos', 'documents', 'principals']
+# Only clean up announcements (test data). Preserve images, videos, documents, principals.
+TARGET_DIRS = ['announcements']
 
 deleted_files = []
 deleted_pageimages = []

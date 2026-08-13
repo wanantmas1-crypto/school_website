@@ -3,7 +3,8 @@ import shutil
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent / 'media'
-TARGET_DIRS = ['site_pages', 'announcements', 'videos', 'documents', 'principals']
+# Only clean up announcements (test data). Preserve images, videos, documents, principals.
+TARGET_DIRS = ['announcements']
 removed = []
 errors = []
 print('Media root:', root)
