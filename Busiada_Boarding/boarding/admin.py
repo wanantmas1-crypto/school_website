@@ -2,9 +2,11 @@ from django.utils.safestring import mark_safe
 from django.contrib import admin
 from django import forms
 from django.utils.text import slugify
+from django.core.files.base import ContentFile
 import time
 from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement
 from .models import SiteSettings
+from .validators import compress_image, get_file_size_display
 
 
 class SitePageAdminForm(forms.ModelForm):
@@ -29,6 +31,7 @@ class SitePageAdminForm(forms.ModelForm):
             'boarding/js/quill_init.js',
             'boarding/js/admin_image_preview.js',
             'boarding/js/inline_ordering.js',
+            'boarding/js/upload_progress.js',
         ]
         css = {
             'all': [
@@ -101,6 +104,7 @@ class SiteSettingsAdminForm(forms.ModelForm):
             'https://cdn.quilljs.com/1.3.6/quill.js',
             'boarding/js/quill_init.js',
             'boarding/js/admin_image_preview.js',
+            'boarding/js/upload_progress.js',
         ]
         css = {
             'all': [
@@ -123,6 +127,19 @@ class PageImageInline(admin.TabularInline):
     fields = ['title', 'caption', 'description', 'image', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
+    
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        # Compress image if provided
+        if 'image' in form.files:
+            image_file = form.files['image']
+            obj.image = compress_image(image_file, quality=85)
+        obj.uploaded_by = request.user
+        super().save_model(request, obj, form, change)
 
 
 class PageVideoInline(admin.TabularInline):
@@ -133,6 +150,15 @@ class PageVideoInline(admin.TabularInline):
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
+    
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        obj.uploaded_by = request.user
+        super().save_model(request, obj, form, change)
 
 
 class DocumentInline(admin.TabularInline):
@@ -142,6 +168,15 @@ class DocumentInline(admin.TabularInline):
     extra = 0
     fields = ['title', 'description', 'file', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
+    
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        obj.uploaded_by = request.user
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(SitePage)
@@ -172,6 +207,13 @@ class SitePageAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not obj.author:
             obj.author = request.user
+        
+        # Compress images if provided
+        if 'featured_image' in form.files:
+            obj.featured_image = compress_image(form.files['featured_image'], quality=85)
+        if 'background_image' in form.files:
+            obj.background_image = compress_image(form.files['background_image'], quality=80)
+        
         super().save_model(request, obj, form, change)
 
 
@@ -205,6 +247,17 @@ class AnnouncementAdmin(admin.ModelAdmin):
                 return mark_safe(f"<img src=\"{url}\" style=\"max-height:180px; max-width:320px; object-fit:contain; border-radius:6px;\" />")
         return ''
     image_preview.short_description = 'Current image'
+    
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        # Compress image if provided
+        if 'image' in form.files:
+            obj.image = compress_image(form.files['image'], quality=85)
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(Document)
@@ -223,6 +276,11 @@ class DocumentAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+    
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
     
     def save_model(self, request, obj, form, change):
         if not obj.uploaded_by:
@@ -261,6 +319,19 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 return mark_safe(f"<img src=\"{url}\" style=\"max-height:160px; max-width:160px; object-fit:cover; border-radius:6px;\" />")
         return ''
     principal_image_preview.short_description = 'Principal image'
+
+    class Media:
+        js = [
+            'boarding/js/upload_progress.js',
+        ]
+    
+    def save_model(self, request, obj, form, change):
+        # Compress images if provided
+        if 'logo' in form.files:
+            obj.logo = compress_image(form.files['logo'], quality=90)
+        if 'principal_image' in form.files:
+            obj.principal_image = compress_image(form.files['principal_image'], quality=85)
+        super().save_model(request, obj, form, change)
 
     def image_preview(self, obj):
         if obj and getattr(obj, 'image'):

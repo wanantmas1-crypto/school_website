@@ -5,6 +5,10 @@ import os
 import hashlib
 import time
 from .utils import document_upload_to, image_upload_to, video_upload_to
+from .validators import (
+    validate_image_file_size, validate_video_file_size, 
+    validate_document_file_size, validate_logo_file_size
+)
 
 try:
     import bleach
@@ -44,11 +48,23 @@ class SiteSettings(models.Model):
     """
     site_name = models.CharField(max_length=200, default='Busiada Girls Senior School')
     tagline = models.CharField(max_length=255, blank=True, default='Unleash Your Potential')
-    logo = models.ImageField(upload_to='branding/', blank=True, null=True, help_text='Upload a square logo (PNG/SVG) into media/branding/')
+    logo = models.ImageField(
+        upload_to='branding/', 
+        blank=True, 
+        null=True, 
+        validators=[validate_logo_file_size],
+        help_text='Upload a square logo (PNG/SVG) max 2MB into media/branding/'
+    )
     principal_name = models.CharField(max_length=200, blank=True, default='Principal Name', help_text='Full name of the principal')
     principal_title = models.CharField(max_length=100, blank=True, default='Principal', help_text='Principal title or position')
     principal_message = models.TextField(blank=True, default='', help_text='Rich text content for the principal message section')
-    principal_image = models.ImageField(upload_to='principals/', blank=True, null=True, help_text='Upload a principal portrait image (recommended 600x800 px)')
+    principal_image = models.ImageField(
+        upload_to='principals/', 
+        blank=True, 
+        null=True, 
+        validators=[validate_image_file_size],
+        help_text='Upload a principal portrait image (max 5MB, recommended 600x800 px)'
+    )
 
     def __str__(self):
         return 'Site settings'
@@ -100,8 +116,19 @@ class SitePage(models.Model):
         from django.contrib.postgres.fields import JSONField
         JSONField = JSONField
     sections = JSONField(blank=True, null=True, default=list, help_text='Ordered list of blocks (JSON)')
-    featured_image = models.ImageField(upload_to='site_pages/', blank=True, null=True)
-    background_image = models.ImageField(upload_to='site_pages/backgrounds/', blank=True, null=True, help_text='Upload a background image for the page.')
+    featured_image = models.ImageField(
+        upload_to='site_pages/', 
+        blank=True, 
+        null=True,
+        validators=[validate_image_file_size]
+    )
+    background_image = models.ImageField(
+        upload_to='site_pages/backgrounds/', 
+        blank=True, 
+        null=True,
+        validators=[validate_image_file_size],
+        help_text='Upload a background image for the page (max 5MB).'
+    )
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -152,7 +179,10 @@ class HistoryImage(models.Model):
 
 class PageImage(models.Model):
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to=image_upload_to)
+    image = models.ImageField(
+        upload_to=image_upload_to,
+        validators=[validate_image_file_size]
+    )
     external_url = models.URLField(blank=True, null=True, help_text='Optional external image URL (Cloudinary or other CDN)')
     title = models.CharField(max_length=200, blank=True)
     caption = models.CharField(max_length=250, blank=True)
@@ -197,7 +227,10 @@ class PageImage(models.Model):
 
 class PageVideo(models.Model):
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='videos')
-    video = models.FileField(upload_to=video_upload_to)
+    video = models.FileField(
+        upload_to=video_upload_to,
+        validators=[validate_video_file_size]
+    )
     external_url = models.URLField(blank=True, null=True, help_text='Optional external video URL (YouTube, Cloudinary, etc.)')
     title = models.CharField(max_length=200, blank=True)
     caption = models.CharField(max_length=250, blank=True)
@@ -230,7 +263,10 @@ class PageVideo(models.Model):
 class Document(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    file = models.FileField(upload_to=document_upload_to)
+    file = models.FileField(
+        upload_to=document_upload_to,
+        validators=[validate_document_file_size]
+    )
     external_url = models.URLField(blank=True, null=True, help_text='Optional external document URL (Cloudinary or other CDN)')
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='documents', null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -258,7 +294,12 @@ class Announcement(models.Model):
     subtitle = models.CharField(max_length=255, blank=True)
     category = models.CharField(max_length=100, blank=True, default='General')
     content = models.TextField()
-    image = models.ImageField(upload_to='announcements/', blank=True, null=True)
+    image = models.ImageField(
+        upload_to='announcements/', 
+        blank=True, 
+        null=True,
+        validators=[validate_image_file_size]
+    )
     date = models.DateField(auto_now_add=True)
     event_date = models.DateTimeField(blank=True, null=True, help_text='Optional countdown date for events')
     is_live_event = models.BooleanField(default=False)
