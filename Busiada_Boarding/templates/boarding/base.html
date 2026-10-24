@@ -335,10 +335,17 @@
         }
 
         @media (min-width: 640px) {
-            .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (min-width: 1024px) {
-            .footer-grid { gap: 1.25rem; }
+            .footer-grid {
+                grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.65fr);
+                gap: 1.25rem;
+            }
+            .footer-card { padding: 0.75rem 1rem; }
+            .footer-contact-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem 1rem; }
+            .footer-contact-item { align-items: center; }
+            .footer-contact-icon { width: 1.7rem; height: 1.7rem; }
         }
         @media (max-width: 1024px) {
             .nav-shell, .page-shell { padding-left: 1rem; padding-right: 1rem; }
