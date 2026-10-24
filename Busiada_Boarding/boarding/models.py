@@ -4,7 +4,7 @@ from django.core.files.storage import default_storage
 import os
 import hashlib
 import time
-from .utils import document_upload_to, image_upload_to, video_upload_to
+from .utils import document_upload_to, image_upload_to, safe_file_url, video_upload_to
 from .validators import (
     validate_image_file_size, validate_video_file_size, 
     validate_document_file_size, validate_logo_file_size
@@ -48,6 +48,12 @@ class SiteSettings(models.Model):
     """
     site_name = models.CharField(max_length=200, default='Busiada Girls Senior School')
     tagline = models.CharField(max_length=255, blank=True, default='Unleash Your Potential')
+    phone_number = models.CharField(
+        max_length=30,
+        blank=True,
+        default='+254700000000',
+        help_text='School phone number shown in the red contact ribbon. Include the country code for click-to-call.',
+    )
     logo = models.ImageField(
         upload_to='branding/', 
         blank=True, 
@@ -116,6 +122,16 @@ class SitePage(models.Model):
         from django.contrib.postgres.fields import JSONField
         JSONField = JSONField
     sections = JSONField(blank=True, null=True, default=list, help_text='Ordered list of blocks (JSON)')
+    stem_learner_population = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        help_text='Optional learner count shown for the STEM pathway on the Senior School page.',
+    )
+    social_sciences_learner_population = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        help_text='Optional learner count shown for the Social Sciences pathway on the Senior School page.',
+    )
     featured_image = models.ImageField(
         upload_to='site_pages/', 
         blank=True, 

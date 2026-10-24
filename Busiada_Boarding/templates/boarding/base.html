@@ -311,9 +311,30 @@
         .site-nav { position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; }
         .site-nav.scrolled { box-shadow: 0 4px 20px rgba(30, 58, 95, 0.15); }
         .site-utility-bar {
+            position: fixed;
+            top: var(--site-nav-height, 5rem);
+            left: 0;
+            z-index: 40;
+            width: 100%;
             background: linear-gradient(90deg, #991b1b 0%, #C41E3A 48%, #7f1d1d 100%);
             color: #ffffff;
             font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        .site-main { margin-top: 3.75rem; }
+        .utility-phone-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .utility-phone-link:hover { color: rgba(255, 255, 255, .82); }
+        .utility-phone-link:focus-visible {
+            border-radius: .2rem;
+            outline: 2px solid #fff;
+            outline-offset: 3px;
         }
         .utility-social-link {
             display: inline-flex;
@@ -419,9 +440,8 @@
             .utility-bar-inner { justify-content: center; }
         }
         @media (max-width: 767.98px) {
-            .site-utility-bar { margin-top: -0.75rem; }
+            :root { --site-nav-height: 68px; }
         }
-
         .static-nav { position: sticky; top: 0; background: rgba(10, 37, 64, 0.92); backdrop-filter: blur(10px); }
         .footer-surface { background: var(--color-blue-900); color: white; }
         .footer-surface a { color: rgba(255,255,255,0.85); }
@@ -1010,6 +1030,12 @@
     <section class="site-utility-bar text-white" aria-label="School contact information and social media">
         <div class="utility-bar-inner mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-3 text-sm sm:px-6 lg:px-8">
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+                {% if site_settings.phone_number %}
+                <a href="tel:{{ site_settings.phone_number_href }}" class="utility-phone-link" aria-label="Call the school at {{ site_settings.phone_number }}">
+                    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5.5A2.5 2.5 0 0 1 6.5 3h2A1.5 1.5 0 0 1 10 4.2l.8 3.2a1.5 1.5 0 0 1-.7 1.7l-1.4.9a14 14 0 0 0 5.5 5.5l.9-1.4a1.5 1.5 0 0 1 1.7-.7l3.2.8a1.5 1.5 0 0 1 1.2 1.5v2A2.5 2.5 0 0 1 18.7 20 15.7 15.7 0 0 1 4 5.5Z"/></svg>
+                    <span>{{ site_settings.phone_number }}</span>
+                </a>
+                {% endif %}
                 <span class="hidden items-center gap-2 md:inline-flex">
                     <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM4 9h16M8 5v4m8-4v4M8 13h3m2 0h3M8 16h3"/></svg>
                     <span>P.O. Box 35-50404, Bumala, Busia County, Kenya</span>
@@ -1036,7 +1062,7 @@
         </div>
     </section>
 
-    <main class="w-full overflow-x-hidden">
+    <main class="site-main w-full overflow-x-hidden">
         {% block content_wrapper_start %}
         <div class="w-full max-w-none px-3 py-5 sm:px-6 lg:px-8 lg:py-8 reveal-on-scroll">
         {% endblock %}

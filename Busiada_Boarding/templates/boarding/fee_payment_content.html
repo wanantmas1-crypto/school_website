@@ -1,0 +1,283 @@
+<section class="fee-payment-section">
+    <header class="fee-payment-intro">
+        <p class="fee-payment-eyebrow">Busiada Girls Senior School</p>
+        <h2>Fee Payment</h2>
+        <p>Pay school fees easily using the methods below. Always use the student’s Admission Number or Student ID as the payment reference.</p>
+    </header>
+
+    <p class="fee-payment-placeholder-notice" role="note">
+        Payment values shown in brackets are placeholders. Confirm the current payment details with the school accounts office before sending money.
+    </p>
+
+    <div class="fee-payment-grid">
+        <article class="fee-payment-card fee-payment-card--mpesa">
+            <div class="fee-payment-card-heading">
+                <span class="fee-payment-icon" aria-hidden="true"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                <div>
+                    <p class="fee-payment-label">Mobile money</p>
+                    <h3>M-Pesa Paybill</h3>
+                </div>
+            </div>
+            <dl class="fee-payment-details">
+                <div><dt>Paybill Number</dt><dd>[Enter School Paybill]</dd></div>
+                <div><dt>Account Number</dt><dd>Student Admission Number</dd></div>
+            </dl>
+            <h4>How to pay</h4>
+            <ol>
+                <li>Go to M-Pesa.</li>
+                <li>Select <strong>Lipa na M-Pesa</strong>, then <strong>Paybill</strong>.</li>
+                <li>Enter the school Paybill Number.</li>
+                <li>Enter the Admission Number as the Account Number.</li>
+                <li>Enter the amount and confirm the payment details.</li>
+            </ol>
+        </article>
+
+        <article class="fee-payment-card fee-payment-card--till">
+            <div class="fee-payment-card-heading">
+                <span class="fee-payment-icon" aria-hidden="true"><i class="fa-solid fa-wallet"></i></span>
+                <div>
+                    <p class="fee-payment-label">Mobile money</p>
+                    <h3>M-Pesa Till Number</h3>
+                </div>
+            </div>
+            <dl class="fee-payment-details">
+                <div><dt>Till Number</dt><dd>[Enter School Till]</dd></div>
+            </dl>
+            <h4>How to pay</h4>
+            <ol>
+                <li>Go to M-Pesa.</li>
+                <li>Select <strong>Lipa na M-Pesa</strong>, then <strong>Buy Goods and Services</strong>.</li>
+                <li>Enter the school Till Number.</li>
+                <li>Enter the amount and use the Admission Number as the reference where possible.</li>
+                <li>Confirm the payment details.</li>
+            </ol>
+        </article>
+
+        <article class="fee-payment-card fee-payment-card--bank">
+            <div class="fee-payment-card-heading">
+                <span class="fee-payment-icon" aria-hidden="true"><i class="fa-solid fa-building-columns"></i></span>
+                <div>
+                    <p class="fee-payment-label">Bank transfer</p>
+                    <h3>Bank Deposit / Transfer</h3>
+                </div>
+            </div>
+            <dl class="fee-payment-details">
+                <div><dt>Bank Name</dt><dd>[Bank Name]</dd></div>
+                <div><dt>Account Name</dt><dd>Busiada Girls’ High School</dd></div>
+                <div><dt>Account Number</dt><dd>[Account Number]</dd></div>
+                <div><dt>Branch</dt><dd>[Branch]</dd></div>
+            </dl>
+            <p class="fee-payment-important"><strong>Important:</strong> Write the student’s full name and Admission Number on the deposit slip or transfer description.</p>
+        </article>
+
+        <article class="fee-payment-card fee-payment-card--cash">
+            <div class="fee-payment-card-heading">
+                <span class="fee-payment-icon" aria-hidden="true"><i class="fa-solid fa-receipt"></i></span>
+                <div>
+                    <p class="fee-payment-label">At school</p>
+                    <h3>Cash Payment</h3>
+                </div>
+            </div>
+            <p>Parents may pay at the school accounts office during working hours. Always collect an official receipt for the payment.</p>
+        </article>
+    </div>
+
+    <section class="fee-payment-notes" aria-labelledby="fee-payment-notes-title">
+        <div class="fee-payment-notes-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></div>
+        <div>
+            <h3 id="fee-payment-notes-title">Important Instructions for Parents</h3>
+            <ul>
+                <li>Always use the student’s Admission Number as the payment reference.</li>
+                <li>Keep your M-Pesa confirmation message or bank slip safely.</li>
+                <li>Present the payment confirmation at the school accounts office if required.</li>
+                <li>For payment issues, <a href="{% url 'contact_page' %}">contact the school office</a>.</li>
+            </ul>
+        </div>
+    </section>
+</section>
+
+<style>
+    .fee-payment-section {
+        padding: clamp(1.25rem, 3vw, 2.25rem);
+        border: 1px solid #e2e8f0;
+        border-radius: 1.25rem;
+        background: #f8fafc;
+        color: #334155;
+    }
+    .fee-payment-intro {
+        max-width: 48rem;
+        margin: 0 auto 1.75rem;
+        text-align: center;
+    }
+    .fee-payment-eyebrow,
+    .fee-payment-label {
+        margin: 0;
+        color: #2b6cb0;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
+    .fee-payment-intro h2 {
+        margin: .45rem 0 .5rem;
+        color: #1e3a5f;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+    }
+    .fee-payment-intro > p:last-child {
+        margin: 0;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+    .fee-payment-placeholder-notice {
+        max-width: 56rem;
+        margin: 0 auto 1.5rem;
+        padding: .85rem 1rem;
+        border: 1px solid #f4d58d;
+        border-radius: .75rem;
+        background: #fff8e6;
+        color: #704d0b;
+        font-size: .9rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+    .fee-payment-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+    .fee-payment-card {
+        min-width: 0;
+        padding: clamp(1.1rem, 2vw, 1.5rem);
+        border: 1px solid #e2e8f0;
+        border-top: 4px solid var(--fee-accent);
+        border-radius: 1rem;
+        background: #fff;
+        box-shadow: 0 16px 36px -30px rgba(15, 23, 42, .45);
+    }
+    .fee-payment-card--mpesa { --fee-accent: #16805d; --fee-accent-bg: #e5f5ee; }
+    .fee-payment-card--till { --fee-accent: #2b6cb0; --fee-accent-bg: #ebf4ff; }
+    .fee-payment-card--bank { --fee-accent: #c27a13; --fee-accent-bg: #fff3d9; }
+    .fee-payment-card--cash { --fee-accent: #c2414b; --fee-accent-bg: #fcebed; }
+    .fee-payment-card-heading {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        margin-bottom: 1rem;
+    }
+    .fee-payment-icon {
+        display: inline-flex;
+        width: 2.9rem;
+        height: 2.9rem;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        border-radius: .9rem;
+        background: var(--fee-accent-bg);
+        color: var(--fee-accent);
+        font-size: 1.15rem;
+    }
+    .fee-payment-card h3 {
+        margin: .15rem 0 0;
+        color: #1e3a5f;
+        font-size: 1.2rem;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+    .fee-payment-details {
+        display: grid;
+        gap: .55rem;
+        margin: 0 0 1rem;
+        padding: .9rem 1rem;
+        border: 1px solid #e8edf3;
+        border-radius: .75rem;
+        background: #f8fafc;
+    }
+    .fee-payment-details > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: .25rem .75rem;
+    }
+    .fee-payment-details dt {
+        color: #64748b;
+        font-size: .88rem;
+    }
+    .fee-payment-details dd {
+        margin: 0;
+        color: #1e3a5f;
+        font-size: .9rem;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+        text-align: right;
+    }
+    .fee-payment-card h4 {
+        margin: 1rem 0 .4rem;
+        color: #1e3a5f;
+        font-size: .98rem;
+        font-weight: 700;
+    }
+    .fee-payment-card > p,
+    .fee-payment-card ol {
+        margin: 0;
+        color: #475569;
+        font-size: .92rem;
+        line-height: 1.7;
+    }
+    .fee-payment-card ol {
+        padding-left: 1.25rem;
+    }
+    .fee-payment-card li + li {
+        margin-top: .2rem;
+    }
+    .fee-payment-important {
+        padding: .85rem;
+        border-left: 3px solid #c27a13;
+        border-radius: .4rem;
+        background: #fff8e6;
+    }
+    .fee-payment-notes {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding: 1.2rem 1.35rem;
+        border: 1px solid #cbdcf0;
+        border-radius: 1rem;
+        background: #ebf4ff;
+    }
+    .fee-payment-notes-icon {
+        color: #2b6cb0;
+        font-size: 1.2rem;
+        padding-top: .1rem;
+    }
+    .fee-payment-notes h3 {
+        margin: 0 0 .35rem;
+        color: #1e3a5f;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+    .fee-payment-notes ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        color: #475569;
+        font-size: .92rem;
+        line-height: 1.7;
+    }
+    .fee-payment-notes a {
+        color: #1e3a5f;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: .18em;
+    }
+    .fee-payment-notes a:focus-visible {
+        outline: 3px solid rgba(43, 108, 176, .35);
+        outline-offset: 3px;
+    }
+    @media (max-width: 700px) {
+        .fee-payment-grid { grid-template-columns: minmax(0, 1fr); gap: .9rem; }
+        .fee-payment-card { padding: 1.15rem; }
+        .fee-payment-notes { padding: 1rem; }
+    }
+</style>

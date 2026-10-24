@@ -8,6 +8,10 @@ def site_settings(request):
         if settings:
             settings.principal_image_url = safe_file_url(getattr(settings, 'principal_image', None))
             settings.logo_url = safe_file_url(getattr(settings, 'logo', None))
+            settings.phone_number_href = ''.join(
+                character for character in settings.phone_number
+                if character.isdigit() or character == '+'
+            )
     except Exception:
         settings = None
     return {'site_settings': settings}

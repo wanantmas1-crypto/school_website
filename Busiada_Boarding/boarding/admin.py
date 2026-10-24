@@ -160,7 +160,7 @@ class PageVideoInline(admin.TabularInline):
     model = PageVideo
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
-    verbose_name_plural = 'Videos (first ordered video on Home is used as the hero background)'
+    verbose_name_plural = 'Videos (first ordered video on Home takes priority over homepage images and is used as the hero background)'
     extra = 0
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
@@ -211,7 +211,11 @@ class SitePageAdmin(admin.ModelAdmin):
         ('Content', {
             'fields': ('content', 'featured_image', 'background_image', 'sections'),
             'classes': ('wide',),
-            'description': 'featured_image is used in page galleries and carousels. background_image is used as the page background. On the School Chaplaincy page, background_image is the hero background, featured_image is the introduction photo, and Page Images below populate the Growing Through Connection gallery. On the Home page, the first ordered uploaded video is used as the hero background instead of the background image.'
+            'description': 'featured_image is used in page galleries and carousels. background_image is used as the page background. On the School Chaplaincy page, background_image is the hero background, featured_image is the introduction photo, and Page Images below populate the Growing Through Connection gallery. On the Home page, uploaded Page Images are used as an automatically transitioning hero slideshow in admin order; an uploaded video takes priority, and background_image is the fallback when no hero images or video are available. On the CBE page, add any number of Page Images titled “STEM”, “Social Sciences”, or “Arts & Sports Science” to populate each pathway gallery. STEM Laboratory and Computer Lab titles are also treated as STEM images. Images appear in their admin-defined order; pathways without uploads show no image area.'
+        }),
+        ('Senior School Pathway Populations', {
+            'fields': ('stem_learner_population', 'social_sciences_learner_population'),
+            'description': 'Optional learner counts shown on the Senior School 2-6-3-3-3 pathway cards. Leave blank until confirmed.'
         }),
         ('Metadata', {
             'fields': ('author', 'created_at', 'updated_at'),
@@ -309,7 +313,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['site_name', 'tagline']
     readonly_fields = ['logo_preview', 'principal_image_preview']
     fieldsets = (
-        ('Branding', {'fields': ('site_name', 'tagline', 'logo')}),
+        ('Branding', {'fields': ('site_name', 'tagline', 'phone_number', 'logo')}),
         ('Principal Message', {'fields': ('principal_name', 'principal_title', 'principal_image', 'principal_message')}),
     )
 

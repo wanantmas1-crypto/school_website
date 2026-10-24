@@ -24,7 +24,11 @@
     </figure>
     {% endif %}
 
+    {% if page.slug == 'fee-payment' %}
+    {% include 'boarding/fee_payment_content.html' %}
+    {% else %}
     {% include 'boarding/page_sections.html' %}
+    {% endif %}
 
     {% if page.slug == 'admission-process' %}
     <section class="admission-process-section dynamic-panel reveal-on-scroll section-shell border border-slate-200 bg-white p-3 p-md-4 shadow-sm">

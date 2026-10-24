@@ -17,6 +17,11 @@
             object-position: center;
             animation: hero-ken-burns 20s ease-in-out infinite alternate;
         }
+        .hero-background-slide {
+            opacity: 0;
+            transition: opacity 1.4s ease-in-out;
+        }
+        .hero-background-slide.is-active { opacity: 1; }
         .hero-background-overlay { background: rgba(30, 58, 95, 0.52); }
         @keyframes hero-ken-burns {
             from { transform: scale(1); }
@@ -24,6 +29,7 @@
         }
         @media (prefers-reduced-motion: reduce) {
             .hero-background-media { animation: none; }
+            .hero-background-slide { transition: none; }
         }
         @media (max-width: 768px) {
             .landing-cta-button { width: 100%; }
@@ -37,6 +43,16 @@
         <video class="hero-background-media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
             <source src="{{ hero_video_url }}">
         </video>
+        {% elif hero_images %}
+        {% for image in hero_images %}
+        <img
+            class="hero-background-media hero-background-slide{% if forloop.first %} is-active{% endif %}"
+            src="{{ image.url }}"
+            alt=""
+            aria-hidden="true"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+        >
+        {% endfor %}
         {% elif page_background_image_url %}
         <img class="hero-background-media" src="{{ page_background_image_url }}" alt="" aria-hidden="true">
         {% endif %}
@@ -68,6 +84,22 @@
         </div>
     </div>
 </section>
+{% if hero_images|length > 1 %}
+<script>
+    (() => {
+        const slides = document.querySelectorAll('.hero-background-slide');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (slides.length < 2 || reduceMotion) return;
+
+        let activeIndex = 0;
+        window.setInterval(() => {
+            slides[activeIndex].classList.remove('is-active');
+            activeIndex = (activeIndex + 1) % slides.length;
+            slides[activeIndex].classList.add('is-active');
+        }, 7000);
+    })();
+</script>
+{% endif %}
 <!-- Motto / Identity Section -->
 <section class="fade-up bg-[#FDF8F0] py-16 md:py-20">
     <div class="mx-auto max-w-4xl px-6 text-center">

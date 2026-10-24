@@ -7,22 +7,27 @@
 {% block content %}
 <style>
   .cbe-page {
-    --ink: #17231f;
-    --soft: #f6f8f7;
-    --line: #d8e3dc;
-    --forest: #123b2f;
-    --leaf: #1f7a5c;
-    --sun: #d9941c;
-    --coral: #c94f3d;
+    --ink: #24364b;
+    --soft: #f7f8f6;
+    --line: #dce5df;
+    --forest: #1e3a5f;
+    --leaf: #527d68;
+    --sun: #d4a017;
+    --coral: #527d68;
     background: var(--soft);
     color: var(--ink);
   }
+
+  .cbe-page h2,
+  .cbe-page h3,
+  .cbe-page h4 { color: var(--forest); }
+
+  .cbe-page .cbe-eyebrow { color: var(--leaf); }
 
   .cbe-section { padding: 4.5rem 1rem; }
   .cbe-wrap { width: min(1120px, 100%); margin: 0 auto; }
 
   .cbe-eyebrow {
-    color: var(--coral);
     font-size: .78rem;
     font-weight: 900;
     letter-spacing: .14em;
@@ -31,7 +36,7 @@
 
   .cbe-card {
     border: 1px solid var(--line);
-    border-radius: .5rem;
+    border-radius: 1rem;
     background: #fff;
     box-shadow: 0 14px 32px rgba(23, 35, 31, .07);
     transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
@@ -76,6 +81,55 @@
     border-radius: 999px;
   }
 
+  .pathway-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: .75rem;
+  }
+
+  .pathway-media {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: #f1f5f2;
+  }
+
+  .pathway-media img {
+    display: block;
+    width: 100%;
+    height: 11rem;
+    object-fit: cover;
+  }
+
+  .pathway-media-placeholder {
+    display: flex;
+    min-height: 12rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    padding: 1rem;
+    color: #526658;
+    text-align: center;
+  }
+
+  .pathway-media-placeholder i {
+    color: var(--leaf);
+    font-size: 1.5rem;
+  }
+
+  .pathway-population {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1rem;
+    padding: .4rem .75rem;
+    border-radius: 999px;
+    background: #eaf2ed;
+    color: #365b47;
+    font-size: .85rem;
+    font-weight: 700;
+  }
+
   @media (max-width: 640px) {
     .cbe-section { padding: 3.25rem 1rem; }
   }
@@ -83,30 +137,27 @@
 
 <div class="cbe-page">
   <section role="banner" aria-label="CBE 2-6-3-3-3 overview" class="relative min-h-[620px] overflow-hidden bg-[#1E3A5F] text-white">
-    <div class="absolute inset-0" data-cbe-hero-slides>
-      {% if hero_slides %}
-        {% for slide in hero_slides %}
+    <div class="absolute inset-0">
+      {% if page_background_image_url %}
         <img
-          src="{{ slide.url }}"
-          alt="{{ slide.alt }}"
-          class="cbe-hero-slide {% if forloop.first %}is-active{% endif %} absolute inset-0 h-full w-full object-contain bg-[#123b2f]"
-          {% if not forloop.first %}loading="lazy"{% endif %}
+          src="{{ page_background_image_url }}"
+          alt=""
+          class="absolute inset-0 h-full w-full object-cover"
+          aria-hidden="true"
         >
-        {% endfor %}
       {% else %}
-        <div class="absolute inset-0 bg-[#123b2f]"></div>
-        <div class="absolute inset-0 opacity-30" style="background-image: linear-gradient(135deg, rgba(217,148,28,.9) 0 2px, transparent 2px 28px), linear-gradient(45deg, rgba(31,122,92,.8) 0 2px, transparent 2px 34px);"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-[#152A45] via-[#1E3A5F] to-[#315B50]"></div>
       {% endif %}
     </div>
-    <div class="absolute inset-0 bg-[#123b2f]/78" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-[#1E3A5F]/75" aria-hidden="true"></div>
     <div class="absolute inset-x-0 bottom-0 h-24 bg-[#f6f8f7]" aria-hidden="true"></div>
 
     <div class="cbe-wrap relative grid min-h-[620px] gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_.95fr] lg:items-end lg:px-8 lg:py-20">
       <div class="pb-12 lg:pb-20">
         <p class="text-sm font-black uppercase tracking-[.18em] text-[#D4A017]">Competency Based Education</p>
-        <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl text-[#4A90C8]">CBE 2-6-3-3-3 at Busiada Girls Senior School</h1>
+        <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">CBE at Busiada Girls Senior School</h1>
         <p class="mt-6 max-w-2xl text-base leading-8 text-white/88 sm:text-lg">
-          A focused senior school programme where learners choose a pathway, strengthen character and prepare for university, TVET and professional life.
+          The future of learning at Busiada — where every girl chooses a pathway, builds real skills, and prepares for life beyond school.
         </p>
         <div class="mt-9 flex flex-col gap-3 sm:flex-row">
           <a href="#pathways" class="cbe-action inline-flex items-center justify-center gap-2 bg-[#C41E3A] px-5 py-3 text-sm font-black text-white shadow-lg shadow-black/20 hover:bg-[#A61830] focus:outline-none focus:ring-2 focus:ring-[#D4A017]">
@@ -133,7 +184,7 @@
           </div>
           <div class="grid grid-cols-3 gap-3 text-center">
             <div class="rounded-lg bg-[#eaf5ef] p-4">
-              <p class="text-3xl font-black text-[#1f7a5c]">2</p>
+              <p class="text-3xl font-black text-[#1f7a5c]">3</p>
               <p class="mt-1 text-xs font-bold text-[#43524b]">Pathways</p>
             </div>
             <div class="rounded-lg bg-[#fff4df] p-4">
@@ -156,109 +207,130 @@
 
   <section class="cbe-section cbe-reveal" data-cbe-reveal>
     <div class="cbe-wrap">
-      <div class="rounded-3xl border border-[#d8e3dc] bg-white p-6 shadow-sm sm:p-8">
-        <p class="cbe-eyebrow">Academics</p>
-        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Two distinct academic pathways, one school community.</h2>
-        <p class="mt-4 max-w-3xl text-base leading-8 text-[#53635b]">Busiada Girls Senior School offers both the 8-4-4 pathway and the 2-6-3-3-3 competency-based pathway so learners can thrive in the framework that best fits their strengths and future goals.</p>
-        <div class="mt-8 grid gap-4 lg:grid-cols-2">
-          <article class="rounded-2xl border border-[#d8e3dc] bg-[#f6f8f7] p-6">
-            <div class="flex items-center gap-3">
-              <span class="rounded-full bg-[#123b2f] px-3 py-1 text-xs font-black uppercase tracking-[.16em] text-white">8-4-4</span>
-              <span class="text-sm font-semibold text-[#1f7a5c]">Established secondary pathway</span>
-            </div>
-            <h3 class="mt-4 text-xl font-black text-[#123b2f]">Structured academic progression</h3>
-            <p class="mt-3 text-sm leading-7 text-[#53635b]">A familiar, well-sequenced curriculum that prepares learners for national examinations and future studies.</p>
-          </article>
-          <article class="rounded-2xl border border-[#d8e3dc] bg-[#fff4df] p-6">
-            <div class="flex items-center gap-3">
-              <span class="rounded-full bg-[#d9941c] px-3 py-1 text-xs font-black uppercase tracking-[.16em] text-[#17231f]">2-6-3-3-3</span>
-              <span class="text-sm font-semibold text-[#b46f00]">Competency-based pathway</span>
-            </div>
-            <h3 class="mt-4 text-xl font-black text-[#123b2f]">Skills-led senior school learning</h3>
-            <p class="mt-3 text-sm leading-7 text-[#53635b]">A modern route that develops practical competencies, career awareness and self-directed learning through Grades 10 to 12.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="mt-10 grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-start">
+      <div class="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
         <div>
-          <p class="cbe-eyebrow">Why Busiada</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">A senior school structure with direction and care.</h2>
+          <p class="cbe-eyebrow">Why CBE Matters</p>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Learning that turns knowledge into ability.</h2>
           <p class="mt-4 text-base leading-8 text-[#53635b]">
-            The programme balances academic focus, practical skill development, personal guidance and community life so every learner can make a thoughtful pathway choice.
+            CBE focuses on what a learner can do, not just what she can remember. It helps every girl discover her strengths, develop useful skills, and prepare for university, TVET, employment, or entrepreneurship.
           </p>
         </div>
-        <div class="grid gap-4 sm:grid-cols-3">
-          <article class="cbe-card border-t-4 border-t-[#1f7a5c] p-6" tabindex="0">
-            <i class="fa-solid fa-circle-check text-2xl text-[#1f7a5c]" aria-hidden="true"></i>
-            <h3 class="mt-5 text-lg font-black text-[#123b2f]">Approved Curriculum</h3>
-            <p class="mt-3 text-sm leading-6 text-[#53635b]">Aligned to Ministry of Education and KICD senior school expectations.</p>
-          </article>
-          <article class="cbe-card border-t-4 border-t-[#d9941c] p-6" tabindex="0">
-            <i class="fa-solid fa-compass text-2xl text-[#b46f00]" aria-hidden="true"></i>
-            <h3 class="mt-5 text-lg font-black text-[#123b2f]">Pathway Guidance</h3>
-            <p class="mt-3 text-sm leading-6 text-[#53635b]">Students are supported to match strengths, interests and career goals.</p>
-          </article>
-          <article class="cbe-card border-t-4 border-t-[#c94f3d] p-6" tabindex="0">
-            <i class="fa-solid fa-hands-holding-heart text-2xl text-[#c94f3d]" aria-hidden="true"></i>
-            <h3 class="mt-5 text-lg font-black text-[#123b2f]">Whole Student Care</h3>
-            <p class="mt-3 text-sm leading-6 text-[#53635b]">Learning is paired with wellbeing, leadership and community responsibility.</p>
-          </article>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Learners choose a pathway based on interest and ability.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Skills, values, and character are emphasized.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Learning prepares girls for real life and further education.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Talent development goes hand in hand with academics.</p></article>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="pathways" class="cbe-section cbe-reveal bg-white" data-cbe-reveal>
+  <section id="pathways" class="cbe-section cbe-reveal" data-cbe-reveal>
     <div class="cbe-wrap">
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div class="max-w-3xl">
-          <p class="cbe-eyebrow">Learning Pathways</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Two pathways, one strong foundation.</h2>
+          <p class="cbe-eyebrow">Our Three Career Pathways</p>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Choose a pathway. Grow your potential.</h2>
         </div>
-        <p class="max-w-md text-sm leading-6 text-[#53635b]">Each pathway includes core learning areas, practical application and career-focused preparation.</p>
+        <p class="max-w-md text-sm leading-6 text-[#53635b]">Each pathway connects learner interests and abilities with meaningful skills and future opportunities.</p>
       </div>
 
-      <div class="mt-10 grid gap-5 lg:grid-cols-2">
-        <article class="cbe-card p-6" tabindex="0">
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="pathway-rule bg-[#1f7a5c]"></div>
-              <h3 class="mt-5 text-2xl font-black text-[#123b2f]">STEM</h3>
+              <div class="pathway-rule bg-[#527d68]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">STEM</h3>
+              <p class="mt-1 text-sm font-semibold text-[#527d68]">Science, Technology, Engineering &amp; Mathematics</p>
             </div>
-            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#eaf5ef] text-[#1f7a5c]">
+            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#eaf2ed] text-[#527d68]">
               <i class="fa-solid fa-atom text-xl" aria-hidden="true"></i>
             </span>
           </div>
-          <p class="mt-4 text-sm leading-6 text-[#53635b]">For learners drawn to science, technology, mathematics and hands-on problem solving.</p>
+          {% if page.stem_learner_population != None %}
+          <p class="pathway-population">{{ page.stem_learner_population }} learners</p>
+          {% endif %}
+          {% if pathway_images.stem %}
+          <div class="pathway-gallery mt-5" aria-label="STEM pathway images">
+            {% for image in pathway_images.stem %}
+            <figure class="pathway-media">
+              <img src="{{ image.url }}" alt="{{ image.alt }}" loading="lazy">
+            </figure>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <p class="mt-4 text-sm leading-6 text-[#53635b]">Problem-solving, innovation, scientific thinking, and technology.</p>
           <div class="mt-6 border-t border-[#d8e3dc] pt-5">
-            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#c94f3d]">Learning Areas</h4>
-            <ul class="mt-3 grid gap-2 text-sm font-medium text-[#28352f]">
-              <li>Biology, Chemistry and Physics</li>
-              <li>Core Mathematics and Computer Studies</li>
-              <li>Agriculture and ICT</li>
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+              <li>Medicine, Nursing, Engineering, Computer Science</li>
+              <li>Agriculture, Architecture, Data Science</li>
+              <li>Environmental Science, Pharmacy</li>
             </ul>
           </div>
         </article>
 
-        <article class="cbe-card p-6" tabindex="0">
+        <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="pathway-rule bg-[#d9941c]"></div>
-              <h3 class="mt-5 text-2xl font-black text-[#123b2f]">Social Sciences</h3>
+              <div class="pathway-rule bg-[#d4a017]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">Social Sciences</h3>
+              <p class="mt-1 text-sm font-semibold text-[#527d68]">Languages, Humanities &amp; Business</p>
             </div>
             <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#fff4df] text-[#b46f00]">
               <i class="fa-solid fa-landmark text-xl" aria-hidden="true"></i>
             </span>
           </div>
-          <p class="mt-4 text-sm leading-6 text-[#53635b]">For learners interested in leadership, communication, enterprise and society.</p>
+          {% if page.social_sciences_learner_population != None %}
+          <p class="pathway-population">{{ page.social_sciences_learner_population }} learners</p>
+          {% endif %}
+          {% if pathway_images.social_sciences %}
+          <div class="pathway-gallery mt-5" aria-label="Social Sciences pathway images">
+            {% for image in pathway_images.social_sciences %}
+            <figure class="pathway-media">
+              <img src="{{ image.url }}" alt="{{ image.alt }}" loading="lazy">
+            </figure>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <p class="mt-4 text-sm leading-6 text-[#53635b]">Communication, leadership, society, and enterprise.</p>
           <div class="mt-6 border-t border-[#d8e3dc] pt-5">
-            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#c94f3d]">Learning Areas</h4>
-            <ul class="mt-3 grid gap-2 text-sm font-medium text-[#28352f]">
-              <li>Business Studies, Geography and Economics</li>
-              <li>History and Citizenship</li>
-              <li>Languages and ICT</li>
-              <li>Essential Mathematics</li>
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+              <li>Law, Journalism, Teaching, Business, Banking</li>
+              <li>Diplomacy, Public Administration, Social Work</li>
+              <li>Entrepreneurship</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="pathway-rule bg-[#527d68]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">Arts &amp; Sports Science</h3>
+              <p class="mt-1 text-sm font-semibold text-[#527d68]">Creative Arts &amp; Sports</p>
+            </div>
+            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#eaf2ed] text-[#527d68]">
+              <i class="fa-solid fa-palette text-xl" aria-hidden="true"></i>
+            </span>
+          </div>
+          {% if pathway_images.arts_sports %}
+          <div class="pathway-gallery mt-5" aria-label="Arts and Sports Science pathway images">
+            {% for image in pathway_images.arts_sports %}
+            <figure class="pathway-media">
+              <img src="{{ image.url }}" alt="{{ image.alt }}" loading="lazy">
+            </figure>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <p class="mt-4 text-sm leading-6 text-[#53635b]">Creativity, talent development, performance, and physical excellence.</p>
+          <div class="mt-6 border-t border-[#d8e3dc] pt-5">
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+              <li>Music, Theatre, Film, Fine Arts</li>
+              <li>Sports Coaching, Sports Management</li>
+              <li>Media Production, Event Management, Creative Design</li>
             </ul>
           </div>
         </article>
@@ -268,21 +340,41 @@
 
   <section class="cbe-section cbe-reveal bg-[#f6f8f7]" data-cbe-reveal>
     <div class="cbe-wrap">
-      <div class="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <div>
-          <p class="cbe-eyebrow">Core Learning</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">A shared foundation across every pathway.</h2>
-          <p class="mt-4 text-base leading-8 text-[#53635b]">
-            All learners continue to develop communication, numeracy, physical education, technology, values and service before specializing deeply in their chosen pathway.
-          </p>
-        </div>
-        <div class="grid gap-3 sm:grid-cols-2">
-          <div class="rounded-lg border border-[#d8e3dc] bg-white p-5"><p class="font-black text-[#123b2f]">English and Kiswahili</p></div>
-          <div class="rounded-lg border border-[#d8e3dc] bg-[#eaf5ef] p-5"><p class="font-black text-[#123b2f]">Mathematics</p></div>
-          <div class="rounded-lg border border-[#d8e3dc] bg-[#fff4df] p-5"><p class="font-black text-[#7a4b00]">Physical Education</p></div>
-          <div class="rounded-lg border border-[#d8e3dc] bg-white p-5"><p class="font-black text-[#123b2f]">Community Service Learning</p></div>
-          <div class="rounded-lg border border-[#d8e3dc] bg-[#fdecea] p-5"><p class="font-black text-[#8f3025]">ICT</p></div>
-          <div class="rounded-lg border border-[#d8e3dc] bg-white p-5"><p class="font-black text-[#123b2f]">Values and Leadership</p></div>
+      <div class="grid gap-8 lg:grid-cols-2">
+        <article class="rounded-3xl border border-[#d8e3dc] bg-white p-6 shadow-sm sm:p-8">
+          <p class="cbe-eyebrow">Core Values</p>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f]">Guiding learning and life.</h2>
+          <p class="mt-4 text-sm leading-7 text-[#53635b]">These values guide learning and life at Busiada under CBE.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm font-bold text-[#24364b] sm:grid-cols-3">
+            <li class="rounded-lg bg-[#f6f8f7] p-4">Integrity</li>
+            <li class="rounded-lg bg-[#eaf5ef] p-4">Responsibility</li>
+            <li class="rounded-lg bg-[#f6f8f7] p-4">Respect</li>
+            <li class="rounded-lg bg-[#eaf5ef] p-4">Excellence</li>
+            <li class="rounded-lg bg-[#f6f8f7] p-4">Service</li>
+            <li class="rounded-lg bg-[#eaf5ef] p-4">Discipline</li>
+          </ul>
+        </article>
+
+        <article class="rounded-3xl border border-[#d8e3dc] bg-white p-6 shadow-sm sm:p-8">
+          <p class="cbe-eyebrow">Pillars of CBE at Busiada</p>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f]">What we stand on.</h2>
+          <ul class="mt-6 space-y-4 text-sm leading-6 text-[#53635b]">
+            <li><strong class="text-[#123b2f]">Pathway Choice</strong> — Every girl selects a path that matches her strengths.</li>
+            <li><strong class="text-[#123b2f]">Skill Development</strong> — Focus on practical and useful competencies.</li>
+            <li><strong class="text-[#123b2f]">Character Formation</strong> — Values and discipline are part of daily learning.</li>
+            <li><strong class="text-[#123b2f]">Talent Nurturing</strong> — Arts, sports, and leadership are fully supported.</li>
+            <li><strong class="text-[#123b2f]">Future Readiness</strong> — Preparation for university, TVET, work, and life.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="mt-8 rounded-3xl border border-[#d8e3dc] bg-[#1e3a5f] p-6 text-white shadow-sm sm:p-8">
+        <p class="text-xs font-black uppercase tracking-[.16em] text-[#bfe2cc]">What Parents Should Know</p>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">CBE allows early specialisation through pathways.</p>
+          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">Learners still take core subjects: English, Kiswahili, PE, and Community Service Learning.</p>
+          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">The system values both academic ability and practical skills.</p>
+          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">Success is measured by competence, character, and readiness for the next stage.</p>
         </div>
       </div>
     </div>

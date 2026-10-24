@@ -72,13 +72,32 @@ def _render_dynamic_page(request, page, template_name='boarding/site_page.html',
 
 
 def home(request):
-    page = SitePage.objects.filter(slug='home', status='published').first()
+    page = (
+        SitePage.objects
+        .filter(slug='home', status='published')
+        .prefetch_related('images', 'videos')
+        .first()
+    )
     if not page:
-        page = SitePage.objects.filter(slug='home').first()
+        page = (
+            SitePage.objects
+            .filter(slug='home')
+            .prefetch_related('images', 'videos')
+            .first()
+        )
 
     page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
     hero_video = PageVideo.objects.filter(page=page).exclude(video='').first() if page else None
     hero_video_url = _safe_file_url(hero_video.video) if hero_video else ''
+    hero_images = []
+    if page:
+        for image in page.images.all():
+            image_url = image.display_url()
+            if image_url:
+                hero_images.append({
+                    'url': image_url,
+                    'alt': image.caption or image.title or 'Busiada school',
+                })
 
     # Pass gallery items to the template
     gallery_items = _gallery_items_for_page(page)
@@ -87,6 +106,7 @@ def home(request):
         'page': page,
         'page_background_image_url': page_background_image_url,
         'hero_video_url': hero_video_url,
+        'hero_images': hero_images,
         'gallery_items': gallery_items,
     })
 
@@ -243,8 +263,46 @@ def academics_844(request):
 
 
 def academics_26333(request):
+    page, _created = SitePage.objects.get_or_create(
+        slug='academics-2-6-3-3-3',
+        defaults={
+            'title': 'Senior School: 2-6-3-3-3 Curriculum',
+            'category': 'Academics',
+            'content': '',
+            'status': 'published',
+        },
+    )
+    page = SitePage.objects.prefetch_related('images').get(pk=page.pk)
+
+    pathway_images = {
+        'stem': [],
+        'social_sciences': [],
+        'arts_sports': [],
+    }
+    for image in page.images.all():
+        image_title = (image.title or '').strip().casefold()
+        image_key = (
+            'stem'
+            if image_title in {'stem', 'stem laboratory', 'computer lab'}
+            else 'social_sciences'
+            if image_title in {'social sciences', 'social science'}
+            else 'arts_sports'
+            if image_title in {'arts & sports science', 'arts and sports science', 'arts & sports', 'arts and sports'}
+            else None
+        )
+        if image_key:
+            image_url = image.display_url()
+            if image_url:
+                pathway_images[image_key].append({
+                    'url': image_url,
+                    'alt': image.caption or image.title or 'Pathway image',
+                })
+
     context = {
         'title': '2-6-3-3-3 Curriculum',
+        'page': page,
+        'pathway_images': pathway_images,
+        'page_background_image_url': _safe_file_url(getattr(page, 'background_image', None)),
         'content': (
             '<h2 class="text-2xl font-bold mb-4">2-6-3-3-3 Curriculum</h2>'
             '<p>This page provides an overview of the 2-6-3-3-3 curriculum. Update content in the template or through Django Admin.</p>'
@@ -359,55 +417,7 @@ def fee_payment(request):
             .prefetch_related('images', 'videos', 'documents')
             .first()
         )
-    
-    payment_methods = [
-        {
-            'title': 'Paybill Number',
-            'label': 'Mobile Money',
-            'value': '[Enter Paybill here]',
-            'description': 'Pay via your mobile money account with secure verification.',
-            'icon': 'fa-solid fa-mobile-screen-button',
-            'accent': '#0ea5e9',
-            'accent_bg': 'rgba(14, 165, 233, 0.14)',
-            'accent_border': 'rgba(14, 165, 233, 0.25)',
-            'tooltip': 'Copy the Paybill number for mobile payment',
-        },
-        {
-            'title': 'Till Number',
-            'label': 'Till/USSD',
-            'value': '[Enter Till here]',
-            'description': 'Fast payment using a Till number or USSD transfer.',
-            'icon': 'fa-solid fa-wallet',
-            'accent': '#2563eb',
-            'accent_bg': 'rgba(37, 99, 235, 0.14)',
-            'accent_border': 'rgba(37, 99, 235, 0.25)',
-            'tooltip': 'Copy the Till number for quick payment',
-        },
-        {
-            'title': 'Bank Account',
-            'label': 'Bank Transfer',
-            'value': '[Enter Bank Name & Account Number here]',
-            'description': 'Direct bank transfer using the school account details.',
-            'icon': 'fa-solid fa-building-columns',
-            'accent': '#4338ca',
-            'accent_bg': 'rgba(67, 56, 202, 0.14)',
-            'accent_border': 'rgba(67, 56, 202, 0.25)',
-            'tooltip': 'Copy bank details for secure transfer',
-        },
-        {
-            'title': 'Postal Address',
-            'label': 'Postal/Reference',
-            'value': '[Enter Postal Address or Reference here]',
-            'description': 'Mail payment or reference documentation to the school address.',
-            'icon': 'fa-solid fa-envelope',
-            'accent': '#0f766e',
-            'accent_bg': 'rgba(15, 118, 110, 0.14)',
-            'accent_border': 'rgba(15, 118, 110, 0.25)',
-            'tooltip': 'Copy postal reference details for payment',
-        },
-    ]
-    
-    return render(request, 'boarding/fee_payment.html', {'page': page, 'payment_methods': payment_methods})
+    return render(request, 'boarding/fee_payment.html', {'page': page})
 
 
 

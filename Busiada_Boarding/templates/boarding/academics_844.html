@@ -1,305 +1,321 @@
 {% extends 'boarding/base.html' %}
+
+{% block page_title %}8-4-4 Curriculum{% endblock %}
+
 {% block content %}
+<main class="curriculum-844">
+    <section class="curriculum-844-hero" aria-labelledby="curriculum-844-title">
+        <div class="curriculum-844-hero-inner">
+            <p class="curriculum-844-eyebrow">Outgoing curriculum · 8-4-4</p>
+            <h1 id="curriculum-844-title">Busiada Girls’ High School</h1>
+            <p class="curriculum-844-hero-copy">A focused and supportive learning environment for learners completing the 8-4-4 journey.</p>
+            <div class="curriculum-844-actions">
+                <a class="curriculum-844-button curriculum-844-button--primary" href="#forms">Explore Forms</a>
+                <a class="curriculum-844-button curriculum-844-button--outline" href="#resources">Revision Resources</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="curriculum-844-content">
+        <section class="curriculum-844-intro" aria-label="About the 8-4-4 curriculum">
+            <p>We continue to support our Form 3 and Form 4 learners with strong teaching, structured revision, and close guidance as they complete the 8-4-4 curriculum.</p>
+        </section>
+
+        <section class="curriculum-844-section" id="forms" aria-labelledby="curriculum-844-forms-title">
+            <div class="curriculum-844-section-heading">
+                <p class="curriculum-844-section-eyebrow">Focused support</p>
+                <h2 id="curriculum-844-forms-title">Supporting our Form 3 and Form 4 learners</h2>
+            </div>
+            <div class="curriculum-844-forms">
+                <article class="curriculum-844-card curriculum-844-form-card">
+                    <span class="curriculum-844-form-label">Final year</span>
+                    <h3>Form 4</h3>
+                    <p>Final year of the 8-4-4 cycle. Focused revision, exam preparation, and personalised support help every learner perform at her best in KCSE.</p>
+                </article>
+                <article class="curriculum-844-card curriculum-844-form-card">
+                    <span class="curriculum-844-form-label">Building for success</span>
+                    <h3>Form 3</h3>
+                    <p>Building a strong foundation through consistent teaching, continuous assessment, and early preparation for the final examination year.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="curriculum-844-section" id="resources" aria-labelledby="curriculum-844-resources-title">
+            <div class="curriculum-844-section-heading">
+                <p class="curriculum-844-section-eyebrow">Learning support</p>
+                <h2 id="curriculum-844-resources-title">Resources to keep learners on track</h2>
+            </div>
+            <div class="curriculum-844-resources">
+                <article class="curriculum-844-card curriculum-844-resource-card">
+                    <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+                    <h3>Assignments</h3>
+                    <p>Weekly tasks and practical exercises that keep learners on track.</p>
+                </article>
+                <article class="curriculum-844-card curriculum-844-resource-card">
+                    <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></span>
+                    <h3>Revision Materials</h3>
+                    <p>Notes, summaries, and structured revision tools for effective exam preparation.</p>
+                </article>
+                <article class="curriculum-844-card curriculum-844-resource-card">
+                    <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <h3>Past KCSE Papers</h3>
+                    <p>Practice with previous examination papers to build confidence and exam technique.</p>
+                </article>
+            </div>
+        </section>
+
+        <aside class="curriculum-844-closing">
+            <span class="curriculum-844-closing-mark" aria-hidden="true"></span>
+            <p>We remain fully committed to our 8-4-4 learners. Every girl is supported to finish strong and step confidently into the next stage of her education.</p>
+        </aside>
+    </div>
+</main>
+
 <style>
-  .academics-844-page {
-    color: #f8fafc;
-    min-height: 100vh;
-    padding: 2rem 0 4rem;
-    background: #f8fafc;
-  }
-
-  .academics-844-hero {
-    background: linear-gradient(135deg, #1E3A5F 0%, #4A90C8 48%, #9ed0f5 100%);
-    min-height: 78vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 3rem 1.5rem;
-  }
-
-  .academics-844-hero h1 {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    font-size: clamp(2.2rem, 4vw, 3.6rem);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    line-height: 1.15;
-    margin-bottom: 1rem;
-    text-shadow: 0 8px 30px rgba(2, 6, 23, 0.28);
-  }
-
-  .academics-844-hero p {
-    max-width: 700px;
-    margin: 0 auto 1.6rem;
-    font-size: 1.05rem;
-    color: rgba(248, 250, 252, 0.9);
-    line-height: 1.8;
-  }
-
-  .academics-844-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .academics-844-actions a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 46px;
-    padding: 0.8rem 1.25rem;
-    border-radius: 999px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.16);
-  }
-
-  .academics-844-actions a:hover,
-  .academics-844-actions a:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.22);
-  }
-
-  .academics-844-actions .btn-primary {
-    background: #F7F5F2;
-    color: #1E3A5F;
-  }
-
-  .academics-844-actions .btn-secondary {
-    background: rgba(255, 255, 255, 0.18);
-    color: #f8fafc;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-  }
-
-  .academics-844-section {
-    padding: 1rem 0 2rem;
-  }
-
-  .section-intro {
-    margin-bottom: 1rem;
-  }
-
-  .section-intro h2 {
-    color: #f8fafc;
-    font-size: 1.55rem;
-    font-weight: 700;
-  }
-
-  .section-intro p {
-    color: rgba(248, 250, 252, 0.86);
-  }
-
-  .academics-844-flex {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    margin-top: 1rem;
-  }
-
-  .academics-844-panel {
-    flex: 1 1 280px;
-    padding: 1.5rem;
-    border-radius: 1.25rem;
-    color: #0f172a;
-    box-shadow: 0 16px 44px rgba(15, 23, 42, 0.12);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    min-height: 220px;
-  }
-
-  .academics-844-panel:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.16);
-  }
-
-  .academics-844-panel h3 {
-    margin-bottom: 0.75rem;
-    font-size: 1.35rem;
-    font-weight: 700;
-  }
-
-  .academics-844-panel p {
-    margin-bottom: 0;
-    color: #475569;
-    line-height: 1.7;
-  }
-
-  .panel-form-4 {
-    background: linear-gradient(135deg, #fef2f2 0%, #fecdd3 100%);
-    border: 1px solid rgba(244, 114, 182, 0.22);
-  }
-
-  .panel-form-3 {
-    background: linear-gradient(135deg, #ecfeff 0%, #a7f3d0 100%);
-    border: 1px solid rgba(16, 185, 129, 0.22);
-  }
-
-  .forms-section-heading {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 1.6rem;
-  }
-
-  .academics-844-cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin-top: 1rem;
-  }
-
-  .academics-844-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.1rem;
-    padding: 1.4rem;
-    min-height: 220px;
-    color: #0f172a;
-    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.1);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    opacity: 0;
-    transform: translateY(16px);
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-  }
-
-  .academics-844-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .academics-844-card:hover {
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.16);
-  }
-
-  .academics-844-card i {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.8rem;
-    height: 2.8rem;
-    border-radius: 999px;
-    margin-bottom: 0.95rem;
-    background: rgba(255,255,255,0.6);
-    font-size: 1.1rem;
-  }
-
-  .academics-844-card h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 0.6rem;
-  }
-
-  .academics-844-card p {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: #334155;
-  }
-
-  .card-assignments { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); }
-  .card-revision { background: linear-gradient(135deg, #ede9fe 0%, #c4b5fd 100%); }
-  .card-kcse { background: linear-gradient(135deg, #fefce8 0%, #fde68a 100%); }
-
-  @media (max-width: 991px) {
-    .academics-844-cards {
-      grid-template-columns: 1fr;
+    .curriculum-844 {
+        --curriculum-navy: #1e3a5f;
+        --curriculum-blue: #2b6cb0;
+        --curriculum-gold: #d4a017;
+        --curriculum-ink: #334155;
+        color: var(--curriculum-ink);
+        background: #f8fafc;
     }
-  }
-</style>
-
-<div class="academics-844-page">
-  <section class="academics-844-hero" id="top">
-    <div class="container-fluid px-4 px-lg-5">
-      <p class="text-sm uppercase tracking-[0.2em] text-[#f5f9ff]/85 mb-4">8-4-4 Curriculum</p>
-      <h1 style="color: #ffffff;">Busiada Girls High School</h1>
-      <p style="color: #f5f9ff;">Discover a vibrant 8-4-4 learning experience built around academic excellence, practical growth, and student support.</p>
-      <div class="academics-844-actions">
-        <a href="#forms" class="btn-primary">Explore Forms</a>
-        <a href="#resources" class="btn-secondary">Resources</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="academics-844-section container-fluid px-4 px-lg-5" id="forms">
-    <h2 class="forms-section-heading">What B.G.H.S Offers</h2>
-    <div class="academics-844-flex">
-      <article class="academics-844-panel panel-form-4">
-        <h3>Form 4</h3>
-        <p>Focused revision pathways, exam readiness, and structured support for learners in their final stage of the 8-4-4 cycle.</p>
-      </article>
-      <article class="academics-844-panel panel-form-3">
-        <h3>Form 3</h3>
-        <p>Balanced academic preparation with skill-building activities, subject enrichment, and confident transition into senior studies.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="academics-844-section container-fluid px-4 px-lg-5" id="resources">
-    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2 mb-3 section-intro">
-      <div>
-        <h2 class="mb-1 text-2xl font-semibold">Academic Resources</h2>
-        <p class="mb-0 text-sm">Helpful materials to support study, revision, and preparation.</p>
-      </div>
-    </div>
-
-    <div class="academics-844-cards">
-      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-assignments reveal-on-scroll">
-        <div>
-          <i class="fa-solid fa-book-open"></i>
-          <h3>Assignments</h3>
-          <p>Access weekly tasks, project guidance, and practical study prompts that keep learners on track.</p>
-        </div>
-        <span class="fw-semibold text-slate-700">Open section →</span>
-      </a>
-      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-revision reveal-on-scroll">
-        <div>
-          <i class="fa-solid fa-file-lines"></i>
-          <h3>Revision Materials</h3>
-          <p>Find concise notes, structured summaries, and revision tools tailored for exam preparation.</p>
-        </div>
-        <span class="fw-semibold text-slate-700">Open section →</span>
-      </a>
-      <a href="/academics/8-4-4/coming-soon/" class="academics-844-card card-kcse reveal-on-scroll">
-        <div>
-          <i class="fa-solid fa-graduation-cap"></i>
-          <h3>Past KCSE Questions</h3>
-          <p>Practice with previous examination papers and build confidence through regular review.</p>
-        </div>
-        <span class="fw-semibold text-slate-700">Open section →</span>
-      </a>
-    </div>
-  </section>
-</div>
-
-<script>
-  (function () {
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
-      link.addEventListener('click', (event) => {
-        const targetId = link.getAttribute('href');
-        if (!targetId || targetId === '#') return;
-        const target = document.querySelector(targetId);
-        if (!target) return;
-        event.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+    .curriculum-844-hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(4rem, 9vw, 7rem) 1.25rem;
+        background: linear-gradient(125deg, #152a45 0%, #1e3a5f 60%, #2b557e 100%);
+        color: #fff;
+        text-align: center;
+    }
+    .curriculum-844-hero::after {
+        position: absolute;
+        right: -6rem;
+        bottom: -11rem;
+        width: 27rem;
+        height: 27rem;
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 50%;
+        box-shadow: 0 0 0 2rem rgba(255, 255, 255, .035), 0 0 0 4rem rgba(255, 255, 255, .025);
+        content: "";
+        pointer-events: none;
+    }
+    .curriculum-844-hero-inner {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 56rem);
+        margin: 0 auto;
+    }
+    .curriculum-844-eyebrow,
+    .curriculum-844-section-eyebrow {
+        margin: 0;
+        color: #f0d98d;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+    }
+    .curriculum-844-hero h1 {
+        margin: .85rem 0 1rem;
+        color: #fff;
+        font-size: clamp(2.2rem, 6vw, 4.2rem);
+        font-weight: 700;
+        letter-spacing: -.035em;
+        line-height: 1.1;
+    }
+    .curriculum-844-hero-copy {
+        max-width: 43rem;
+        margin: 0 auto;
+        color: rgba(255, 255, 255, .88);
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        line-height: 1.75;
+    }
+    .curriculum-844-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: .8rem;
+        margin-top: 2rem;
+    }
+    .curriculum-844-button {
+        display: inline-flex;
+        min-height: 2.9rem;
+        align-items: center;
+        justify-content: center;
+        padding: .75rem 1.25rem;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        font-size: .92rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+    }
+    .curriculum-844-button--primary {
+        background: var(--curriculum-gold);
+        color: #172b45;
+    }
+    .curriculum-844-button--primary:hover {
+        background: #e2bb45;
+        color: #172b45;
+    }
+    .curriculum-844-button--outline {
+        border-color: rgba(255, 255, 255, .68);
+        background: rgba(255, 255, 255, .06);
+        color: #fff;
+    }
+    .curriculum-844-button--outline:hover {
+        border-color: #fff;
+        background: #fff;
+        color: var(--curriculum-navy);
+    }
+    .curriculum-844-button:focus-visible {
+        outline: 3px solid #f0d98d;
+        outline-offset: 3px;
+    }
+    .curriculum-844-content {
+        width: min(100% - 2rem, 74rem);
+        margin: 0 auto;
+        padding: clamp(2.5rem, 6vw, 5rem) 0;
+    }
+    .curriculum-844-intro {
+        max-width: 58rem;
+        margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+        padding: clamp(1.35rem, 3vw, 2rem);
+        border-left: 4px solid var(--curriculum-gold);
+        border-radius: 0 .9rem .9rem 0;
+        background: #fff;
+        box-shadow: 0 18px 45px -38px rgba(15, 23, 42, .38);
+    }
+    .curriculum-844-intro p {
+        margin: 0;
+        color: #334155;
+        font-size: clamp(1.02rem, 2vw, 1.15rem);
+        line-height: 1.85;
+    }
+    .curriculum-844-section + .curriculum-844-section {
+        margin-top: clamp(2.75rem, 6vw, 4.5rem);
+    }
+    .curriculum-844-section-heading {
+        max-width: 46rem;
+        margin: 0 auto 1.5rem;
+        text-align: center;
+    }
+    .curriculum-844-section-eyebrow {
+        color: var(--curriculum-blue);
+        letter-spacing: .14em;
+    }
+    .curriculum-844-section-heading h2 {
+        margin: .55rem 0 0;
+        color: var(--curriculum-navy);
+        font-size: clamp(1.55rem, 3vw, 2.25rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+        line-height: 1.25;
+    }
+    .curriculum-844-forms {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+    .curriculum-844-card {
+        min-width: 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        background: #fff;
+        box-shadow: 0 16px 36px -30px rgba(15, 23, 42, .4);
+    }
+    .curriculum-844-form-card {
+        padding: clamp(1.4rem, 3vw, 2rem);
+        border-top: 4px solid var(--curriculum-gold);
+    }
+    .curriculum-844-form-label {
+        display: inline-block;
+        padding: .35rem .7rem;
+        border-radius: 999px;
+        background: #fbf4dd;
+        color: #75570d;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+    .curriculum-844-card h3 {
+        margin: .8rem 0 .5rem;
+        color: var(--curriculum-navy);
+        font-size: 1.35rem;
+        font-weight: 700;
+    }
+    .curriculum-844-card p {
+        margin: 0;
+        color: #536273;
+        font-size: .98rem;
+        line-height: 1.8;
+    }
+    .curriculum-844-resources {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.1rem;
+    }
+    .curriculum-844-resource-card {
+        padding: 1.4rem;
+        border-top: 3px solid #d8e2ed;
+    }
+    .curriculum-844-resource-icon {
+        display: inline-flex;
+        width: 2.8rem;
+        height: 2.8rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: .85rem;
+        background: #ebf4ff;
+        color: var(--curriculum-blue);
+        font-size: 1.1rem;
+    }
+    .curriculum-844-resource-card h3 {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+    }
+    .curriculum-844-resource-card p {
+        font-size: .92rem;
+    }
+    .curriculum-844-closing {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-top: clamp(2.5rem, 5vw, 4rem);
+        padding: clamp(1.25rem, 3vw, 1.75rem);
+        border: 1px solid #d7e2ed;
+        border-radius: 1rem;
+        background: #edf4fa;
+    }
+    .curriculum-844-closing-mark {
+        width: .55rem;
+        min-width: .55rem;
+        height: 2.25rem;
+        border-radius: 999px;
+        background: var(--curriculum-gold);
+    }
+    .curriculum-844-closing p {
+        margin: 0;
+        color: var(--curriculum-navy);
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.8;
+    }
+    @media (max-width: 767px) {
+        .curriculum-844-forms,
+        .curriculum-844-resources {
+            grid-template-columns: minmax(0, 1fr);
         }
-      });
-    }, { threshold: 0.18 });
-
-    document.querySelectorAll('.reveal-on-scroll').forEach((card) => observer.observe(card));
-  })();
-</script>
+        .curriculum-844-hero {
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .curriculum-844-button {
+            transition: none;
+        }
+    }
+</style>
 {% endblock %}

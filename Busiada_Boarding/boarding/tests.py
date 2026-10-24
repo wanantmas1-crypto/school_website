@@ -244,7 +244,7 @@ class PublicPagesTests(TestCase):
 
         html = response.content.decode()
         self.assertLess(html.index('class="site-nav'), html.index('class="site-utility-bar'))
-        self.assertNotContains(response, '254700000000')
+        self.assertContains(response, 'tel:+254700000000')
 
     @patch(
         'boarding.views._safe_file_url',
@@ -271,6 +271,43 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'animation: hero-ken-burns 20s ease-in-out infinite alternate')
         self.assertContains(response, 'rgba(30, 58, 95, 0.52)')
         self.assertContains(response, 'Existing hero content.')
+
+    @patch(
+        'boarding.models.safe_file_url',
+        side_effect=lambda file_field: {
+            'pages/hero-first.jpg': '/media/pages/hero-first.jpg',
+            'pages/hero-second.jpg': '/media/pages/hero-second.jpg',
+        }.get(getattr(file_field, 'name', ''), ''),
+    )
+    def test_home_page_uses_ordered_uploaded_images_as_transitioning_hero(self, _safe_file_url):
+        page = SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Homepage with image slideshow.</p>',
+            status='published',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='Second image',
+            image='pages/hero-second.jpg',
+            order=2,
+        )
+        PageImage.objects.create(
+            page=page,
+            title='First image',
+            image='pages/hero-first.jpg',
+            order=1,
+        )
+
+        response = self.client.get('/')
+        html = response.content.decode()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="hero-background-media hero-background-slide is-active"')
+        self.assertLess(html.index('/media/pages/hero-first.jpg'), html.index('/media/pages/hero-second.jpg'))
+        self.assertContains(response, 'transition: opacity 1.4s ease-in-out')
+        self.assertContains(response, '}, 7000);')
+        self.assertContains(response, 'Homepage with image slideshow.')
 
     def test_about_page_contains_location_map_link(self):
         response = self.client.get('/about/')
@@ -329,6 +366,18 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, '/school-leadership/')
         self.assertContains(response, '/service-charter/')
         self.assertContains(response, '/strategic-plan/')
+
+    def test_contact_ribbon_shows_admin_configured_phone_and_stays_sticky(self):
+        SiteSettings.objects.create()
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'tel:+254700000000')
+        self.assertContains(response, '+254700000000')
+        self.assertContains(response, 'position: fixed;')
+        self.assertContains(response, 'top: var(--site-nav-height, 5rem);')
+        self.assertContains(response, 'z-index: 40;')
 
     def test_school_leadership_page_enables_reveal_script(self):
         response = self.client.get('/school-leadership/')
@@ -412,17 +461,46 @@ class SchoolAnthemTests(TestCase):
 
 
 class FeePaymentPageTests(TestCase):
-    def test_fee_payment_page_renders_with_payment_methods_grid(self):
+    def assert_fee_payment_content(self, response):
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Fee Payment')
+        self.assertContains(response, 'Always use the student’s Admission Number or Student ID as the payment reference.')
+        self.assertContains(response, 'M-Pesa Paybill')
+        self.assertContains(response, '[Enter School Paybill]')
+        self.assertContains(response, 'M-Pesa Till Number')
+        self.assertContains(response, '[Enter School Till]')
+        self.assertContains(response, 'Bank Deposit / Transfer')
+        self.assertContains(response, '[Bank Name]')
+        self.assertContains(response, 'Busiada Girls’ High School')
+        self.assertContains(response, '[Account Number]')
+        self.assertContains(response, 'Cash Payment')
+        self.assertContains(response, 'working hours')
+        self.assertContains(response, 'official receipt')
+        self.assertContains(response, 'Important Instructions for Parents')
+        self.assertContains(response, 'M-Pesa confirmation message or bank slip')
+        self.assertContains(response, 'href="/contact/"')
+        self.assertContains(response, 'Payment values shown in brackets are placeholders.')
+        self.assertNotContains(response, 'Multiple Payment Options')
+        self.assertNotContains(response, 'processed immediately')
+
+    def test_fee_payment_page_renders_payment_guidance(self):
         response = self.client.get('/fees/')
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Multiple Payment Options')
-        self.assertContains(response, 'Paybill Number')
-        self.assertContains(response, 'Till Number')
-        self.assertContains(response, 'Bank Account')
-        self.assertContains(response, 'Postal Address')
-        self.assertContains(response, 'Payment Instructions')
-        self.assertContains(response, 'payment-card')
+        self.assert_fee_payment_content(response)
+
+    def test_fee_payment_site_page_renders_the_same_guidance(self):
+        SitePage.objects.create(
+            slug='fee-payment',
+            title='Fee Payment',
+            category='Admissions',
+            content='<p>Old payment copy should not replace the current instructions.</p>',
+            status='published',
+        )
+
+        response = self.client.get('/page/fee-payment/')
+
+        self.assert_fee_payment_content(response)
+        self.assertNotContains(response, 'Old payment copy should not replace the current instructions.')
 
 
 class AboutPageDynamicContentTests(TestCase):
@@ -466,11 +544,21 @@ class AcademicsPageTests(TestCase):
         response = self.client.get('/academics/8-4-4/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Busiada Girls High School')
+        self.assertContains(response, 'Busiada Girls’ High School')
+        self.assertContains(response, 'Outgoing curriculum')
+        self.assertContains(response, 'A focused and supportive learning environment for learners completing the 8-4-4 journey.')
         self.assertContains(response, 'Explore Forms')
-        self.assertContains(response, 'Resources')
+        self.assertContains(response, 'Revision Resources')
+        self.assertContains(response, 'We continue to support our Form 3 and Form 4 learners')
         self.assertContains(response, 'Form 4')
-        self.assertContains(response, 'Past KCSE Questions')
+        self.assertContains(response, 'personalised support help every learner perform at her best in KCSE.')
+        self.assertContains(response, 'continuous assessment, and early preparation')
+        self.assertContains(response, 'Assignments')
+        self.assertContains(response, 'Revision Materials')
+        self.assertContains(response, 'Past KCSE Papers')
+        self.assertContains(response, 'finish strong and step confidently into the next stage of her education.')
+        self.assertContains(response, 'href="#forms"')
+        self.assertContains(response, 'href="#resources"')
 
     def test_academics_view_uses_admin_page_when_present(self):
         page = SitePage.objects.create(
@@ -494,6 +582,79 @@ class AcademicsPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(SitePage.objects.filter(slug='academics', status='published').exists())
         self.assertContains(response, 'Academics')
+
+    def test_senior_school_page_hides_empty_pathway_galleries_and_unset_populations(self):
+        response = self.client.get('/academics/2-6-3-3-3/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Arts &amp; Sports Science')
+        self.assertContains(response, 'Possible Careers')
+        self.assertContains(response, 'Why CBE Matters')
+        self.assertContains(response, 'What Parents Should Know')
+        self.assertContains(response, 'Pathway Choice')
+        self.assertContains(response, 'Core Values')
+        self.assertNotContains(response, 'STEM pathway images')
+        self.assertNotContains(response, 'Social Sciences pathway images')
+        self.assertNotContains(response, 'Arts and Sports Science pathway images')
+        self.assertNotContains(response, 'learners</p>')
+        self.assertTrue(SitePage.objects.filter(slug='academics-2-6-3-3-3').exists())
+
+    @patch(
+        'boarding.models.safe_file_url',
+        side_effect=lambda file_field: {
+            'pages/stem-laboratory.jpg': '/media/pages/stem-laboratory.jpg',
+            'pages/computer-lab.jpg': '/media/pages/computer-lab.jpg',
+            'pages/stem-event.jpg': '/media/pages/stem-event.jpg',
+            'pages/social-sciences.jpg': '/media/pages/social-sciences.jpg',
+            'pages/arts-sports.jpg': '/media/pages/arts-sports.jpg',
+        }.get(getattr(file_field, 'name', ''), ''),
+    )
+    def test_senior_school_page_uses_admin_images_and_pathway_populations(self, _safe_file_url):
+        page = SitePage.objects.create(
+            slug='academics-2-6-3-3-3',
+            title='Senior School',
+            stem_learner_population=28,
+            social_sciences_learner_population=34,
+            status='published',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='STEM Laboratory',
+            image='pages/stem-laboratory.jpg',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='Computer Lab',
+            image='pages/computer-lab.jpg',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='STEM',
+            image='pages/stem-event.jpg',
+            order=1,
+        )
+        PageImage.objects.create(
+            page=page,
+            title='Social Sciences',
+            image='pages/social-sciences.jpg',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='Arts & Sports Science',
+            image='pages/arts-sports.jpg',
+        )
+
+        response = self.client.get('/academics/2-6-3-3-3/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '/media/pages/stem-laboratory.jpg')
+        self.assertContains(response, '/media/pages/computer-lab.jpg')
+        self.assertContains(response, '/media/pages/stem-event.jpg')
+        self.assertContains(response, '/media/pages/social-sciences.jpg')
+        self.assertContains(response, '/media/pages/arts-sports.jpg')
+        self.assertContains(response, '28 learners')
+        self.assertContains(response, '34 learners')
+        self.assertNotContains(response, 'Upload via Admin')
 
 
 @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT)
