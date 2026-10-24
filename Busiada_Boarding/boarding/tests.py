@@ -1,13 +1,14 @@
 import os
 import shutil
 import tempfile
+from unittest.mock import patch
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 
-from .models import Announcement, Document, PageImage, PageVideo, SitePage
+from .models import Announcement, Document, HistoryImage, PageImage, PageVideo, SitePage, SiteSettings
 
 
 TEST_MEDIA_ROOT = tempfile.mkdtemp()
@@ -40,6 +41,125 @@ class AnnouncementAdminFieldsTests(TestCase):
 
 
 class PublicPagesTests(TestCase):
+    def test_admission_process_page_renders_updated_steps_and_help_contact(self):
+        SitePage.objects.create(
+            slug='admission-process',
+            title='Admission Process',
+            category='Admissions',
+            content='',
+            status='published',
+        )
+
+        response = self.client.get('/page/admission-process/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Complete Grade 9')
+        self.assertContains(response, 'Your child finishes Junior School and sits for the KJSEA examination.')
+        self.assertContains(response, 'https://www.knec.ac.ke')
+        self.assertContains(response, 'Select Pathway and Schools')
+        self.assertContains(response, 'Together with teachers, choose one pathway, subject combination, and eight senior schools.')
+        self.assertContains(response, 'The Junior School submits the choices through the official portal:')
+        self.assertContains(response, 'https://selection-placement.kemis.go.ke')
+        self.assertContains(response, 'Ministry Placement')
+        self.assertContains(response, 'The Ministry of Education places learners into Senior Schools based on performance and the choices made.')
+        self.assertContains(response, 'Check Placement Result')
+        self.assertContains(response, 'https://placement.education.go.ke')
+        self.assertContains(response, '22263')
+        self.assertContains(response, 'Download Admission Letter')
+        self.assertContains(response, 'This is the only valid admission letter.')
+        self.assertContains(response, 'Report to School')
+        self.assertContains(response, 'Complete Admission')
+        self.assertContains(response, 'More Official Information')
+        self.assertContains(response, 'https://www.education.go.ke')
+        self.assertContains(response, 'Placement is done by the Ministry of Education, not by individual schools.')
+        self.assertContains(response, 'target="_blank" rel="noopener noreferrer"', html=False)
+        self.assertContains(response, 'admission-step-apply')
+        self.assertContains(response, 'admission-step-interview')
+        self.assertContains(response, 'admission-step-enroll')
+
+    def test_school_chaplaincy_shows_image_placeholders_without_admin_uploads(self):
+        SitePage.objects.create(
+            slug='school-chaplaincy',
+            title='School Chaplaincy',
+            status='published',
+        )
+
+        response = self.client.get('/school-chaplaincy/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Spiritual care, guidance, and pastoral support for every girl at Busiada.')
+        self.assertContains(response, 'No featured chaplaincy image uploaded')
+        self.assertContains(response, 'No chaplaincy gallery photos uploaded')
+        self.assertNotContains(response, 'chaplaincy-slide')
+
+    @patch(
+        'boarding.views._safe_file_url',
+        side_effect=lambda file_field: {
+            'site_pages/chaplaincy-background.jpg': '/media/site_pages/chaplaincy-background.jpg',
+            'site_pages/chaplaincy-featured.jpg': '/media/site_pages/chaplaincy-featured.jpg',
+            'pages/chaplaincy-gallery.jpg': '/media/pages/chaplaincy-gallery.jpg',
+        }.get(getattr(file_field, 'name', ''), ''),
+    )
+    def test_school_chaplaincy_uses_uploaded_page_images(self, _safe_file_url):
+        page = SitePage.objects.create(
+            slug='school-chaplaincy',
+            title='School Chaplaincy',
+            status='published',
+            background_image='site_pages/chaplaincy-background.jpg',
+            featured_image='site_pages/chaplaincy-featured.jpg',
+        )
+        PageImage.objects.create(
+            page=page,
+            image='pages/chaplaincy-gallery.jpg',
+            title='Chapel gathering',
+            caption='A moment of fellowship',
+        )
+
+        response = self.client.get('/school-chaplaincy/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '/media/site_pages/chaplaincy-background.jpg')
+        self.assertContains(response, '/media/site_pages/chaplaincy-featured.jpg')
+        self.assertContains(response, '/media/pages/chaplaincy-gallery.jpg')
+        self.assertContains(response, 'A moment of fellowship')
+        self.assertContains(response, 'background: rgba(30, 58, 95, .52)')
+    def test_history_page_renders_supplied_milestones_when_no_admin_entries(self):
+        response = self.client.get('/history/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Our History')
+        self.assertContains(response, 'Founding Years')
+        self.assertContains(response, 'Growth &amp; Development')
+        self.assertContains(response, 'Rise in Academic Performance')
+        self.assertContains(response, 'C2 Senior School')
+        self.assertContains(response, 'Meet Our Leadership')
+        self.assertNotContains(response, 'Content will be uploaded soon')
+
+    @patch(
+        'boarding.views._safe_file_url',
+        side_effect=lambda file_field: (
+            '/media/history/milestone.jpg'
+            if getattr(file_field, 'name', '') == 'history/milestone.jpg'
+            else ''
+        ),
+    )
+    def test_history_page_renders_uploaded_milestones(self, _safe_file_url):
+        HistoryImage.objects.create(
+            year='1985',
+            title='A school milestone',
+            description='A milestone shared by the school community.',
+            image='history/milestone.jpg',
+        )
+
+        response = self.client.get('/history/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '1985')
+        self.assertContains(response, 'A school milestone')
+        self.assertContains(response, 'A milestone shared by the school community.')
+        self.assertContains(response, '/media/history/milestone.jpg')
+        self.assertNotContains(response, 'Founding Years')
+
     def test_home_page_renders_successfully(self):
         page = SitePage.objects.create(
             slug='home',
@@ -85,10 +205,72 @@ class PublicPagesTests(TestCase):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Apply Now')
-        self.assertContains(response, 'Explore Campus')
+        self.assertContains(response, 'Admission Process')
+        self.assertContains(response, 'Our History')
+        self.assertContains(response, 'Contact Us')
         self.assertContains(response, 'site-utility-bar')
-        self.assertContains(response, 'WhatsApp')
+        self.assertContains(response, 'mailto:info@busiadagirls.ac.ke')
+
+    def test_home_page_uses_cms_identity_and_renders_contact_social_links(self):
+        SiteSettings.objects.create(
+            site_name='Busiada Girls Senior School',
+            tagline='Unleash Your Potential',
+            principal_name='CMS Principal',
+            principal_title='Principal',
+            principal_message='<p>Welcome to our school.</p>',
+        )
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Busiada Girls Senior School')
+        self.assertContains(response, 'Unleash Your Potential')
+        self.assertContains(response, 'CMS Principal')
+        self.assertContains(response, 'Welcome to our school.')
+        self.assertContains(response, 'href="/contact/"')
+        self.assertContains(response, 'View Announcements')
+        self.assertContains(response, 'Principal portrait placeholder')
+        self.assertContains(response, 'home-map-frame')
+        self.assertContains(response, 'Busiada, Kenya')
+        self.assertContains(response, 'P.O. Box 35-50404, Bumala, Busia County, Kenya')
+        self.assertContains(response, '<svg', html=False)
+        for social_url in (
+            'https://www.tiktok.com/',
+            'https://www.facebook.com/',
+            'https://www.instagram.com/',
+            'https://x.com/',
+        ):
+            self.assertContains(response, social_url)
+
+        html = response.content.decode()
+        self.assertLess(html.index('class="site-nav'), html.index('class="site-utility-bar'))
+        self.assertNotContains(response, '254700000000')
+
+    @patch(
+        'boarding.views._safe_file_url',
+        side_effect=lambda file_field: (
+            '/media/videos/hero.mp4'
+            if getattr(file_field, 'name', '') == 'videos/hero.mp4'
+            else ''
+        ),
+    )
+    def test_home_page_uses_uploaded_video_as_animated_hero_background(self, _safe_file_url):
+        page = SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Existing hero content.</p>',
+            status='published',
+        )
+        PageVideo.objects.create(page=page, video='videos/hero.mp4', order=0)
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<video class="hero-background-media" autoplay muted loop playsinline', html=False)
+        self.assertContains(response, '<source src="/media/videos/hero.mp4">', html=False)
+        self.assertContains(response, 'animation: hero-ken-burns 20s ease-in-out infinite alternate')
+        self.assertContains(response, 'rgba(30, 58, 95, 0.52)')
+        self.assertContains(response, 'Existing hero content.')
 
     def test_about_page_contains_location_map_link(self):
         response = self.client.get('/about/')
@@ -161,18 +343,27 @@ class PublicPagesTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Contact Us')
         self.assertContains(response, 'Reach the school office')
+        self.assertContains(response, 'admissions, general inquiries, and official communication')
         self.assertContains(response, 'WhatsApp')
         self.assertContains(response, 'Phone')
         self.assertContains(response, 'Email')
         self.assertContains(response, 'Postal Address')
-        self.assertContains(response, 'contact-item')
+        self.assertContains(response, 'contact-card')
+        self.assertContains(response, 'WhatsApp contact details are not available yet.')
+        self.assertContains(response, 'Phone contact details are not available yet.')
+        self.assertContains(response, 'mailto:info@busiadagirls.ac.ke')
+        self.assertContains(response, 'P.O. Box 35-50404, Bumala, Busia County, Kenya')
+        self.assertContains(response, 'Our Location')
+        self.assertContains(response, 'https://www.google.com/maps/search/?api=1&amp;query=Busiada+Girls+High+School+Bumala+Busia+Kenya')
+        self.assertNotContains(response, '[Enter')
+        self.assertNotContains(response, '+254 700 000 000')
+        self.assertNotContains(response, 'href="tel:')
 
 
 class SchoolAnthemTests(TestCase):
     def test_school_anthem_page_renders_with_lyrics_and_audio_placeholder(self):
         from .models import SchoolAnthem
-        
-        # Create a school anthem entry
+
         anthem = SchoolAnthem.objects.create(
             title='Busiada School Anthem',
             lyrics='<p>Verse 1: Rise and shine, Busiada pride...</p><p>Chorus: We are leaders, bright and true...</p>',
@@ -181,9 +372,43 @@ class SchoolAnthemTests(TestCase):
         response = self.client.get('/school-anthem/')
 
         self.assertEqual(response.status_code, 200)
-        # Check for content that's definitely in the template
-        self.assertContains(response, 'Our Pride')
-        self.assertContains(response, 'Celebrating our heritage and unity')
+        self.assertContains(response, anthem.title)
+        self.assertContains(response, 'The song that unites every Busiada girl in pride and purpose.')
+        self.assertContains(response, 'School Anthem Lyrics')
+        self.assertContains(response, 'Verse 1: Rise and shine, Busiada pride...')
+        self.assertContains(response, 'Chorus: We are leaders, bright and true...')
+        self.assertContains(response, 'The School Anthem is sung with pride during assemblies')
+        self.assertContains(response, 'No audio available yet')
+        self.assertContains(response, 'The school anthem recording will be available soon. Please check back later.')
+        self.assertNotContains(response, '<audio', html=False)
+
+    def test_school_anthem_page_renders_without_an_admin_record(self):
+        response = self.client.get('/school-anthem/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'School Anthem')
+        self.assertContains(response, 'We rise with pride beneath the Kenyan sun')
+        self.assertContains(response, 'No audio available yet')
+
+    def test_school_anthem_audio_player_is_available_without_autoplay(self):
+        from .models import SchoolAnthem
+
+        SchoolAnthem.objects.create(
+            title='Busiada School Anthem',
+            audio_file='anthem/school-anthem.mp3',
+        )
+
+        response = self.client.get('/school-anthem/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            '<audio controls preload="metadata" aria-label="Listen to the Busiada school anthem">',
+            html=False,
+        )
+        self.assertContains(response, 'school-anthem.mp3')
+        self.assertNotContains(response, 'autoplay')
+        self.assertNotContains(response, 'No audio available yet')
 
 
 class FeePaymentPageTests(TestCase):

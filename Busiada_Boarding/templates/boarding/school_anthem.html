@@ -1,145 +1,249 @@
-{% extends 'boarding/page_template.html' %}
+{% extends 'boarding/base.html' %}
 
-{% block page_title %}{{ anthem.title }}{% endblock %}
-{% block page_subtitle %}Busiada Girls Senior School{% endblock %}
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
 
-{% block page_content %}
-<section class="anthem-page-block dynamic-panel reveal-on-scroll border-0 p-0">
-    <div class="anthem-hero bg-[#004e92] text-white py-16 px-4">
-        <div class="container-fluid mx-auto max-w-7xl text-center">
-            <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(255,255,255,.12); color: #ffffff; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;">
-                <i class="fa-solid fa-music me-2"></i>Our Pride
+{% block content %}
+<section class="anthem-page">
+    <header class="anthem-hero">
+        <div class="anthem-hero-content">
+            <span class="anthem-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                </svg>
             </span>
-            <h2 class="mb-4 text-4xl md:text-5xl font-bold tracking-tight">{{ anthem.title }}</h2>
-            <p class="mx-auto max-w-3xl text-center text-base md:text-lg text-white/80">A celebration of school spirit, heritage, and our shared future as Busiada Girls Senior School.</p>
+            <p class="anthem-eyebrow">Our pride</p>
+            <h1>{{ anthem.title|default:"School Anthem" }}</h1>
+            <p class="anthem-hero-subtitle">The song that unites every Busiada girl in pride and purpose.</p>
         </div>
-    </div>
+    </header>
 
-    <div class="container-fluid px-3 px-md-4 px-xl-5 py-8">
-        <div class="card shadow-lg border-0 bg-white p-4 p-md-5" style="border-radius: 1.5rem;">
-            <div class="anthem-lyrics mb-6 p-5 text-center" style="background: #ffffff; border-radius: 1rem; border-left: 6px solid #004e92;">
-                <div class="mb-5">
-                    <h3 class="text-2xl font-semibold text-[#0A2540]">School Anthem Lyrics</h3>
-                    <p class="text-sm text-slate-500 mb-0">Our anthem is formed of verses that celebrate learning, unity, and pride.</p>
-                </div>
-                <div class="lyrics-content text-slate-700 mx-auto" style="line-height: 1.9; font-size: 1.05rem;">
-                    {% if anthem.lyrics %}
-                        {{ anthem.lyrics|safe }}
-                    {% else %}
-                        <div class="stanza-columns" style="column-count: 2; column-gap: 3rem;">
-                            <p>We rise with pride beneath the Kenyan sun,<br>
-                            Busiada's daughters, bold and one.</p>
-                            <p>In halls of learning, our voices ring,<br>
-                            United in hope, each heart takes wing.</p>
-                            <p>With wisdom sought and honor found,<br>
-                            We build our dreams on sacred ground.</p>
-                            <p>In every challenge, hand in hand,<br>
-                            We shape a brighter, stronger land.</p>
-                        </div>
-                    {% endif %}
-                </div>
+    <div class="anthem-content">
+        <section class="anthem-lyrics-card" aria-labelledby="anthem-lyrics-title">
+            <div class="anthem-section-heading">
+                <p class="anthem-eyebrow">Our shared voice</p>
+                <h2 id="anthem-lyrics-title">School Anthem Lyrics</h2>
             </div>
-
-            <!-- Audio Player Section -->
-                {% if anthem.audio_file %}
-                <div class="audio-player-section p-5" style="background: linear-gradient(135deg, rgba(0, 78, 146, .08) 0%, rgba(59, 130, 246, .06) 100%); border-radius: 1rem;">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <h3 class="mb-1 text-lg font-semibold text-[#0A2540]">
-                                <i class="fa-solid fa-headphones me-2" style="color: #004e92;"></i>Listen to Our Anthem
-                            </h3>
-                            <p class="mb-0 text-sm text-slate-600">Click play to hear the official school anthem recording</p>
-                        </div>
-                    </div>
-                    
-                    <audio controls class="w-100 mt-3" style="border-radius: 0.5rem;">
-                        <source src="{{ anthem.audio_file.url }}" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
+            <div class="anthem-lyrics">
+                {% if anthem.lyrics %}
+                    {{ anthem.lyrics|safe }}
                 {% else %}
-                <div class="alert alert-info d-flex align-items-center p-4" style="background: rgba(59, 130, 246, .1); border: 1px solid rgba(59, 130, 246, .3); border-radius: 1rem;">
-                    <i class="fa-solid fa-circle-info me-3" style="color: #3b82f6; font-size: 1.5rem;"></i>
-                    <div>
-                        <strong>No audio file available</strong>
-                        <p class="mb-0 text-sm mt-1">The school anthem audio recording will be available soon. Please check back later.</p>
-                    </div>
-                </div>
+                    <p>We rise with pride beneath the Kenyan sun,<br>
+                    Busiada's daughters, bold and one.</p>
+                    <p>In halls of learning, our voices ring,<br>
+                    United in hope, each heart takes wing.</p>
+                    <p>With wisdom sought and honor found,<br>
+                    We build our dreams on sacred ground.</p>
+                    <p>In every challenge, hand in hand,<br>
+                    We shape a brighter, stronger land.</p>
                 {% endif %}
-
-                <!-- Last Updated -->
-                <div class="text-center mt-6 pt-4" style="border-top: 1px solid rgba(15, 23, 42, .1);">
-                    <p class="mb-0 text-xs text-slate-500">
-                        <i class="fa-solid fa-clock me-2"></i>Last updated: {{ anthem.updated_at|date:"F d, Y" }}
-                    </p>
-                </div>
             </div>
-        </div>
+            <p class="anthem-closing-note">
+                The School Anthem is sung with pride during assemblies, official functions, and special school events.
+            </p>
+        </section>
+
+        <section class="anthem-audio-card" aria-labelledby="anthem-audio-title">
+            <span class="anthem-audio-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 5 6 9H3v6h3l5 4V5Z"/>
+                    <path d="M15.5 8.5a5 5 0 0 1 0 7m3-10a9 9 0 0 1 0 13"/>
+                </svg>
+            </span>
+            <div class="anthem-audio-copy">
+                <h2 id="anthem-audio-title">{% if anthem.audio_file %}Listen to Our Anthem{% else %}No audio available yet{% endif %}</h2>
+                <p>{% if anthem.audio_file %}Listen to the official school anthem recording.{% else %}The school anthem recording will be available soon. Please check back later.{% endif %}</p>
+                {% if anthem.audio_file %}
+                <audio controls preload="metadata" aria-label="Listen to the Busiada school anthem">
+                    <source src="{{ anthem.audio_file.url }}">
+                    Your browser does not support audio playback.
+                </audio>
+                {% endif %}
+            </div>
+        </section>
+
+        {% if anthem.updated_at %}
+        <p class="anthem-updated">Last updated: {{ anthem.updated_at|date:"F d, Y" }}</p>
+        {% endif %}
     </div>
 </section>
 
 <style>
+    .anthem-page {
+        background: #F8FAFC;
+        color: #1E3A5F;
+    }
     .anthem-hero {
-        width: 100%;
+        display: flex;
+        min-height: 21rem;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 1.5rem;
+        background: linear-gradient(135deg, #1E3A5F 0%, #234B73 58%, #152A45 100%);
+        color: #fff;
+        text-align: center;
     }
-
-    .anthem-page-block {
-        overflow: visible;
+    .anthem-hero-content {
+        max-width: 48rem;
     }
-
-    .anthem-lyrics {
-        max-width: 100%;
-        padding: 2rem;
-    }
-
-    .stanza-columns {
-        column-count: 2;
-        column-gap: 3rem;
-        text-align: left;
-    }
-
-    .audio-player-section,
-    .alert {
-        margin-bottom: 0;
-    }
-
-    .lyrics-content {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-
-    .lyrics-content p {
+    .anthem-icon {
+        display: inline-flex;
+        width: 3.25rem;
+        height: 3.25rem;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, .25);
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, .1);
+        color: #F8F1E3;
     }
-
-    .lyrics-content p:last-child {
+    .anthem-icon svg,
+    .anthem-audio-icon svg {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .anthem-eyebrow {
+        margin: 0;
+        color: #9CC7EA;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+    }
+    .anthem-hero h1 {
+        margin: .5rem 0 0;
+        color: #fff;
+        font-size: clamp(2.25rem, 5vw, 3.75rem);
+        font-weight: 700;
+        letter-spacing: -.03em;
+        line-height: 1.1;
+    }
+    .anthem-hero-subtitle {
+        margin: 1rem auto 0;
+        color: rgba(255, 255, 255, .84);
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+    .anthem-content {
+        display: grid;
+        width: min(100% - 2rem, 58rem);
+        gap: 1.5rem;
+        margin: 0 auto;
+        padding: 3.5rem 0 4rem;
+    }
+    .anthem-lyrics-card,
+    .anthem-audio-card {
+        border: 1px solid rgba(30, 58, 95, .1);
+        border-radius: 1.5rem;
+        background: #fff;
+        box-shadow: 0 20px 55px -38px rgba(15, 23, 42, .3);
+    }
+    .anthem-lyrics-card {
+        padding: clamp(1.5rem, 5vw, 3rem);
+        border-left: 5px solid #1E3A5F;
+    }
+    .anthem-section-heading {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    .anthem-section-heading h2,
+    .anthem-audio-copy h2 {
+        margin: .5rem 0 0;
+        color: #1E3A5F;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+    }
+    .anthem-lyrics {
+        max-width: 38rem;
+        margin: 0 auto;
+        color: #334155;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.125rem;
+        line-height: 1.9;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+    .anthem-lyrics p {
+        margin: 0 0 1.5rem;
+        break-inside: avoid;
+    }
+    .anthem-lyrics p:last-child {
         margin-bottom: 0;
     }
-
-    audio {
-        max-width: 100%;
-        height: 40px;
-        outline: none;
+    .anthem-closing-note {
+        max-width: 42rem;
+        margin: 2rem auto 0;
+        padding-top: 1.25rem;
+        border-top: 1px solid #E2E8F0;
+        color: #64748B;
+        font-size: .875rem;
+        line-height: 1.7;
+        text-align: center;
     }
-
-    audio::-webkit-media-controls-panel {
-        background: linear-gradient(135deg, rgba(0, 78, 146, .15) 0%, rgba(59, 130, 246, .1) 100%);
+    .anthem-audio-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: #FDFBF7;
     }
-
-    @media (max-width: 768px) {
+    .anthem-audio-icon {
+        display: inline-flex;
+        width: 2.75rem;
+        height: 2.75rem;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        border-radius: .9rem;
+        background: #F8F1E3;
+        color: #1E3A5F;
+    }
+    .anthem-audio-copy {
+        min-width: 0;
+        flex: 1;
+    }
+    .anthem-audio-copy h2 {
+        margin-top: .1rem;
+        font-size: 1.125rem;
+    }
+    .anthem-audio-copy p {
+        margin: .4rem 0 0;
+        color: #64748B;
+        font-size: .9rem;
+        line-height: 1.6;
+    }
+    .anthem-audio-copy audio {
+        display: block;
+        width: 100%;
+        margin-top: 1rem;
+        accent-color: #1E3A5F;
+        color-scheme: light;
+    }
+    .anthem-updated {
+        margin: 0;
+        color: #94A3B8;
+        font-size: .75rem;
+        text-align: center;
+    }
+    @media (max-width: 480px) {
+        .anthem-hero {
+            min-height: 18rem;
+            padding: 3rem 1.25rem;
+        }
+        .anthem-content {
+            width: min(100% - 1.25rem, 58rem);
+            padding: 2rem 0 2.5rem;
+        }
+        .anthem-audio-card {
+            padding: 1.25rem;
+        }
         .anthem-lyrics {
-            padding: 1.25rem !important;
-            column-count: 1;
-        }
-
-        .audio-player-section {
-            padding: 1.25rem !important;
-        }
-
-        .card {
-            padding: 1.5rem !important;
+            font-size: 1.05rem;
         }
     }
 </style>
 {% endblock %}
-

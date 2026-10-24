@@ -2,70 +2,333 @@
 
 {% block page_title %}School Chaplaincy{% endblock %}
 
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+
 {% block content %}
-<section class="w-full max-w-7xl mx-auto grid gap-8 py-8 lg:py-12 relative overflow-hidden" {% if page_background_image_url %}style="background-image: url('{{ page_background_image_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"{% endif %}>
-    <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
-        <div class="space-y-6">
-            <h1 class="text-4xl font-bold text-slate-900">School Chaplaincy</h1>
-            <p class="text-lg leading-8 text-slate-700">The chaplaincy team provides spiritual care, moral guidance and pastoral support for every student at Busiada Girls Senior School.</p>
-            <p class="text-base leading-7 text-slate-600">Use the admin panel to upload the page background image and add chaplaincy photos. The first section shows text on the left and a featured image on the right.</p>
+<section class="chaplaincy-page">
+    <section class="chaplaincy-hero{% if page_background_image_url %} chaplaincy-hero-has-image{% endif %}"{% if page_background_image_url %} style="--chaplaincy-hero-image: url('{{ page_background_image_url|escape }}');"{% endif %}>
+        <div class="chaplaincy-hero-content">
+            <p class="chaplaincy-eyebrow">Care, guidance, and belonging</p>
+            <h1>School Chaplaincy</h1>
+            <p>Spiritual care, guidance, and pastoral support for every girl at Busiada.</p>
         </div>
-        <div class="rounded-[2rem] overflow-hidden bg-slate-200 min-h-[340px] flex items-center justify-center">
-            {% if section_one_image and section_one_image.image_url %}
-                <img src="{{ section_one_image.image_url }}" alt="{{ section_one_image.title }}" class="w-full h-full object-cover" loading="lazy" />
-            {% else %}
-                <div class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-500" aria-hidden="true"></div>
-            {% endif %}
-        </div>
-    </div>
+    </section>
 
-    <div class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] items-center">
-        <div class="space-y-6">
-            <h2 class="text-3xl font-semibold text-slate-900">Spiritual care with compassion</h2>
-            <p class="text-lg leading-8 text-slate-700">The chaplaincy supports student wellbeing through prayer, guidance and community outreach, all rooted in our school’s values.</p>
-            <p class="text-base leading-7 text-slate-600">This section is text-led and designed to introduce the core mission of the school chaplaincy team.</p>
-        </div>
-        <div class="rounded-[2rem] overflow-hidden bg-slate-200 min-h-[340px] flex items-center justify-center">
-            {% if section_two_image and section_two_image.image_url %}
-                <img src="{{ section_two_image.image_url }}" alt="{{ section_two_image.title }}" class="w-full h-full object-cover" loading="lazy" />
-            {% else %}
-                <div class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-500" aria-hidden="true"></div>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="relative overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-12 text-center text-white">
-        <div class="space-y-6 max-w-3xl mx-auto">
-            <h2 class="text-3xl font-semibold">Growing through connection</h2>
-            <p class="text-lg leading-8 text-slate-300">A visual section for featured chaplaincy moments, with a subtle animation effect on uploaded images.</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3 chaplaincy-transition">
-            {% for slide in transition_images %}
-                <div class="relative overflow-hidden rounded-[1.75rem] bg-slate-800 p-4 shadow-2xl">
-                    {% if slide.image_url %}
-                        <img src="{{ slide.image_url }}" alt="{{ slide.title }}" class="chaplaincy-slide mx-auto block h-64 w-full object-cover transition-transform duration-1000 ease-in-out hover:scale-105 hover:rotate-1" loading="lazy" />
-                    {% else %}
-                        <div class="flex h-64 w-full items-center justify-center bg-slate-700 text-slate-400" aria-hidden="true"></div>
-                    {% endif %}
-                    <div class="mt-4 text-left">
-                        <p class="font-semibold text-white">{{ slide.title }}</p>
-                        <p class="text-sm text-slate-300">{{ slide.description|default:'Chaplaincy photo' }}</p>
-                    </div>
+    <div class="chaplaincy-content">
+        <section class="chaplaincy-intro chaplaincy-section">
+            <div class="chaplaincy-copy">
+                <p class="chaplaincy-eyebrow">A place to find support</p>
+                <h2>Spiritual care with compassion</h2>
+                <p>The chaplaincy team offers spiritual care, moral guidance, and pastoral support to learners across school life.</p>
+                <p>Through prayer, reflection, and a listening ear, we encourage every girl to grow in faith, resilience, and care for others.</p>
+            </div>
+            <div class="chaplaincy-image-frame chaplaincy-featured-image">
+                {% if featured_image_url %}
+                <img src="{{ featured_image_url|escape }}" alt="School chaplaincy" loading="lazy">
+                {% else %}
+                <div class="chaplaincy-placeholder" role="img" aria-label="No featured chaplaincy image uploaded">
+                    <span>Featured image will appear here</span>
                 </div>
-            {% endfor %}
-        </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="chaplaincy-mission chaplaincy-section">
+            <div class="chaplaincy-mission-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M24 7v34M14 17h20M18 41h12"/>
+                    <path d="M12 18c0 7 5.4 12 12 12s12-5 12-12"/>
+                    <path d="m8 17 4-7 4 7M32 17l4-7 4 7"/>
+                </svg>
+            </div>
+            <div class="chaplaincy-copy">
+                <p class="chaplaincy-eyebrow">Faith in everyday life</p>
+                <h2>Guidance that helps every girl grow</h2>
+                <p>Rooted in the values of the Anglican Church of Kenya, chaplaincy activities create space for worship, thoughtful conversation, and service to the wider community.</p>
+            </div>
+        </section>
+
+        <section class="chaplaincy-gallery-section">
+            <div class="chaplaincy-gallery-heading">
+                <p class="chaplaincy-eyebrow">Shared moments</p>
+                <h2>Growing Through Connection</h2>
+                <p>Moments of reflection, fellowship, and service in our school community.</p>
+            </div>
+            <div class="chaplaincy-gallery">
+                {% if gallery_images %}
+                    {% for image in gallery_images %}
+                    <figure class="chaplaincy-gallery-card">
+                        <img src="{{ image.image_url|escape }}" alt="{{ image.title|default:image.caption|default:'School chaplaincy moment'|escape }}" loading="lazy">
+                        {% if image.caption or image.title %}
+                        <figcaption>{{ image.caption|default:image.title }}</figcaption>
+                        {% endif %}
+                    </figure>
+                    {% endfor %}
+                {% else %}
+                    <div class="chaplaincy-gallery-placeholder" role="img" aria-label="No chaplaincy gallery photos uploaded">
+                        Additional chaplaincy photos will appear here
+                    </div>
+                    <div class="chaplaincy-gallery-placeholder chaplaincy-gallery-placeholder-secondary" aria-hidden="true"></div>
+                    <div class="chaplaincy-gallery-placeholder chaplaincy-gallery-placeholder-secondary" aria-hidden="true"></div>
+                {% endif %}
+            </div>
+        </section>
     </div>
 </section>
 
 <style>
-    .chaplaincy-transition .chaplaincy-slide {
-        transform-origin: center center;
-        animation: chaplaincy-zoom-rotate 12s ease-in-out infinite;
+    .chaplaincy-page {
+        background: #F8FAFC;
+        color: #1E3A5F;
     }
-
-    @keyframes chaplaincy-zoom-rotate {
-        0%, 100% { transform: scale(1) rotate(0deg); }
-        50% { transform: scale(1.08) rotate(1.25deg); }
+    .chaplaincy-hero {
+        position: relative;
+        display: flex;
+        min-height: 24rem;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 4rem 1.5rem;
+        background: linear-gradient(135deg, #1E3A5F, #152A45);
+        color: #fff;
+        text-align: center;
+        isolation: isolate;
+    }
+    .chaplaincy-hero::before {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background-image: var(--chaplaincy-hero-image);
+        background-position: center;
+        background-size: cover;
+        content: "";
+    }
+    .chaplaincy-hero::after {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background: rgba(30, 58, 95, .52);
+        content: "";
+    }
+    .chaplaincy-hero-content {
+        width: min(100%, 48rem);
+    }
+    .chaplaincy-hero h1 {
+        margin: .5rem 0 0;
+        color: #fff;
+        font-size: clamp(2.4rem, 6vw, 4rem);
+        font-weight: 700;
+        letter-spacing: -.035em;
+        line-height: 1.1;
+    }
+    .chaplaincy-hero-content > p:last-child {
+        margin: 1rem auto 0;
+        color: rgba(255, 255, 255, .9);
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    .chaplaincy-eyebrow {
+        margin: 0;
+        color: #2B6CB0;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .19em;
+        text-transform: uppercase;
+    }
+    .chaplaincy-hero .chaplaincy-eyebrow {
+        color: #F8F1E3;
+    }
+    .chaplaincy-content {
+        display: grid;
+        width: min(100% - 2rem, 74rem);
+        gap: 2rem;
+        margin: 0 auto;
+        padding: 4rem 0;
+    }
+    .chaplaincy-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+        gap: clamp(2rem, 6vw, 5rem);
+        align-items: center;
+    }
+    .chaplaincy-copy h2,
+    .chaplaincy-gallery-heading h2 {
+        margin: .65rem 0 1rem;
+        color: #1E3A5F;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        letter-spacing: -.025em;
+        line-height: 1.2;
+    }
+    .chaplaincy-copy > p:not(.chaplaincy-eyebrow) {
+        margin: .9rem 0 0;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.85;
+    }
+    .chaplaincy-image-frame {
+        min-height: 21rem;
+        overflow: hidden;
+        border: 1px solid rgba(30, 58, 95, .1);
+        border-radius: 1.5rem;
+        background: #E5E7EB;
+        box-shadow: 0 20px 55px -38px rgba(15, 23, 42, .32);
+    }
+    .chaplaincy-featured-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 21rem;
+        object-fit: cover;
+    }
+    .chaplaincy-placeholder {
+        display: flex;
+        min-height: 21rem;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        color: #64748B;
+        font-size: .9rem;
+        text-align: center;
+    }
+    .chaplaincy-mission {
+        grid-template-columns: 5rem minmax(0, 1fr);
+        max-width: 58rem;
+        margin: 1rem auto 0;
+        padding: clamp(1.5rem, 4vw, 2.75rem);
+        border: 1px solid rgba(30, 58, 95, .1);
+        border-radius: 1.5rem;
+        background: #fff;
+        box-shadow: 0 20px 55px -38px rgba(15, 23, 42, .28);
+    }
+    .chaplaincy-mission-mark {
+        display: flex;
+        width: 4rem;
+        height: 4rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        background: #F8F1E3;
+        color: #1E3A5F;
+    }
+    .chaplaincy-mission-mark svg {
+        width: 2rem;
+        height: 2rem;
+    }
+    .chaplaincy-mission .chaplaincy-copy h2 {
+        font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+    .chaplaincy-gallery-section {
+        padding-top: 1.5rem;
+    }
+    .chaplaincy-gallery-heading {
+        max-width: 44rem;
+        margin: 0 auto 2rem;
+        text-align: center;
+    }
+    .chaplaincy-gallery-heading h2 {
+        margin-bottom: .75rem;
+    }
+    .chaplaincy-gallery-heading > p:last-child {
+        margin: 0;
+        color: #64748B;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    .chaplaincy-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+    }
+    .chaplaincy-gallery-card,
+    .chaplaincy-gallery-placeholder {
+        min-width: 0;
+        min-height: 16rem;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid rgba(30, 58, 95, .1);
+        border-radius: 1.25rem;
+        background: #E5E7EB;
+        box-shadow: 0 16px 40px -30px rgba(15, 23, 42, .3);
+    }
+    .chaplaincy-gallery-card img {
+        display: block;
+        width: 100%;
+        height: 16rem;
+        object-fit: cover;
+        transition: transform .5s ease;
+    }
+    .chaplaincy-gallery-card:hover img {
+        transform: scale(1.035);
+    }
+    .chaplaincy-gallery-card figcaption {
+        padding: .85rem 1rem;
+        background: #fff;
+        color: #475569;
+        font-size: .875rem;
+    }
+    .chaplaincy-gallery-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        color: #64748B;
+        font-size: .875rem;
+        text-align: center;
+    }
+    .chaplaincy-gallery-placeholder-secondary {
+        background: #EEF0F2;
+    }
+    @media (max-width: 700px) {
+        .chaplaincy-hero {
+            min-height: 20rem;
+            padding: 3.5rem 1.25rem;
+        }
+        .chaplaincy-content {
+            width: min(100% - 1.5rem, 74rem);
+            gap: 2.75rem;
+            padding: 2.5rem 0;
+        }
+        .chaplaincy-section {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+        .chaplaincy-intro .chaplaincy-image-frame {
+            grid-row: 2;
+        }
+        .chaplaincy-mission {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1rem;
+        }
+        .chaplaincy-gallery {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .85rem;
+        }
+        .chaplaincy-gallery-card,
+        .chaplaincy-gallery-placeholder {
+            min-height: 12rem;
+        }
+        .chaplaincy-gallery-card img {
+            height: 12rem;
+        }
+    }
+    @media (max-width: 420px) {
+        .chaplaincy-gallery {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        .chaplaincy-gallery-card,
+        .chaplaincy-gallery-placeholder {
+            min-height: 14rem;
+        }
+        .chaplaincy-gallery-card img {
+            height: 14rem;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .chaplaincy-gallery-card img {
+            transition: none;
+        }
     }
 </style>
 {% endblock %}

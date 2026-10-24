@@ -1,54 +1,215 @@
 {% extends 'boarding/base.html' %}
 
-{% block page_title %}School History{% endblock %}
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+{% block page_title %}Our History{% endblock %}
 
 {% block content %}
-<section class="relative w-screen h-screen overflow-hidden bg-black text-white">
-    <div class="absolute inset-0 overflow-hidden">
-        {% if history_images %}
-            {% for slide in history_images %}
-            <div class="history-slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700" style="animation: history-slide 28s ease-in-out infinite; animation-delay: {{ slide.delay }}s;">
-                {% if slide.image_url %}
-                    <img src="{{ slide.image_url }}" alt="{{ slide.object.title }}" class="absolute inset-0 w-full h-full object-cover" />
-                {% endif %}
-                <div class="absolute inset-0 bg-black/50"></div>
-                <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-                    <h2 class="text-4xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">{{ slide.object.year }}</h2>
-                    <h3 class="text-2xl font-semibold text-white mt-4 sm:text-3xl">{{ slide.object.title }}</h3>
-                    <p class="max-w-2xl text-lg text-white mt-4 sm:text-xl leading-relaxed">{{ slide.object.description|safe }}</p>
-                </div>
+<section class="relative overflow-hidden bg-[#1E3A5F] text-white">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#1E3A5F] via-[#1E3A5F] to-[#152A45]"></div>
+    <div class="relative mx-auto flex min-h-[42vh] max-w-7xl items-center justify-center px-6 py-16 text-center sm:min-h-[48vh]">
+        <div class="max-w-3xl">
+            <p class="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#F8F1E3]">Our story</p>
+            <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">Our History</h1>
+            <p class="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/85 sm:text-lg">
+                The story of Busiada Girls’ High School — from humble beginnings to a centre of excellence.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="bg-[#F8FAFC] py-14 sm:py-18 md:py-20">
+    <div class="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+        <div class="mx-auto mb-12 max-w-3xl text-center">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#2B6CB0]">A journey of growth</p>
+            <h2 class="mt-3 text-2xl font-semibold tracking-tight text-[#1E3A5F] sm:text-3xl">Building a legacy, one generation at a time</h2>
+            <div class="mt-4 space-y-4 text-left text-base leading-8 text-[#475569]">
+                <p>
+                    Busiada Girls’ High School has grown from a modest institution into one of the respected girls’ schools in Busia County. Rooted in the values of the Anglican Church of Kenya, the school has remained committed to academic excellence, discipline, and the holistic development of every girl.
+                </p>
+                <p>
+                    Over the years, the school has built a strong culture of hard work, sisterhood, and service. Today, Busiada continues to nurture confident young women who are ready to unleash their potential and contribute meaningfully to society.
+                </p>
             </div>
+        </div>
+
+        <div class="mb-8 flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EBF4FF] text-[#2B6CB0]">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM8 3v4m8-4v4M4 9h16M8 13h3m2 0h3M8 16h3"/>
+                </svg>
+            </span>
+            <div>
+                <h2 class="text-xl font-semibold text-[#1E3A5F]">Key Milestones</h2>
+                <p class="text-sm text-[#475569]">
+                    {% if history_images %}{{ history_images|length }} moments in our story{% else %}Four chapters in our journey{% endif %}
+                </p>
+            </div>
+        </div>
+
+        {% if history_images %}
+        <ol class="history-timeline">
+            {% for slide in history_images %}
+            <li class="history-timeline-item">
+                <div class="history-timeline-year">
+                    <span>{{ slide.object.year }}</span>
+                </div>
+                <span class="history-timeline-marker" aria-hidden="true">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18c-4 2-5 5-5 9s1 7 5 9m0-18c4 2 5 5 5 9s-1 7-5 9"/>
+                    </svg>
+                </span>
+                <article class="history-timeline-card">
+                    {% if slide.image_url %}
+                    <img src="{{ slide.image_url }}" alt="{{ slide.object.title }}" class="history-timeline-image" loading="lazy">
+                    {% endif %}
+                    <div class="p-5 sm:p-7">
+                        <h3 class="text-xl font-semibold leading-snug text-[#1E3A5F]">{{ slide.object.title }}</h3>
+                        {% if slide.object.description %}
+                        <p class="mt-3 text-sm leading-7 text-[#475569]">{{ slide.object.description }}</p>
+                        {% endif %}
+                    </div>
+                </article>
+            </li>
             {% endfor %}
         {% else %}
-            <div class="absolute inset-0 flex items-center justify-center bg-black/80 text-center px-6">
-                <div class="max-w-2xl rounded-3xl border border-white/20 bg-white/5 p-10 backdrop-blur-sm">
-                    <h2 class="text-3xl font-bold text-white mb-4">School History</h2>
-                    <p class="text-lg text-white/90">Content will be uploaded soon.</p>
+            <li class="history-timeline-item">
+                <div class="history-timeline-year">
+                    <span>01</span>
                 </div>
-            </div>
+                <span class="history-timeline-marker" aria-hidden="true">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18c-4 2-5 5-5 9s1 7 5 9m0-18c4 2 5 5 5 9s-1 7-5 9"/>
+                    </svg>
+                </span>
+                <article class="history-timeline-card p-5 sm:p-7">
+                    <h3 class="text-xl font-semibold leading-snug text-[#1E3A5F]">Founding Years</h3>
+                    <p class="mt-3 text-sm leading-7 text-[#475569]">The school was established with a clear vision — to provide quality education for girls in the region and raise young women of character and purpose.</p>
+                </article>
+            </li>
+            <li class="history-timeline-item">
+                <div class="history-timeline-year">
+                    <span>02</span>
+                </div>
+                <span class="history-timeline-marker" aria-hidden="true">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18c-4 2-5 5-5 9s1 7 5 9m0-18c4 2 5 5 5 9s-1 7-5 9"/>
+                    </svg>
+                </span>
+                <article class="history-timeline-card p-5 sm:p-7">
+                    <h3 class="text-xl font-semibold leading-snug text-[#1E3A5F]">Growth &amp; Development</h3>
+                    <p class="mt-3 text-sm leading-7 text-[#475569]">Through the dedication of teachers, parents, and the school community, Busiada expanded its facilities and strengthened its academic programmes.</p>
+                </article>
+            </li>
+            <li class="history-timeline-item">
+                <div class="history-timeline-year">
+                    <span>03</span>
+                </div>
+                <span class="history-timeline-marker" aria-hidden="true">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18c-4 2-5 5-5 9s1 7 5 9m0-18c4 2 5 5 5 9s-1 7-5 9"/>
+                    </svg>
+                </span>
+                <article class="history-timeline-card p-5 sm:p-7">
+                    <h3 class="text-xl font-semibold leading-snug text-[#1E3A5F]">Rise in Academic Performance</h3>
+                    <p class="mt-3 text-sm leading-7 text-[#475569]">The school began recording improved KCSE results and steadily earned recognition as a centre of academic excellence in Busia County.</p>
+                </article>
+            </li>
+            <li class="history-timeline-item">
+                <div class="history-timeline-year">
+                    <span>04</span>
+                </div>
+                <span class="history-timeline-marker" aria-hidden="true">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18c-4 2-5 5-5 9s1 7 5 9m0-18c4 2 5 5 5 9s-1 7-5 9"/>
+                    </svg>
+                </span>
+                <article class="history-timeline-card p-5 sm:p-7">
+                    <h3 class="text-xl font-semibold leading-snug text-[#1E3A5F]">Present Day</h3>
+                    <p class="mt-3 text-sm leading-7 text-[#475569]">Today, Busiada Girls’ High School stands as a C2 Senior School offering both the 8-4-4 and Competency-Based pathways. The school continues to uphold its motto: <em>Unleash Your Potential</em>.</p>
+                </article>
+            </li>
         {% endif %}
-    </div>
+        </ol>
 
-    <div class="absolute bottom-6 left-1/2 z-20 w-full max-w-5xl -translate-x-1/2 px-6">
-        <div class="mx-auto flex flex-wrap items-center justify-center gap-3 rounded-full bg-white/10 px-4 py-3 backdrop-blur-lg text-sm text-white/90">
-            <span class="font-semibold">History timeline</span>
-            <span class="px-3 py-1 rounded-full bg-white/10">{{ history_images|length }} slides</span>
+        <div class="mt-14 rounded-3xl bg-[#1E3A5F] px-6 py-9 text-center text-white sm:px-10">
+            <h2 class="text-2xl font-semibold">Our story continues with every learner</h2>
+            <p class="mx-auto mt-3 max-w-2xl text-sm leading-7 text-white/80">
+                From its early days to the present, the story of Busiada remains one of resilience, faith, and continuous improvement. We honour the past and look forward to an even brighter future for every girl who passes through our gates.
+            </p>
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+                <a href="{% url 'school_leadership' %}" class="inline-flex items-center justify-center rounded-full bg-[#2B6CB0] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#4A90C8]">Meet Our Leadership</a>
+                <a href="{% url 'home' %}" class="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20">Back to Home</a>
+            </div>
         </div>
     </div>
 </section>
 
 <style>
-    .history-slide {
-        animation-name: history-slide;
-        animation-duration: 28s;
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
+    .history-timeline {
+        position: relative;
+        display: grid;
+        gap: 1.5rem;
     }
-
-    @keyframes history-slide {
-        0%, 10% { opacity: 0; transform: translateX(100%); }
-        12%, 25% { opacity: 1; transform: translateX(0); }
-        90%, 100% { opacity: 0; transform: translateX(-100%); }
+    .history-timeline::before {
+        position: absolute;
+        top: 1rem;
+        bottom: 1rem;
+        left: 4.4rem;
+        width: 2px;
+        background: rgba(30, 58, 95, 0.16);
+        content: "";
+    }
+    .history-timeline-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 3.5rem minmax(0, 1fr);
+        column-gap: 1.75rem;
+        align-items: start;
+    }
+    .history-timeline-year {
+        grid-column: 1;
+        padding-top: 1.1rem;
+        color: #1E3A5F;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-align: right;
+    }
+    .history-timeline-marker {
+        position: absolute;
+        z-index: 1;
+        top: 1rem;
+        left: 3.82rem;
+        display: flex;
+        width: 1.25rem;
+        height: 1.25rem;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #2B6CB0;
+        border-radius: 9999px;
+        background: #F8FAFC;
+        color: #2B6CB0;
+    }
+    .history-timeline-card {
+        grid-column: 2;
+        overflow: hidden;
+        border: 1px solid rgba(30, 58, 95, 0.1);
+        border-radius: 1.5rem;
+        background: #ffffff;
+        box-shadow: 0 20px 60px -34px rgba(15, 23, 42, 0.18);
+    }
+    .history-timeline-image {
+        display: block;
+        width: 100%;
+        max-height: 20rem;
+        object-fit: cover;
+    }
+    @media (max-width: 480px) {
+        .history-timeline::before { left: 0.6rem; }
+        .history-timeline-item { grid-template-columns: minmax(0, 1fr); padding-left: 2rem; }
+        .history-timeline-year { grid-column: 1; padding: 0 0 0.55rem; text-align: left; }
+        .history-timeline-marker { top: 0.1rem; left: 0; }
+        .history-timeline-card { grid-column: 1; }
     }
 </style>
 {% endblock %}

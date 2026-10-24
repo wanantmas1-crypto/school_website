@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
-from .models import Inquiry, SitePage, Announcement, HistoryImage
+from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem
 from .utils import safe_file_url
 
 
@@ -77,6 +77,8 @@ def home(request):
         page = SitePage.objects.filter(slug='home').first()
 
     page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
+    hero_video = PageVideo.objects.filter(page=page).exclude(video='').first() if page else None
+    hero_video_url = _safe_file_url(hero_video.video) if hero_video else ''
 
     # Pass gallery items to the template
     gallery_items = _gallery_items_for_page(page)
@@ -84,6 +86,7 @@ def home(request):
     return render(request, 'boarding/index.html', {
         'page': page,
         'page_background_image_url': page_background_image_url,
+        'hero_video_url': hero_video_url,
         'gallery_items': gallery_items,
     })
 
@@ -171,25 +174,24 @@ def school_chaplaincy(request):
             },
         )
 
-    images = list(page.images.all())
-    section_one_image = images[0] if len(images) > 0 else None
-    section_two_image = images[1] if len(images) > 1 else None
-    transition_images = images[2:5] or images[:3]
-
     page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
-    if section_one_image:
-        section_one_image.image_url = _safe_file_url(getattr(section_one_image, 'image', None))
-    if section_two_image:
-        section_two_image.image_url = _safe_file_url(getattr(section_two_image, 'image', None))
-    for slide in transition_images:
-        slide.image_url = _safe_file_url(getattr(slide, 'image', None))
+    featured_image_url = _safe_file_url(getattr(page, 'featured_image', None))
+    gallery_images = []
+    for image in page.images.all():
+        image_url = _safe_file_url(getattr(image, 'image', None))
+        if image_url:
+            gallery_images.append({
+                'image_url': image_url,
+                'title': image.title,
+                'caption': image.caption,
+                'description': image.description,
+            })
 
     return render(request, 'boarding/chaplaincy.html', {
         'page': page,
         'page_background_image_url': page_background_image_url,
-        'section_one_image': section_one_image,
-        'section_two_image': section_two_image,
-        'transition_images': transition_images,
+        'featured_image_url': featured_image_url,
+        'gallery_images': gallery_images,
     })
 
 
@@ -437,77 +439,60 @@ def contact_page(request):
 
     contact_details = [
         {
+            'key': 'whatsapp',
             'label': 'WhatsApp',
-            'value': '[Enter WhatsApp Number]',
-            'description': 'Reach us quickly for school updates or urgent inquiries.',
+            'value': 'WhatsApp contact details are not available yet.',
+            'description': 'For quick updates or urgent inquiries, email the school office for assistance.',
             'icon': 'fa-brands fa-whatsapp',
             'accent': '#10b981',
             'accent_bg': 'rgba(16, 185, 129, 0.14)',
             'accent_border': 'rgba(16, 185, 129, 0.22)',
-            'badge': 'Chat now',
-            'tooltip': 'Click to chat on WhatsApp',
-            'href': 'https://wa.me/',
-            'clickable': True,
+            'action_label': 'Email the office',
+            'action_href': 'mailto:info@busiadagirls.ac.ke',
+            'value_href': '',
         },
         {
+            'key': 'phone',
             'label': 'Phone',
-            'value': '[Enter Phone Number]',
-            'description': 'Use this for direct calls and urgent school matters.',
+            'value': 'Phone contact details are not available yet.',
+            'description': 'For direct-call assistance, email the school office and we will direct your inquiry.',
             'icon': 'fa-solid fa-phone',
             'accent': '#3b82f6',
             'accent_bg': 'rgba(59, 130, 246, 0.14)',
             'accent_border': 'rgba(59, 130, 246, 0.22)',
-            'badge': 'Call now',
-            'tooltip': 'Call the school office directly',
-            'href': 'tel:',
-            'clickable': True,
+            'action_label': 'Email the office',
+            'action_href': 'mailto:info@busiadagirls.ac.ke',
+            'value_href': '',
         },
         {
+            'key': 'email',
             'label': 'Email',
-            'value': '[Enter Email Address]',
+            'value': 'info@busiadagirls.ac.ke',
             'description': 'Send formal communication or admissions requests.',
             'icon': 'fa-solid fa-envelope',
             'accent': '#f97316',
             'accent_bg': 'rgba(249, 115, 22, 0.14)',
             'accent_border': 'rgba(249, 115, 22, 0.22)',
-            'badge': 'Write us',
-            'tooltip': 'Send an email to the school office',
-            'href': 'mailto:',
-            'clickable': True,
+            'action_label': 'Write to us',
+            'action_href': 'mailto:info@busiadagirls.ac.ke',
+            'value_href': 'mailto:info@busiadagirls.ac.ke',
         },
         {
+            'key': 'address',
             'label': 'Postal Address',
-            'value': '[Enter Postal Address]',
+            'value': 'P.O. Box 35-50404, Bumala, Busia County, Kenya',
             'description': 'Mail letters or official documents to the school office.',
             'icon': 'fa-solid fa-map-marker-alt',
             'accent': '#ef4444',
             'accent_bg': 'rgba(239, 68, 68, 0.14)',
             'accent_border': 'rgba(239, 68, 68, 0.22)',
-            'badge': 'Mail us',
-            'tooltip': 'Use the school postal address',
-            'href': '#',
-            'clickable': False,
+            'action_label': 'View location',
+            'action_href': 'https://www.google.com/maps/search/?api=1&query=Busiada+Girls+High+School+Bumala+Busia+Kenya',
+            'value_href': '',
         },
     ]
 
     return render(request, 'boarding/contact_page.html', {'page': page, 'contact_details': contact_details})
-
-
-def school_anthem(request):
-    page = (
-        SitePage.objects
-        .filter(slug='school-anthem', status='published')
-        .prefetch_related('images', 'videos', 'documents')
-        .first()
-    )
-    if not page:
-        page = (
-            SitePage.objects
-            .filter(slug='school-anthem')
-            .prefetch_related('images', 'videos', 'documents')
-            .first()
-        )
-    return render(request, 'boarding/school_anthem.html', {'page': page})
 
 
 def strategic_plan(request):
@@ -558,7 +543,13 @@ def school_anthem(request):
             .prefetch_related('images', 'videos', 'documents')
             .first()
         )
-    return render(request, 'boarding/school_anthem.html', {'page': page})
+    anthem = SchoolAnthem.objects.order_by('-updated_at').first()
+    if anthem is None:
+        anthem = SchoolAnthem(title='School Anthem')
+    return render(request, 'boarding/school_anthem.html', {
+        'page': page,
+        'anthem': anthem,
+    })
 
 
 def school_leadership(request):

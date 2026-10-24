@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,22 +47,23 @@ if cloudinary:
         api_secret=CLOUDINARY_API_SECRET,
     )
 
+# In test environments, prefer local filesystem storage so uploaded test fixtures are
+# valid byte streams rather than being sent to Cloudinary and rejected as invalid files.
+IN_TESTS = 'test' in sys.argv or 'pytest' in sys.argv[0]
+
 STORAGES = {
     'default': {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+        'BACKEND': ('django.core.files.storage.FileSystemStorage' if IN_TESTS else 'cloudinary_storage.storage.MediaCloudinaryStorage'),
     },
     'staticfiles': {
         'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
 
-if cloudinary_storage:
+if cloudinary_storage and not IN_TESTS:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    STORAGES['default'] = {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
-    }
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 

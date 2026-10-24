@@ -4,7 +4,7 @@ from django import forms
 from django.utils.text import slugify
 from django.core.files.base import ContentFile
 import time
-from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement
+from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, HistoryImage, SchoolAnthem
 from .models import SiteSettings
 from .validators import compress_image, get_file_size_display
 
@@ -119,6 +119,20 @@ class InquiryAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
 
 
+@admin.register(HistoryImage)
+class HistoryImageAdmin(admin.ModelAdmin):
+    list_display = ['year', 'title', 'created_at']
+    search_fields = ['year', 'title', 'description']
+    ordering = ['year', 'created_at']
+    readonly_fields = ['created_at']
+
+
+@admin.register(SchoolAnthem)
+class SchoolAnthemAdmin(admin.ModelAdmin):
+    list_display = ['title', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
+
+
 class PageImageInline(admin.TabularInline):
     model = PageImage
     fk_name = 'page'
@@ -146,6 +160,7 @@ class PageVideoInline(admin.TabularInline):
     model = PageVideo
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
+    verbose_name_plural = 'Videos (first ordered video on Home is used as the hero background)'
     extra = 0
     fields = ['title', 'caption', 'description', 'video', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
@@ -196,7 +211,7 @@ class SitePageAdmin(admin.ModelAdmin):
         ('Content', {
             'fields': ('content', 'featured_image', 'background_image', 'sections'),
             'classes': ('wide',),
-            'description': 'featured_image is used in page galleries and carousels. background_image is used as the animated page background.'
+            'description': 'featured_image is used in page galleries and carousels. background_image is used as the page background. On the School Chaplaincy page, background_image is the hero background, featured_image is the introduction photo, and Page Images below populate the Growing Through Connection gallery. On the Home page, the first ordered uploaded video is used as the hero background instead of the background image.'
         }),
         ('Metadata', {
             'fields': ('author', 'created_at', 'updated_at'),
