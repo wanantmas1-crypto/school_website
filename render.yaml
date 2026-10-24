@@ -6,7 +6,7 @@ services:
     branch: busiada_boarding
     rootDir: Busiada_Boarding
     buildCommand: "pip install -r ../requirements.txt"
-    startCommand: "python -m gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    startCommand: "python manage.py migrate --noinput && python manage.py collectstatic --noinput && python -m gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DJANGO_DEBUG
         value: "False"
@@ -20,7 +20,6 @@ services:
         fromDatabase:
           name: busiada-boarding-db
           property: connectionString
-    deployCommand: "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
 
 databases:
   - name: busiada-boarding-db
