@@ -757,9 +757,28 @@
             .mobile-menu-scroll {
                 flex: 1 1 auto;
                 min-height: 0;
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
                 overflow-y: auto;
                 overscroll-behavior: contain;
                 padding: 1rem 0 max(1rem, env(safe-area-inset-bottom));
+                scrollbar-color: rgba(248, 241, 227, .55) rgba(255, 255, 255, .08);
+                scrollbar-width: thin;
+            }
+            .mobile-menu-scroll::-webkit-scrollbar {
+                width: .45rem;
+            }
+            .mobile-menu-scroll::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, .08);
+                border-radius: 999px;
+            }
+            .mobile-menu-scroll::-webkit-scrollbar-thumb {
+                background: rgba(248, 241, 227, .55);
+                border-radius: 999px;
+            }
+            .mobile-menu-scroll > * {
+                flex: 0 0 auto;
             }
             #mobile-menu .mobile-menu-home,
             #mobile-menu .mobile-menu-announcements {
@@ -1187,7 +1206,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div class="mobile-menu-scroll grid gap-2 py-3">
+            <div class="mobile-menu-scroll py-3">
                 <a href="{% url 'home' %}" class="mobile-menu-home">Home</a>
 
                 <div class="mobile-menu-group">
@@ -1214,7 +1233,7 @@
                     </button>
                     <div id="mobile-admissions" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
                         <a href="{% url 'site_page' slug='admission-process' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Admission Process</a>
-                        <a href="{% url 'site_page' slug='fee-payment' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Fee Payment</a>
+                        <a href="{% url 'fee_payment' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Fee Payment</a>
                     </div>
                 </div>
 
@@ -1239,6 +1258,7 @@
                     </button>
                     <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
                         <!-- Departments link removed from mobile menu -->
+                        <a href="{% url 'boarding' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Boarding</a>
                         <a href="{% url 'guiding_and_counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
                         <a href="{% url 'games_and_sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
                         <a href="{% url 'clubs_and_societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
@@ -1502,14 +1522,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!panel) return;
 
             const isOpen = !panel.classList.contains('hidden');
-            closeMobileDropdowns();
 
-            if (!isOpen) {
-                panel.classList.remove('hidden');
-                button.setAttribute('aria-expanded', 'true');
-                icon?.classList.remove('fa-chevron-down');
-                icon?.classList.add('fa-chevron-up');
+            if (isOpen) {
+                panel.classList.add('hidden');
+                button.setAttribute('aria-expanded', 'false');
+                icon?.classList.remove('fa-chevron-up');
+                icon?.classList.add('fa-chevron-down');
+                return;
             }
+
+            panel.classList.remove('hidden');
+            button.setAttribute('aria-expanded', 'true');
+            icon?.classList.remove('fa-chevron-down');
+            icon?.classList.add('fa-chevron-up');
+            panel.scrollIntoView({
+                block: 'nearest',
+                inline: 'nearest',
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            });
         });
     });
 

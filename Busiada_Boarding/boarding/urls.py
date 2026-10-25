@@ -32,5 +32,6 @@ urlpatterns = [
     
     path('ai/admin/suggest/', views_ai.admin_suggest, name='ai_admin_suggest'),
     path('ai/chat/', views_ai.user_chat, name='ai_user_chat'),
+    path('announcements/<int:pk>/', views.announcement_detail, name='announcement_detail'),
     path('announcements/', views.announcements, name='announcements'),
 ]

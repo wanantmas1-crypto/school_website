@@ -1,8 +1,12 @@
 import os
 from html import unescape
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponse
 from django.core.files.storage import default_storage
+from django.db.models.functions import Trim
+from django.utils import timezone
 from django.utils.html import strip_tags
 from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem, GalleryCategory, Leadership
 from .utils import safe_file_url
@@ -880,7 +884,92 @@ def school_leadership(request):
 
 
 def announcements(request):
-    announcements = Announcement.objects.filter(is_active=True)
-    for announcement in announcements:
+    published_announcements = (
+        Announcement.objects.filter(is_active=True)
+        .annotate(trimmed_content=Trim('content'))
+        .exclude(trimmed_content='')
+        .order_by('-date', '-pk')
+    )
+
+    category_names = {}
+    for value in published_announcements.order_by().values_list('category', flat=True).distinct():
+        name = value.strip() or 'General'
+        category_names.setdefault(name.casefold(), name)
+    categories = sorted(category_names.values(), key=str.casefold)
+
+    featured_announcement = (
+        published_announcements.filter(is_featured=True).first()
+        or published_announcements.first()
+    )
+    upcoming_events = published_announcements.filter(
+        event_date__gt=timezone.now()
+    ).order_by('event_date', '-date')[:4]
+
+    selected_category = request.GET.get('category', '').strip()
+    if selected_category:
+        if selected_category.casefold() not in category_names:
+            selected_category = ''
+        elif selected_category.casefold() == 'general':
+            published_announcements = published_announcements.filter(
+                Q(category__iexact='general') | Q(category='')
+            )
+        else:
+            published_announcements = published_announcements.filter(
+                category__iexact=category_names[selected_category.casefold()]
+            )
+
+    search_query = request.GET.get('q', '').strip()
+    if search_query:
+        published_announcements = published_announcements.filter(
+            Q(title__icontains=search_query)
+            | Q(subtitle__icontains=search_query)
+            | Q(content__icontains=search_query)
+        )
+
+    has_separate_featured = bool(
+        featured_announcement
+        and not selected_category
+        and not search_query
+        and published_announcements.count() > 1
+    )
+    show_featured = has_separate_featured and request.GET.get('page', '1') == '1'
+    if has_separate_featured:
+        published_announcements = published_announcements.exclude(
+            pk=featured_announcement.pk
+        )
+
+    page_obj = Paginator(published_announcements, 9).get_page(request.GET.get('page'))
+    pagination_params = request.GET.copy()
+    pagination_params.pop('page', None)
+    for announcement in page_obj.object_list:
         announcement.safe_image_url = _safe_file_url(getattr(announcement, 'image', None))
-    return render(request, 'boarding/announcements.html', {'announcements': announcements})
+    if featured_announcement:
+        featured_announcement.safe_image_url = _safe_file_url(
+            getattr(featured_announcement, 'image', None)
+        )
+
+    return render(request, 'boarding/announcements.html', {
+        'announcements': page_obj.object_list,
+        'page_obj': page_obj,
+        'categories': categories,
+        'selected_category': selected_category,
+        'search_query': search_query,
+        'featured_announcement': featured_announcement,
+        'show_featured': show_featured,
+        'upcoming_events': upcoming_events,
+        'has_filters': bool(categories and len(categories) > 1),
+        'pagination_query': pagination_params.urlencode(),
+    })
+
+
+def announcement_detail(request, pk):
+    announcement = get_object_or_404(
+        Announcement.objects.filter(is_active=True)
+        .annotate(trimmed_content=Trim('content'))
+        .exclude(trimmed_content=''),
+        pk=pk,
+    )
+    announcement.safe_image_url = _safe_file_url(getattr(announcement, 'image', None))
+    return render(request, 'boarding/announcement_detail.html', {
+        'announcement': announcement,
+    })

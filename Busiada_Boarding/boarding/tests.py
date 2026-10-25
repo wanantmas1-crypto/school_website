@@ -1,6 +1,7 @@
 import os
 import shutil
 import tempfile
+from datetime import timedelta
 from html import unescape
 from unittest.mock import patch
 
@@ -9,6 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
+from django.utils import timezone
 
 from .admin import SchoolAnthemAdminForm, SitePageAdminForm, SiteSettingsAdminForm
 from .models import Announcement, Document, GalleryCategory, HistoryImage, Leadership, PageImage, PageVideo, SchoolAnthem, SitePage, SiteSettings
@@ -95,6 +97,7 @@ class AnnouncementAdminFieldsTests(TestCase):
             event_link='https://example.org/live',
             document_link='https://example.org/handbook.pdf',
             document_label='Student Handbook',
+            is_important=True,
         )
 
         saved = Announcement.objects.get(pk=announcement.pk)
@@ -105,6 +108,20 @@ class AnnouncementAdminFieldsTests(TestCase):
         self.assertEqual(saved.event_link, 'https://example.org/live')
         self.assertEqual(saved.document_link, 'https://example.org/handbook.pdf')
         self.assertEqual(saved.document_label, 'Student Handbook')
+        self.assertTrue(saved.is_important)
+
+    def test_announcement_admin_exposes_important_notice_control(self):
+        admin_user = get_user_model().objects.create_superuser(
+            username='announcement-admin',
+            email='announcement-admin@example.com',
+            password='announcement-admin-password',
+        )
+        self.client.force_login(admin_user)
+
+        response = self.client.get('/admin/boarding/announcement/add/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="is_important"')
 
 
 class PublicPagesTests(TestCase):
@@ -457,7 +474,130 @@ class PublicPagesTests(TestCase):
         response = self.client.get('/announcements/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Announcements')
+        self.assertContains(response, 'Announcements &amp; School Updates')
+        self.assertContains(response, 'Latest Announcements')
+        self.assertContains(response, 'Contact the school')
+
+    def test_announcements_filters_search_and_featured_fallback(self):
+        featured = Announcement.objects.create(
+            title='Featured science update',
+            subtitle='Laboratory schedule information',
+            category='Academic Updates',
+            content='Please review the science schedule.',
+            is_active=True,
+            is_featured=True,
+            is_important=True,
+        )
+        Announcement.objects.create(
+            title='Sports information',
+            category='School Events',
+            content='The sports information is available.',
+            is_active=True,
+        )
+        Announcement.objects.create(
+            title='Unpublished notice',
+            content='This should not be shown.',
+            is_active=False,
+        )
+
+        response = self.client.get('/announcements/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Featured science update')
+        self.assertContains(response, 'Academic Updates')
+        self.assertContains(response, 'Important notice')
+        self.assertNotContains(response, 'Unpublished notice')
+
+        filtered_response = self.client.get('/announcements/?category=School%20Events')
+        self.assertContains(filtered_response, 'Sports information')
+        self.assertNotContains(filtered_response, 'Featured science update')
+
+        search_response = self.client.get('/announcements/?q=laboratory')
+        self.assertContains(search_response, 'Featured science update')
+        self.assertNotContains(search_response, 'Sports information')
+        self.assertEqual(featured.pk, response.context['featured_announcement'].pk)
+
+    def test_latest_announcement_is_featured_when_no_explicit_feature_is_selected(self):
+        Announcement.objects.create(
+            title='Earlier school notice',
+            content='Earlier details.',
+            is_active=True,
+        )
+        latest = Announcement.objects.create(
+            title='Latest school notice',
+            content='Latest details.',
+            is_active=True,
+        )
+
+        response = self.client.get('/announcements/')
+
+        self.assertEqual(response.context['featured_announcement'].pk, latest.pk)
+        self.assertTrue(response.context['show_featured'])
+        self.assertContains(response, 'Latest school notice')
+
+    def test_announcements_hide_empty_test_records_and_support_details(self):
+        placeholder = Announcement.objects.create(
+            title='test-upload',
+            content='',
+            is_active=True,
+        )
+        published = Announcement.objects.create(
+            title='Published school notice',
+            category='General Notices',
+            content='The full approved announcement content.',
+            document_link='https://example.org/notice.pdf',
+            document_label='Download notice',
+            is_active=True,
+            is_important=True,
+        )
+
+        response = self.client.get('/announcements/')
+        self.assertNotContains(response, 'test-upload')
+        self.assertContains(response, 'Published school notice')
+        self.assertTrue(Announcement.objects.filter(pk=placeholder.pk).exists())
+
+        detail_response = self.client.get(f'/announcements/{published.pk}/')
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertContains(detail_response, 'The full approved announcement content.')
+        self.assertContains(detail_response, 'Download notice')
+        self.assertContains(detail_response, 'Important notice')
+        self.assertContains(detail_response, '/announcements/')
+
+        placeholder_response = self.client.get(f'/announcements/{placeholder.pk}/')
+        self.assertEqual(placeholder_response.status_code, 404)
+
+    def test_announcements_show_only_future_events_and_paginate(self):
+        Announcement.objects.create(
+            title='Future school event',
+            content='A forthcoming school event.',
+            event_date=timezone.now() + timedelta(days=5),
+            is_active=True,
+        )
+        Announcement.objects.create(
+            title='Past school event',
+            content='A completed school event.',
+            event_date=timezone.now() - timedelta(days=5),
+            is_active=True,
+        )
+        for index in range(9):
+            Announcement.objects.create(
+                title=f'Published notice {index}',
+                content='Published notice details.',
+                is_active=True,
+            )
+
+        response = self.client.get('/announcements/')
+        self.assertContains(response, 'Upcoming events')
+        self.assertContains(response, 'Future school event')
+        self.assertNotIn(
+            'Past school event',
+            [event.title for event in response.context['upcoming_events']],
+        )
+        self.assertEqual(len(response.context['announcements']), 9)
+        self.assertEqual(response.context['page_obj'].paginator.num_pages, 2)
+
+        next_page = self.client.get('/announcements/?page=2')
+        self.assertEqual(next_page.status_code, 200)
+        self.assertEqual(len(next_page.context['announcements']), 1)
 
     @override_settings(MEDIA_ROOT=TEST_MEDIA_ROOT, MEDIA_URL='/media/')
     def test_announcements_page_excludes_missing_image_urls(self):
@@ -750,8 +890,12 @@ class NavigationMenuTests(TestCase):
         self.assertContains(response, 'min-width: 15rem;')
         self.assertContains(response, 'transition: opacity .16s ease, transform .16s ease;')
         self.assertContains(response, 'height: 100dvh;')
+        self.assertContains(response, 'flex-direction: column;')
         self.assertContains(response, 'mobile-menu-close')
         self.assertContains(response, 'data-mobile-target="mobile-about" aria-expanded="false" aria-controls="mobile-about"')
+        self.assertContains(response, 'data-mobile-target="mobile-student-life" aria-expanded="false" aria-controls="mobile-student-life"')
+        self.assertContains(response, '>Boarding</a>')
+        self.assertContains(response, '>Fee Payment</a>')
         self.assertContains(response, 'Events & Announcements')
         self.assertContains(response, '8-4-4 Curriculum')
         self.assertContains(response, 'Revision Materials')

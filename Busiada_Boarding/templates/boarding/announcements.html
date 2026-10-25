@@ -1,108 +1,216 @@
 {% extends 'boarding/page_template.html' %}
 
-{% block page_content %}
-    <section class="dynamic-panel reveal-on-scroll section-shell bg-white border border-slate-200 shadow-sm p-3 p-md-4" style="border-radius:.5rem;" aria-labelledby="announcements-heading">
-      <div class="container-fluid px-0">
-        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end justify-content-between gap-2 mb-4">
-          <div>
-            <h2 id="announcements-heading" class="section-title mb-1 text-[#0A2540]">Announcements</h2>
-            <p class="mb-0 text-sm text-slate-500">Latest updates, events, and image-led highlights from the school.</p>
-          </div>
-          <span class="badge rounded-pill text-bg-light px-3 py-2 text-slate-600">{{ announcements|length }} active post{{ announcements|length|pluralize }}</span>
+{% block page_header %}
+<header class="announcements-hero">
+  <div class="announcements-hero-inner">
+    <nav class="announcements-breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'home' %}">Home</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Announcements</span>
+    </nav>
+    <div class="announcements-hero-copy">
+      <span class="announcements-hero-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-4.5-5.8V4a1.5 1.5 0 0 0-3 0v1.2A6 6 0 0 0 6 11v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0a3 3 0 0 1-6 0"/></svg>
+      </span>
+      <div>
+        <h1>Announcements &amp; School Updates</h1>
+        <p>Stay informed about important school notices, academic updates, upcoming events and the latest developments from Busiada Girls Senior School.</p>
+        <div class="announcements-hero-actions">
+          <a class="announcements-button announcements-button-primary" href="#latest-announcements">Latest announcements</a>
+          <a class="announcements-button announcements-button-secondary" href="{% url 'contact_page' %}">Contact the school</a>
         </div>
-
-        {% if announcements %}
-        <div class="announcements-gallery" role="list">
-          {% for announcement in announcements %}
-          <article role="listitem" class="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-slate-50 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg reveal-on-scroll">
-            {% if announcement.safe_image_url %}
-            <figure class="relative overflow-hidden bg-slate-100" style="aspect-ratio:4/3;">
-              <a href="#" class="announcement-thumb group relative w-full h-full p-0 block focus:outline-none" data-lightbox-src="{{ announcement.safe_image_url }}" data-lightbox-caption="{{ announcement.title }}" aria-label="Open image for {{ announcement.title }}">
-                <img src="{{ announcement.safe_image_url }}" alt="{{ announcement.title }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-400 ease-out group-hover:scale-105" />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-4">
-                  <p class="font-semibold text-white text-sm line-clamp-2">{{ announcement.title }}</p>
-                </div>
-              </a>
-            </figure>
-            {% else %}
-            <div class="w-full aspect-video bg-gradient-to-br from-[#1E3A5F] via-[#4A90C8] to-[#C41E3A] flex items-center justify-center p-6">
-              <span class="text-center text-white">
-                <i class="fa-solid fa-megaphone text-3xl mb-2 block"></i>
-                <span class="text-xs uppercase tracking-[0.3em]">{{ announcement.category|default:'General' }}</span>
-              </span>
-            </div>
-            {% endif %}
-            <div class="p-4">
-              <div class="flex flex-wrap items-center gap-2 mb-3">
-                <span class="rounded-full bg-white px-2 py-1 text-xs uppercase tracking-[0.2em] text-[#0A2540] font-semibold shadow-sm">{{ announcement.category|default:'General' }}</span>
-                {% if announcement.is_featured %}<span class="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-700 font-semibold">Featured</span>{% endif %}
-                <span class="text-xs text-slate-500">{{ announcement.date|date:"d M, Y" }}</span>
-              </div>
-              <h3 class="text-sm font-semibold text-[#0A2540] line-clamp-2 mb-2">{{ announcement.title }}</h3>
-              {% if announcement.subtitle %}<p class="text-xs text-slate-600 line-clamp-1">{{ announcement.subtitle }}</p>{% endif %}
-            </div>
-          </article>
-          {% endfor %}
-        </div>
-        {% else %}
-          <div class="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
-            <i class="fa-solid fa-megaphone text-4xl text-slate-300 mb-3 block"></i>
-            <p class="text-slate-500">No announcements at the moment. Add one from the admin area to publish updates and highlights.</p>
-          </div>
-        {% endif %}
-      </div>
-    </section>
-
-    <style>
-      :root { --gallery-gap: 1.25rem; }
-      .announcements-gallery { display:grid; gap:var(--gallery-gap); grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); align-items:start; }
-      .reveal-on-scroll { opacity:0; transform:translateY(12px); transition: opacity .6s ease, transform .6s ease; }
-      .reveal-on-scroll.visible { opacity:1; transform:translateY(0); }
-
-      /* Lightbox */
-      #announcement-lightbox { position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.88); backdrop-filter:blur(6px); padding:1.25rem; overflow:auto; }
-      #announcement-lightbox.show { display:flex; }
-      #announcement-lightbox .lightbox-shell { position:relative; width:min(100%, 72rem); max-height:100%; display:flex; align-items:center; justify-content:center; margin:auto; }
-      #announcement-lightbox img { display:block; max-height:min(90vh, 760px); max-width:100%; width:auto; height:auto; object-fit:contain; object-position:center; border-radius:.75rem; margin:0 auto; }
-      #announcement-lightbox .lb-close { position:absolute; top:1rem; right:1rem; background:transparent; border:0; color:white; font-size:1.25rem; cursor:pointer; }
-    </style>
-
-    <!-- Lightbox modal -->
-    <div id="announcement-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
-      <button class="lb-close" aria-label="Close image viewer">✕</button>
-      <div class="lightbox-shell">
-        <figure class="w-full flex flex-col items-center justify-center text-center">
-          <img id="announcement-lightbox-img" src="" alt="" />
-          <figcaption id="announcement-lightbox-caption" class="mt-4 text-white text-sm text-center"></figcaption>
-        </figure>
       </div>
     </div>
+  </div>
+</header>
+{% endblock %}
 
-    <script>
-      // Reveal on scroll
-      (function(){
-        const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } }); },{threshold:0.12});
-        document.querySelectorAll('.reveal-on-scroll').forEach(n=>io.observe(n));
-      })();
+{% block page_content %}
+<style>
+  .announcements-page { color: #475569; }
+  .announcements-hero {
+    background: linear-gradient(120deg, #29496b 0%, #1e3a5f 100%);
+    color: #fff;
+    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 5vw, 4rem);
+  }
+  .announcements-hero-inner { max-width: 1180px; margin: 0 auto; }
+  .announcements-breadcrumb { display: flex; gap: .6rem; align-items: center; margin-bottom: 1.5rem; color: rgba(255,255,255,.76); font-size: .9rem; }
+  .announcements-breadcrumb a { color: #fff; text-decoration: underline; text-underline-offset: .2em; }
+  .announcements-hero-copy { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 1rem; max-width: 900px; }
+  .announcements-hero-icon { width: 3rem; height: 3rem; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 1rem; background: rgba(255,255,255,.1); }
+  .announcements-hero-icon svg { width: 1.5rem; height: 1.5rem; }
+  .announcements-hero h1 { margin: 0 0 .75rem; color: #fff; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.15; font-weight: 700; }
+  .announcements-hero p { max-width: 68ch; margin: 0; color: rgba(255,255,255,.86); font-size: 1rem; line-height: 1.7; }
+  .announcements-hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+  .announcements-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: .65rem 1rem; border: 1px solid transparent; border-radius: 999px; font-weight: 600; text-decoration: none; transition: background-color .16s ease, border-color .16s ease; }
+  .announcements-button:focus-visible, .announcements-filter:focus-visible, .announcements-card a:focus-visible, .announcements-pagination a:focus-visible { outline: 3px solid #d4a017; outline-offset: 3px; }
+  .announcements-button-primary { background: #2b6cb0; color: #fff; }
+  .announcements-button-primary:hover { background: #1e3a5f; color: #fff; }
+  .announcements-button-secondary { border-color: rgba(255,255,255,.5); color: #fff; background: rgba(255,255,255,.06); }
+  .announcements-button-secondary:hover { background: rgba(255,255,255,.16); color: #fff; }
+  .announcements-page h2 { color: #1e3a5f; }
+  .announcements-section-heading { margin-bottom: 1.25rem; }
+  .announcements-section-heading h2 { margin: 0 0 .35rem; font-size: clamp(1.35rem, 2.4vw, 1.8rem); font-weight: 650; }
+  .announcements-section-heading p { margin: 0; line-height: 1.65; }
+  .announcements-featured { display: grid; grid-template-columns: 1fr; overflow: hidden; border: 1px solid rgba(30,58,95,.14); border-radius: 1.5rem; background: #ebf4ff; box-shadow: 0 12px 32px rgba(30,58,95,.08); }
+  .announcements-featured-has-image { grid-template-columns: minmax(0, 1.1fr) minmax(240px, .9fr); }
+  .announcements-featured-copy { padding: clamp(1.25rem, 3vw, 2rem); }
+  .announcements-featured-image { width: 100%; height: 100%; min-height: 220px; max-height: 340px; object-fit: cover; }
+  .announcements-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; margin-bottom: .75rem; color: #475569; font-size: .88rem; }
+  .announcements-category { display: inline-flex; align-items: center; padding: .3rem .7rem; border-radius: 999px; background: #fff; color: #1e3a5f; font-size: .78rem; font-weight: 700; }
+  .announcements-important { color: #991b1b; font-weight: 700; }
+  .announcements-featured h2 { margin: 0 0 .6rem; font-size: clamp(1.35rem, 2.5vw, 1.9rem); line-height: 1.25; }
+  .announcements-featured-summary { margin: 0 0 1rem; line-height: 1.7; white-space: pre-line; }
+  .announcements-text-link { display: inline-flex; min-height: 44px; align-items: center; gap: .4rem; color: #2b6cb0; font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
+  .announcements-upcoming { margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fdf8f0; }
+  .announcements-upcoming h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+  .announcements-event-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: .75rem; }
+  .announcements-event { padding: 1rem; border-radius: .9rem; background: #fff; border: 1px solid rgba(30,58,95,.1); }
+  .announcements-event strong { display: block; color: #1e3a5f; margin-bottom: .35rem; }
+  .announcements-event time { font-size: .9rem; }
+  .announcements-event p { margin: .4rem 0 0; font-size: .9rem; }
+  .announcements-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.5rem 0; }
+  .announcements-filters { display: flex; max-width: 100%; gap: .5rem; overflow-x: auto; padding: .25rem .25rem .5rem; scrollbar-width: thin; }
+  .announcements-filter { display: inline-flex; flex: 0 0 auto; min-height: 42px; align-items: center; padding: .55rem .9rem; border: 1px solid rgba(30,58,95,.18); border-radius: 999px; background: #fff; color: #1e3a5f; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .announcements-filter[aria-current="true"] { border-color: #1e3a5f; background: #1e3a5f; color: #fff; }
+  .announcements-search { display: flex; flex: 1 1 260px; max-width: 420px; gap: .5rem; }
+  .announcements-search label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .announcements-search input { min-width: 0; flex: 1; min-height: 44px; padding: .6rem .85rem; border: 1px solid rgba(30,58,95,.2); border-radius: .75rem; color: #334155; }
+  .announcements-search input:focus-visible { outline: 3px solid rgba(43,108,176,.35); outline-offset: 1px; border-color: #2b6cb0; }
+  .announcements-search button { min-height: 44px; padding: .55rem .9rem; border: 0; border-radius: .75rem; background: #2b6cb0; color: #fff; font-weight: 600; cursor: pointer; }
+  .announcements-reset { align-self: center; color: #2b6cb0; font-weight: 600; text-underline-offset: .2em; }
+  .announcements-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  .announcements-card { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid rgba(30,58,95,.12); border-radius: 1.2rem; background: #fff; box-shadow: 0 8px 24px rgba(30,58,95,.06); }
+  .announcements-card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .announcements-card-copy { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 1.15rem; }
+  .announcements-card h3 { margin: 0 0 .55rem; color: #1e3a5f; font-size: 1.15rem; line-height: 1.35; }
+  .announcements-card-summary { margin: 0 0 1rem; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-height: 1.65; white-space: pre-line; }
+  .announcements-card .announcements-text-link { margin-top: auto; }
+  .announcements-empty { padding: clamp(1.5rem, 4vw, 3rem); border: 1px dashed rgba(30,58,95,.28); border-radius: 1.25rem; background: #f8fafc; text-align: center; }
+  .announcements-empty svg { width: 2.25rem; height: 2.25rem; margin: 0 auto .75rem; color: #2b6cb0; }
+  .announcements-empty h3 { margin: 0 0 .4rem; color: #1e3a5f; }
+  .announcements-empty p { margin: 0; }
+  .announcements-pagination { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .75rem; margin-top: 1.5rem; }
+  .announcements-pagination a { display: inline-flex; min-height: 44px; align-items: center; padding: .55rem .9rem; border: 1px solid rgba(30,58,95,.18); border-radius: .7rem; color: #1e3a5f; font-weight: 600; text-decoration: none; }
+  .announcements-pagination a:hover { background: #ebf4ff; }
+  .announcements-pagination span { color: #475569; }
+  @media (max-width: 900px) { .announcements-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) {
+    .announcements-hero-copy { grid-template-columns: 1fr; }
+    .announcements-featured { grid-template-columns: 1fr; }
+    .announcements-featured-image { grid-row: 1; max-height: 240px; }
+    .announcements-tools { align-items: stretch; }
+    .announcements-search { max-width: none; }
+    .announcements-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .announcements-button { transition: none; } }
+</style>
 
-      // Lightbox with keyboard support
-      (function(){
-        const lightbox = document.getElementById('announcement-lightbox');
-        const lbImg = document.getElementById('announcement-lightbox-img');
-        const lbCaption = document.getElementById('announcement-lightbox-caption');
-        const closeBtn = lightbox.querySelector('.lb-close');
+<div class="announcements-page">
+  {% if show_featured %}
+  <section aria-labelledby="featured-announcement-heading">
+    <div class="announcements-featured{% if featured_announcement.safe_image_url %} announcements-featured-has-image{% endif %}">
+      <div class="announcements-featured-copy">
+        <div class="announcements-meta">
+          <span class="announcements-category">{{ featured_announcement.category|default:'General' }}</span>
+          <span>Published <time datetime="{{ featured_announcement.date|date:'Y-m-d' }}">{{ featured_announcement.date|date:"j F Y" }}</time></span>
+          {% if featured_announcement.is_featured %}<span>Featured</span>{% endif %}
+          {% if featured_announcement.is_important %}<span class="announcements-important">Important notice</span>{% endif %}
+          {% if featured_announcement.event_date %}<span>Event: <time datetime="{{ featured_announcement.event_date|date:'c' }}">{{ featured_announcement.event_date|date:"j F Y, g:i a" }}</time></span>{% endif %}
+        </div>
+        <h2 id="featured-announcement-heading">{{ featured_announcement.title }}</h2>
+        <p class="announcements-featured-summary">{% if featured_announcement.subtitle %}{{ featured_announcement.subtitle }}{% else %}{{ featured_announcement.content|striptags|truncatewords:38 }}{% endif %}</p>
+        <a class="announcements-text-link" href="{% url 'announcement_detail' pk=featured_announcement.pk %}">Read announcement <span aria-hidden="true">→</span></a>
+      </div>
+      {% if featured_announcement.safe_image_url %}<img class="announcements-featured-image" src="{{ featured_announcement.safe_image_url }}" alt="{{ featured_announcement.title }}" decoding="async">{% endif %}
+    </div>
+  </section>
+  {% endif %}
 
-        function open(src, alt, caption){ lbImg.src = src; lbImg.alt = alt || ''; lbCaption.textContent = caption || ''; lightbox.classList.add('show'); lightbox.setAttribute('aria-hidden','false'); closeBtn.focus(); document.body.style.overflow='hidden'; }
-        function close(){ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); lbImg.src=''; document.body.style.overflow=''; }
+  {% if upcoming_events %}
+  <section class="announcements-upcoming" aria-labelledby="upcoming-events-heading">
+    <h2 id="upcoming-events-heading">Upcoming events</h2>
+    <div class="announcements-event-list">
+      {% for event in upcoming_events %}
+      <article class="announcements-event">
+        <strong>{{ event.title }}</strong>
+        <time datetime="{{ event.event_date|date:'c' }}">{{ event.event_date|date:"j F Y, g:i a" }}</time>
+        {% if event.event_location %}<p>{{ event.event_location }}</p>{% endif %}
+        <a class="announcements-text-link" href="{% url 'announcement_detail' pk=event.pk %}">Event details</a>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
-        document.querySelectorAll('.announcement-thumb').forEach(btn=>{
-          btn.addEventListener('click', (e)=>{ e.preventDefault(); open(btn.dataset.lightboxSrc, btn.getAttribute('aria-label'), btn.dataset.lightboxCaption); });
-          btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); open(btn.dataset.lightboxSrc, btn.getAttribute('aria-label'), btn.dataset.lightboxCaption); } });
-        });
+  <section id="latest-announcements" aria-labelledby="latest-announcements-heading" style="margin-top:2.5rem;">
+    <div class="announcements-section-heading">
+      <h2 id="latest-announcements-heading">Latest Announcements</h2>
+      <p>Browse the latest published notices, school updates and important information.</p>
+    </div>
 
-        closeBtn.addEventListener('click', close);
-        lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) close(); });
-        document.addEventListener('keydown', (e)=>{ if(lightbox.classList.contains('show') && e.key==='Escape') close(); });
-      })();
-    </script>
+    <div class="announcements-tools">
+      {% if has_filters %}
+      <nav class="announcements-filters" aria-label="Filter announcements by category">
+        <a class="announcements-filter" href="{% url 'announcements' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}" {% if not selected_category %}aria-current="true"{% endif %}>All announcements</a>
+        {% for category in categories %}
+        <a class="announcements-filter" href="{% url 'announcements' %}?category={{ category|urlencode }}{% if search_query %}&amp;q={{ search_query|urlencode }}{% endif %}" {% if selected_category|lower == category|lower %}aria-current="true"{% endif %}>{{ category }}</a>
+        {% endfor %}
+      </nav>
+      {% endif %}
+      <form class="announcements-search" method="get" action="{% url 'announcements' %}">
+        {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+        <label for="announcement-search">Search published announcements</label>
+        <input id="announcement-search" type="search" name="q" value="{{ search_query }}" placeholder="Search announcements">
+        <button type="submit">Search</button>
+      </form>
+      {% if search_query or selected_category %}<a class="announcements-reset" href="{% url 'announcements' %}">Clear filters</a>{% endif %}
+    </div>
+
+    {% if announcements %}
+    <div class="announcements-grid" role="list">
+      {% for announcement in announcements %}
+      <article class="announcements-card" role="listitem">
+        {% if announcement.safe_image_url %}<img class="announcements-card-image" src="{{ announcement.safe_image_url }}" alt="{{ announcement.title }}" loading="lazy" decoding="async">{% endif %}
+        <div class="announcements-card-copy">
+          <div class="announcements-meta">
+            <span class="announcements-category">{{ announcement.category|default:'General' }}</span>
+            {% if announcement.is_featured %}<span>Featured</span>{% endif %}
+            {% if announcement.is_important %}<span class="announcements-important">Important notice</span>{% endif %}
+            <span>Published <time datetime="{{ announcement.date|date:'Y-m-d' }}">{{ announcement.date|date:"j F Y" }}</time></span>
+            {% if announcement.event_date %}<span>Event <time datetime="{{ announcement.event_date|date:'c' }}">{{ announcement.event_date|date:"j F Y, g:i a" }}</time></span>{% endif %}
+          </div>
+          <h3>{{ announcement.title }}</h3>
+          <p class="announcements-card-summary">{% if announcement.subtitle %}{{ announcement.subtitle }}{% else %}{{ announcement.content|striptags|truncatewords:30 }}{% endif %}</p>
+          <a class="announcements-text-link" href="{% url 'announcement_detail' pk=announcement.pk %}">Read announcement <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="announcements-empty" role="status">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-4.5-5.8V4a1.5 1.5 0 0 0-3 0v1.2A6 6 0 0 0 6 11v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0a3 3 0 0 1-6 0"/></svg>
+      {% if search_query or selected_category %}
+      <h3>No matching announcements</h3>
+      <p>No published announcements match the selected search or category. <a href="{% url 'announcements' %}">Clear filters and view all announcements.</a></p>
+      {% else %}
+      <h3>No published announcements right now</h3>
+      <p>There are currently no school announcements available. Please check again later.</p>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="announcements-pagination" aria-label="Announcement pages">
+      {% if page_obj.has_previous %}
+      <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+      <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}

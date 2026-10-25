@@ -356,6 +356,7 @@ class Announcement(models.Model):
     document_label = models.CharField(max_length=200, blank=True, help_text='Optional label for the document link')
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
+    is_important = models.BooleanField(default=False)
     cta_text = models.CharField(max_length=80, blank=True, help_text='Optional CTA label')
     cta_link = models.URLField(blank=True, help_text='Optional CTA link')
 

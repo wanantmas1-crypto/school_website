@@ -1,0 +1,54 @@
+{% extends 'boarding/page_template.html' %}
+
+{% block page_header %}
+<header class="announcement-detail-hero">
+  <nav aria-label="Breadcrumb">
+    <a href="{% url 'home' %}">Home</a>
+    <span aria-hidden="true">/</span>
+    <a href="{% url 'announcements' %}">Announcements</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{{ announcement.title }}</span>
+  </nav>
+  <div class="announcement-detail-meta">
+    <span>{{ announcement.category|default:'General' }}</span>
+    <span>Published <time datetime="{{ announcement.date|date:'Y-m-d' }}">{{ announcement.date|date:"j F Y" }}</time></span>
+    {% if announcement.event_date %}<span>Event <time datetime="{{ announcement.event_date|date:'c' }}">{{ announcement.event_date|date:"j F Y, g:i a" }}</time></span>{% endif %}
+    {% if announcement.is_featured %}<span>Featured</span>{% endif %}
+    {% if announcement.is_important %}<strong>Important notice</strong>{% endif %}
+  </div>
+  <h1>{{ announcement.title }}</h1>
+  {% if announcement.subtitle %}<p>{{ announcement.subtitle }}</p>{% endif %}
+</header>
+{% endblock %}
+
+{% block page_content %}
+<style>
+  .announcement-detail-hero { padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 4rem); background: linear-gradient(120deg, #29496b, #1e3a5f); color: #fff; }
+  .announcement-detail-hero nav { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: 1.25rem; color: rgba(255,255,255,.78); font-size: .9rem; }
+  .announcement-detail-hero nav a { color: #fff; text-underline-offset: .2em; }
+  .announcement-detail-meta { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin-bottom: .75rem; color: rgba(255,255,255,.84); font-size: .9rem; }
+  .announcement-detail-meta strong { color: #fdf8f0; }
+  .announcement-detail-hero h1 { margin: 0 0 .75rem; color: #fff; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.2; }
+  .announcement-detail-hero p { max-width: 72ch; margin: 0; color: rgba(255,255,255,.88); line-height: 1.7; }
+  .announcement-detail-content { max-width: 850px; margin: 0 auto; color: #475569; font-size: 1.05rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .announcement-detail-image { display: block; max-width: min(100%, 900px); max-height: 620px; margin: 0 auto 2rem; border-radius: 1rem; object-fit: contain; }
+  .announcement-detail-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: 2rem 0; }
+  .announcement-detail-links a { display: inline-flex; min-height: 44px; align-items: center; padding: .65rem 1rem; border-radius: 999px; background: #2b6cb0; color: #fff; font-weight: 600; text-decoration: none; }
+  .announcement-detail-links a:hover { background: #1e3a5f; }
+  .announcement-detail-back { display: inline-flex; min-height: 44px; align-items: center; color: #2b6cb0; font-weight: 700; text-underline-offset: .2em; }
+  .announcement-detail-hero a:focus-visible, .announcement-detail-back:focus-visible, .announcement-detail-links a:focus-visible { outline: 3px solid #d4a017; outline-offset: 3px; }
+</style>
+
+<article class="announcement-detail-content">
+  {% if announcement.safe_image_url %}<img class="announcement-detail-image" src="{{ announcement.safe_image_url }}" alt="{{ announcement.title }}" decoding="async">{% endif %}
+  <div>{{ announcement.content|linebreaks }}</div>
+  {% if announcement.event_location %}<p><strong>Event location:</strong> {{ announcement.event_location }}</p>{% endif %}
+  <div class="announcement-detail-links">
+    {% if announcement.document_link %}<a href="{{ announcement.document_link }}" target="_blank" rel="noopener noreferrer">{{ announcement.document_label|default:'View attached document' }}</a>{% endif %}
+    {% if announcement.event_link %}<a href="{{ announcement.event_link }}" target="_blank" rel="noopener noreferrer">{% if announcement.is_live_event %}Join live event{% else %}Event information{% endif %}</a>{% endif %}
+    {% if announcement.cta_link %}<a href="{{ announcement.cta_link }}" target="_blank" rel="noopener noreferrer">{{ announcement.cta_text|default:'Learn more' }}</a>{% endif %}
+    {% if announcement.video_url %}<a href="{{ announcement.video_url }}" target="_blank" rel="noopener noreferrer">Watch video</a>{% endif %}
+  </div>
+  <a class="announcement-detail-back" href="{% url 'announcements' %}">← Back to all announcements</a>
+</article>
+{% endblock %}

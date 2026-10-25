@@ -286,8 +286,8 @@ class SitePageAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'is_active', 'is_featured', 'date', 'event_date']
-    list_filter = ['is_active', 'is_featured', 'category', 'date']
+    list_display = ['title', 'category', 'is_active', 'is_featured', 'is_important', 'date', 'event_date']
+    list_filter = ['is_active', 'is_featured', 'is_important', 'category', 'date']
     search_fields = ['title', 'subtitle', 'content']
     readonly_fields = ['date', 'image_preview']
     fieldsets = (
@@ -296,7 +296,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
                 'title', 'subtitle', 'category', 'content', 'image',
                 'video_url', 'is_live_event', 'event_start', 'event_end',
                 'event_location', 'event_link', 'document_link', 'document_label',
-                'is_active', 'is_featured',
+                'is_active', 'is_featured', 'is_important',
             )
         }),
         ('Event / CTA', {
