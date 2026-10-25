@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 import sys
 import dj_database_url
-from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -151,11 +150,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if not DEBUG and not DATABASE_URL:
-    raise ImproperlyConfigured('DATABASE_URL must be configured for production deployments.')
-
-# Use Render's managed PostgreSQL database when configured, and SQLite locally.
+# Use DATABASE_URL when configured, and SQLite otherwise.
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
