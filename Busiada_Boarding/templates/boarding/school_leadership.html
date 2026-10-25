@@ -1,217 +1,242 @@
 {% extends 'boarding/base.html' %}
 
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+
 {% block content %}
-<section class="min-h-screen bg-[linear-gradient(135deg,#f8fbff_0%,#eef4ff_45%,#fdfcf7_100%)] py-6 sm:py-8 lg:py-10">
-  <div class="mx-auto flex min-h-[calc(100vh-3rem)] max-w-7xl flex-col px-3 sm:px-6 lg:px-8">
-    <article role="main" aria-labelledby="leadership-title" class="flex-1 rounded-[2rem] border border-slate-200/80 bg-white/85 p-4 shadow-[0_20px_70px_rgba(10,37,64,0.12)] backdrop-blur md:p-6 lg:p-8 xl:p-10">
-      <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div class="reveal-on-scroll rounded-[1.75rem] bg-[#0A2540] p-7 text-white shadow-lg sm:p-8 lg:p-10">
-          <div class="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-sky-100">
-            <i class="fa-solid fa-users-gear mr-2" aria-hidden="true"></i>
-            Leadership Team
-          </div>
-          <h1 id="leadership-title" class="mt-5 text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">{{ page.title|default:'School Leadership' }}</h1>
-          <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-200 sm:text-lg">
-            Meet the dedicated leaders guiding our learners, staff, and school culture with purpose, discipline, and care.
-          </p>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <span class="rounded-full border border-sky-300/40 bg-sky-400/10 px-3 py-2 text-sm font-medium text-sky-100">Governance</span>
-            <span class="rounded-full border border-emerald-300/40 bg-emerald-400/10 px-3 py-2 text-sm font-medium text-emerald-100">Academics</span>
-            <span class="rounded-full border border-amber-300/40 bg-amber-400/10 px-3 py-2 text-sm font-medium text-amber-100">Student Welfare</span>
-          </div>
+<main class="leadership-page">
+  <svg class="leadership-icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="leadership-icon-building" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M8 9h1m6 0h1M8 13h1m6 0h1" /></symbol>
+    <symbol id="leadership-icon-leader" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0M12 3V1m0 14v2m-8-9H2m20 0h-2" /></symbol>
+    <symbol id="leadership-icon-organisation" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="5" rx="1" /><rect x="2" y="16" width="6" height="5" rx="1" /><rect x="16" y="16" width="6" height="5" rx="1" /><path d="M12 8v4m-7 4v-3h14v3" /></symbol>
+    <symbol id="leadership-icon-books" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 1 4 17.5zM4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 6h8m-8 4h6" /></symbol>
+    <symbol id="leadership-icon-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" /></symbol>
+    <symbol id="leadership-icon-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20a6 6 0 0 1 12 0m1-4a5 5 0 0 1 5 4" /></symbol>
+    <symbol id="leadership-icon-coordination" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.1h-2.6v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H6.4v-2.6h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.1H15v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1V14h-.1a1.7 1.7 0 0 0-1.5 1z" /></symbol>
+    <symbol id="leadership-icon-profile" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></symbol>
+    <symbol id="leadership-icon-location" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></symbol>
+    <symbol id="leadership-icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" /></symbol>
+  </svg>
+
+  <section class="leadership-hero">
+    <div class="leadership-container leadership-hero-grid">
+      <div class="leadership-hero-copy">
+        <a class="leadership-breadcrumb" href="{% url 'home' %}">
+          <svg class="leadership-breadcrumb-icon" aria-hidden="true"><use href="#leadership-icon-arrow" /></svg>
+          <span>Home</span>
+        </a>
+        <p class="leadership-eyebrow">
+          <svg class="leadership-inline-icon" aria-hidden="true"><use href="#leadership-icon-people" /></svg>
+          <span>School community</span>
+        </p>
+        <h1 id="leadership-title">{{ page.title|default:'School Leadership' }}</h1>
+        <p class="leadership-intro">Meet the dedicated leaders guiding our learners, staff, and school culture with purpose, discipline, and care.</p>
+        <div class="leadership-highlights" aria-label="Leadership priorities">
+          <span class="leadership-highlight">
+            <svg class="leadership-governance-icon" aria-hidden="true"><use href="#leadership-icon-building" /></svg>
+            <span>Governance</span>
+          </span>
+          <span class="leadership-highlight">
+            <svg class="leadership-student-icon" aria-hidden="true"><use href="#leadership-icon-people" /></svg>
+            <span>Student voice</span>
+          </span>
+          <span class="leadership-highlight">
+            <svg class="leadership-structure-icon" aria-hidden="true"><use href="#leadership-icon-organisation" /></svg>
+            <span>Academic leadership</span>
+          </span>
         </div>
+      </div>
+      {% if page.featured_image %}
+      <figure class="leadership-hero-image">
+        <img src="{{ page.featured_image.url }}" alt="School leadership at Busiada Girls Senior School" fetchpriority="high">
+      </figure>
+      {% endif %}
+    </div>
+  </section>
 
-        <div class="reveal-on-scroll rounded-[1.75rem] border border-slate-200 bg-slate-50 p-4 sm:p-5 lg:p-6">
-          <div class="leader-photo-placeholder overflow-hidden rounded-[1.4rem] border border-slate-200 bg-white shadow-inner">
-            <div class="leader-photo-placeholder__inner" aria-hidden="true"></div>
+  <section class="leadership-sections" aria-labelledby="leadership-structure-title">
+    <div class="leadership-container">
+      <header class="leadership-section-intro">
+        <p class="leadership-section-label">
+          <svg class="leadership-heading-icon" aria-hidden="true"><use href="#leadership-icon-organisation" /></svg>
+          <span>Our team</span>
+        </p>
+        <h2 id="leadership-structure-title">Leadership &amp; Governance</h2>
+        <p>Working together to support learning, wellbeing, and the life of the school.</p>
+      </header>
+
+      <div class="leadership-section-grid">
+        {% for section in leadership_sections %}
+        <section class="leadership-section-card" aria-labelledby="leadership-section-{{ section.key }}">
+          <header class="leadership-card-heading">
+            <span class="leadership-category-icon" aria-hidden="true">
+              <svg><use href="#leadership-icon-{{ section.icon }}" /></svg>
+            </span>
+            <div>
+              <p class="leadership-category-label">{{ section.label }}</p>
+              <h3 id="leadership-section-{{ section.key }}">{{ section.title }}</h3>
+            </div>
+          </header>
+          <p class="leadership-section-description">{{ section.description }}</p>
+
+          {% if section.members %}
+          <div class="leadership-profile-list">
+            {% for member in section.members %}
+            <article class="leadership-profile">
+              <div class="leadership-portrait">
+                {% if member.portrait_url %}
+                <img src="{{ member.portrait_url }}" alt="Portrait of {{ member.name }}" loading="lazy" decoding="async">
+                {% else %}
+                <svg class="leadership-portrait-fallback" role="img" aria-label="Profile icon for {{ member.position }}">
+                  <use href="#leadership-icon-profile" />
+                </svg>
+                {% endif %}
+              </div>
+              <div class="leadership-profile-copy">
+                <p class="leadership-profile-position">{{ member.position }}</p>
+                <h4>{{ member.name }}</h4>
+                {% if member.description %}<p class="leadership-profile-description">{{ member.description }}</p>{% endif %}
+              </div>
+            </article>
+            {% endfor %}
           </div>
-          <div class="mt-4 flex items-center justify-between rounded-2xl border border-dashed border-slate-300 bg-white/80 px-4 py-3 text-sm text-slate-600">
-            <span>Responsive image area for desktop, tablet, and mobile</span>
-            <i class="fa-solid fa-expand text-[#0A2540]" aria-hidden="true"></i>
-          </div>
-        </div>
+          {% else %}
+          <p class="leadership-section-pending">Leadership profiles will be updated here.</p>
+          {% endif %}
+        </section>
+        {% endfor %}
       </div>
 
-      <div class="mt-8 grid gap-6 xl:grid-cols-2">
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-gavel" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">Governance</p>
-              <h2 class="text-xl font-bold text-amber-900">Board of Management</h2>
-            </div>
-          </div>
-          <div class="mt-5 space-y-3">
-            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Board Chair</p>
-              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
-            </div>
-            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Vice Chair</p>
-              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
-            </div>
-            <div class="rounded-2xl border border-amber-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-700">Secretary</p>
-              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Name here]</p>
-            </div>
-          </div>
-          <p class="mt-4 text-sm leading-relaxed text-amber-800">Provides strategic leadership, oversight, and institutional accountability.</p>
-        </section>
+      {% if page.content %}
+      <div class="leadership-page-content">{{ page.content|safe }}</div>
+      {% endif %}
 
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 shadow-sm">
-          <div class="flex items-start gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-mortarboard" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-blue-700">Executive</p>
-              <h2 class="text-xl font-bold text-blue-900">Principal</h2>
-            </div>
-          </div>
-          <div class="mt-5 grid gap-4 md:grid-cols-[88px_1fr]">
-            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-blue-100 bg-white/90">
-              <div class="" aria-hidden="true"></div>
-            </div>
-            <div class="rounded-[1rem] border border-blue-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-xs font-semibold uppercase tracking-[0.25em] text-blue-700">Chief / Head</p>
-              <p class="mt-2 text-lg font-semibold text-slate-800">[Enter Principal Name]</p>
-              <p class="mt-1 text-sm text-slate-600">[Enter Title/Designation]</p>
-            </div>
-          </div>
-          <p class="mt-4 text-sm leading-relaxed text-blue-800">Provides visionary leadership and oversees daily school operations.</p>
-        </section>
-
-      </div>
-
-      <div class="mt-8 grid gap-6 lg:grid-cols-1">
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-teal-200 bg-gradient-to-br from-teal-50 to-cyan-50 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-book" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-teal-700">Leadership</p>
-              <h3 class="text-xl font-bold text-teal-900">Deputy Principal</h3>
-            </div>
-          </div>
-          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
-            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-teal-100 bg-white/90">
-              <div aria-hidden="true"></div>
-            </div>
-            <div class="rounded-[1rem] border border-teal-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
-              <p class="mt-1 text-sm text-slate-600">Supports school administration, coordination, and overall institutional leadership.</p>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-star" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-yellow-700">Discipline</p>
-              <h3 class="text-xl font-bold text-yellow-900">Senior Master</h3>
-            </div>
-          </div>
-          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
-            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-yellow-100 bg-white/90">
-              <div aria-hidden="true"></div>
-            </div>
-            <div class="rounded-[1rem] border border-yellow-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
-              <p class="mt-1 text-sm text-slate-600">Leads student conduct, discipline, and pastoral care.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-purple-200 bg-gradient-to-br from-purple-50 to-violet-50 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-house" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-purple-700">Residential Life</p>
-              <h3 class="text-xl font-bold text-purple-900">Boarding Master</h3>
-            </div>
-          </div>
-          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
-            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-purple-100 bg-white/90">
-              <div aria-hidden="true"></div>
-            </div>
-            <div class="rounded-[1rem] border border-purple-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
-              <p class="mt-1 text-sm text-slate-600">Oversees hostel operations, student welfare, and residential life.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="reveal-on-scroll rounded-[1.5rem] border border-fuchsia-200 bg-gradient-to-br from-fuchsia-50 to-pink-50 p-6 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm">
-              <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-fuchsia-700">Residential Life</p>
-              <h3 class="text-xl font-bold text-fuchsia-900">Boarding Assistant</h3>
-            </div>
-          </div>
-          <div class="mt-5 grid gap-4 md:grid-cols-[72px_1fr]">
-            <div class="leader-photo-placeholder leader-photo-placeholder--small rounded-[1rem] border border-fuchsia-100 bg-white/90">
-              <div aria-hidden="true"></div>
-            </div>
-            <div class="rounded-[1rem] border border-fuchsia-100 bg-white/90 p-4 shadow-sm">
-              <p class="text-lg font-semibold text-slate-800">[Enter Name]</p>
-              <p class="mt-1 text-sm text-slate-600">Supports daily boarding routines, supervision, and student care.</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </article>
-  </div>
-</section>
+      <nav class="leadership-contact-links" aria-label="School contact links">
+        <a href="{% url 'contact_page' %}">
+          <svg class="leadership-contact-icon" aria-hidden="true"><use href="#leadership-icon-location" /></svg>
+          <span>Contact the school</span>
+          <svg class="leadership-action-icon" aria-hidden="true"><use href="#leadership-icon-arrow" /></svg>
+        </a>
+      </nav>
+    </div>
+  </section>
+</main>
 
 <style>
-  .reveal-on-scroll { opacity:0; transform:translateY(16px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal-on-scroll.visible { opacity:1; transform:translateY(0); }
-  .leader-photo-placeholder { aspect-ratio: 4 / 5; background: linear-gradient(135deg, rgba(10, 37, 64, 0.04), rgba(148, 163, 184, 0.12)); }
-  .leader-photo-placeholder--small { aspect-ratio: 1 / 1; }
-  .leader-photo-placeholder__inner { padding: 1.25rem; }
-  @media (max-width: 640px) {
-    .leader-photo-placeholder__inner { padding: 1rem; }
+  .leadership-page { background: #F8FAFC; color: #334155; font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; }
+  .leadership-icon-library { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .leadership-container { width: min(100% - 2rem, 76rem); margin-inline: auto; }
+  .leadership-hero { padding: clamp(2.75rem, 7vw, 5.5rem) 0; background: linear-gradient(120deg, #1E3A5F, #152A45); color: #fff; }
+  .leadership-hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(17rem, .9fr); align-items: center; gap: clamp(2rem, 5vw, 4.5rem); }
+  .leadership-breadcrumb { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; color: #E2E8F0; font-size: .9rem; text-decoration: none; }
+  .leadership-breadcrumb:hover { color: #fff; }
+  .leadership-breadcrumb:focus-visible, .leadership-contact-links a:focus-visible { outline: 3px solid #93C5FD; outline-offset: 3px; border-radius: .5rem; }
+  .leadership-breadcrumb-icon { width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-eyebrow, .leadership-section-label { display: flex; align-items: center; gap: 8px; margin: 1.2rem 0 .8rem; color: #BFDBFE; font-size: .76rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+  .leadership-inline-icon { width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-hero h1 { max-width: 48rem; margin: 0; color: #fff !important; font-size: clamp(2.2rem, 5vw, 3.75rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.12; }
+  .leadership-intro { max-width: 45rem; margin: 1rem 0 0; color: #E2E8F0; font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.8; }
+  .leadership-highlights { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.75rem; }
+  .leadership-highlight { display: inline-flex; min-height: 44px; align-items: center; gap: .7rem; padding: .55rem .9rem; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(255,255,255,.08); color: #fff; font-size: .9rem; font-weight: 500; }
+  .leadership-highlight svg { flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-governance-icon { width: 32px; height: 32px; }
+  .leadership-student-icon { width: 28px; height: 28px; }
+  .leadership-structure-icon { width: 24px; height: 24px; }
+  .leadership-hero-image { margin: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 1.5rem; box-shadow: 0 24px 70px rgba(0,0,0,.2); }
+  .leadership-hero-image img { display: block; width: 100%; max-height: 27rem; aspect-ratio: 4 / 3; object-fit: cover; }
+  .leadership-sections { padding: clamp(2.5rem, 6vw, 5rem) 0; }
+  .leadership-section-intro { max-width: 52rem; margin: 0 auto 2rem; text-align: center; }
+  .leadership-section-label { justify-content: center; margin-top: 0; color: #2B6CB0; }
+  .leadership-heading-icon { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-section-intro h2 { margin: 0; color: #1E3A5F; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -.025em; }
+  .leadership-section-intro > p:last-child { margin: .65rem 0 0; color: #475569; line-height: 1.75; }
+  .leadership-section-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+  .leadership-section-card { min-width: 0; padding: clamp(1.25rem, 3vw, 1.75rem); border: 1px solid rgba(30,58,95,.1); border-radius: 1.5rem; background: #fff; box-shadow: 0 18px 50px -38px rgba(21,42,69,.42); }
+  .leadership-card-heading { display: flex; align-items: center; gap: 8px; }
+  .leadership-category-icon { display: grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(30,58,95,.1); border-radius: 1rem; background: #EBF4FF; color: #1E3A5F; }
+  .leadership-category-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-category-label { margin: 0 0 .25rem; color: #2B6CB0; font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .leadership-card-heading h3 { margin: 0; color: #1E3A5F; font-size: clamp(1.05rem, 2vw, 1.25rem); font-weight: 600; line-height: 1.3; }
+  .leadership-section-description { margin: .9rem 0 0; color: #475569; font-size: .94rem; line-height: 1.7; }
+  .leadership-profile-list { display: grid; gap: .8rem; margin-top: 1.1rem; }
+  .leadership-profile { display: flex; min-width: 0; align-items: center; gap: 1rem; padding: .85rem; border: 1px solid rgba(30,58,95,.09); border-radius: 1.15rem; background: #F8FAFC; }
+  .leadership-portrait { display: grid; width: 88px; height: 88px; flex: 0 0 auto; place-items: center; overflow: hidden; border: 1px solid rgba(30,58,95,.14); border-radius: 50%; background: #EBF4FF; color: #2B6CB0; }
+  .leadership-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .leadership-portrait-fallback { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+  .leadership-profile-copy { min-width: 0; }
+  .leadership-profile-position { margin: 0 0 .25rem; color: #2B6CB0; font-size: .76rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .leadership-profile-copy h4 { overflow-wrap: anywhere; margin: 0; color: #1E3A5F; font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
+  .leadership-profile-description { margin: .3rem 0 0; color: #475569; font-size: .9rem; line-height: 1.6; }
+  .leadership-section-pending { margin: 1rem 0 0; padding: .8rem 1rem; border-radius: .9rem; background: #FDF8F0; color: #475569; font-size: .9rem; line-height: 1.6; }
+  .leadership-page-content { margin-top: 2rem; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #FDF8F0; color: #475569; line-height: 1.8; }
+  .leadership-page-content h2, .leadership-page-content h3 { color: #1E3A5F; }
+  .leadership-contact-links { display: flex; justify-content: center; margin-top: 2rem; }
+  .leadership-contact-links a { display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; gap: .65rem; padding: .65rem 1rem; border-radius: 999px; background: #2B6CB0; color: #fff; font-size: .95rem; font-weight: 600; text-decoration: none; transition: background-color .2s ease; }
+  .leadership-contact-links a:hover { background: #152A45; }
+  .leadership-contact-icon, .leadership-action-icon { width: 18px; height: 18px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media (min-width: 480px) {
+    .leadership-eyebrow, .leadership-section-label { gap: 10px; }
+    .leadership-inline-icon { width: 18px; height: 18px; }
+    .leadership-heading-icon { width: 26px; height: 26px; }
+    .leadership-category-icon { width: 48px; height: 48px; }
+    .leadership-category-icon svg { width: 26px; height: 26px; }
+    .leadership-card-heading { gap: 10px; }
+    .leadership-portrait { width: 96px; height: 96px; }
+    .leadership-portrait-fallback { width: 44px; height: 44px; }
+    .leadership-governance-icon { width: 34px; height: 34px; }
+    .leadership-student-icon { width: 30px; height: 30px; }
+    .leadership-structure-icon { width: 26px; height: 26px; }
+  }
+  @media (min-width: 768px) {
+    .leadership-container { width: min(100% - 3rem, 76rem); }
+    .leadership-eyebrow { gap: 12px; }
+    .leadership-inline-icon { width: 18px; height: 18px; }
+    .leadership-breadcrumb-icon { width: 18px; height: 18px; }
+    .leadership-heading-icon { width: 28px; height: 28px; }
+    .leadership-category-icon { width: 52px; height: 52px; }
+    .leadership-category-icon svg { width: 28px; height: 28px; }
+    .leadership-card-heading { gap: 12px; }
+    .leadership-portrait { width: 104px; height: 104px; }
+    .leadership-portrait-fallback { width: 48px; height: 48px; }
+    .leadership-governance-icon { width: 36px; height: 36px; }
+    .leadership-student-icon { width: 32px; height: 32px; }
+    .leadership-structure-icon { width: 28px; height: 28px; }
+    .leadership-contact-icon, .leadership-action-icon { width: 20px; height: 20px; }
+  }
+  @media (min-width: 1024px) {
+    .leadership-heading-icon { width: 30px; height: 30px; }
+    .leadership-category-icon { width: 56px; height: 56px; }
+    .leadership-category-icon svg { width: 30px; height: 30px; }
+    .leadership-portrait { width: 112px; height: 112px; }
+    .leadership-portrait-fallback { width: 52px; height: 52px; }
+    .leadership-governance-icon { width: 40px; height: 40px; }
+    .leadership-student-icon { width: 36px; height: 36px; }
+    .leadership-structure-icon { width: 30px; height: 30px; }
+  }
+  @media (min-width: 1280px) {
+    .leadership-inline-icon { width: 20px; height: 20px; }
+    .leadership-heading-icon { width: 32px; height: 32px; }
+    .leadership-category-icon { width: 60px; height: 60px; }
+    .leadership-category-icon svg { width: 32px; height: 32px; }
+    .leadership-portrait { width: 120px; height: 120px; }
+    .leadership-portrait-fallback { width: 56px; height: 56px; }
+    .leadership-governance-icon { width: 44px; height: 44px; }
+    .leadership-student-icon { width: 40px; height: 40px; }
+    .leadership-structure-icon { width: 32px; height: 32px; }
+  }
+  @media (max-width: 767px) {
+    .leadership-hero-grid { grid-template-columns: 1fr; }
+    .leadership-section-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 479px) {
+    .leadership-container { width: min(100% - 1.25rem, 76rem); }
+    .leadership-hero { padding-block: 2rem; }
+    .leadership-profile { align-items: flex-start; gap: .75rem; }
+    .leadership-portrait { width: 88px; height: 88px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .leadership-page *, .leadership-page *::before, .leadership-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
   }
 </style>
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const items = document.querySelectorAll('.reveal-on-scroll');
-    if (!items.length) {
-      return;
-    }
-
-    if (!('IntersectionObserver' in window)) {
-      items.forEach((item) => item.classList.add('visible'));
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    items.forEach((item) => observer.observe(item));
-  });
-</script>
 {% endblock %}

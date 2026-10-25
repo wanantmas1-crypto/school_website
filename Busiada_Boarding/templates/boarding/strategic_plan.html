@@ -1,47 +1,142 @@
 {% extends 'boarding/base.html' %}
 
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+
 {% block content %}
-<section class="py-16">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <article role="main" aria-labelledby="strategic-title">
-      <div class="rounded-2xl shadow-lg overflow-hidden" style="background:linear-gradient(135deg,#06b6d4 0%,#0ea5a4 100%);">
-        <div class="p-8 md:p-12 text-white">
-          <h1 id="strategic-title" class="text-3xl font-extrabold mb-4">{{ page.title|default:'Strategic Plan' }}</h1>
-          <p class="mb-6 opacity-90">This is a template for the Strategic Plan dynamic page. Replace placeholders via Django Admin.</p>
-
-          <div class="grid gap-6 md:grid-cols-2">
-            <section role="region" aria-labelledby="vision-heading" class="bg-white/10 rounded-xl p-6">
-              <h2 id="vision-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-eye" aria-hidden="true"></i> Vision Statement</h2>
-              <p class="mt-3">[Enter Vision here]</p>
-            </section>
-
-            <section role="region" aria-labelledby="mission-heading" class="bg-white/10 rounded-xl p-6">
-              <h2 id="mission-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-compass" aria-hidden="true"></i> Mission Statement</h2>
-              <p class="mt-3">[Enter Mission here]</p>
-            </section>
-          </div>
-
-          <div class="mt-6 grid gap-6 md:grid-cols-2">
-            <section role="region" aria-labelledby="objectives-heading" class="bg-white/10 rounded-xl p-6">
-              <h3 id="objectives-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Strategic Objectives</h3>
-              <ul class="mt-3 list-disc pl-5">[List objectives here]</ul>
-            </section>
-
-            <section role="region" aria-labelledby="initiatives-heading" class="bg-white/10 rounded-xl p-6">
-              <h3 id="initiatives-heading" class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Key Initiatives</h3>
-              <p class="mt-3">[Enter initiatives here]</p>
-            </section>
-          </div>
-
-          <div class="mt-6 bg-white/10 rounded-xl p-6">
-            <h3 class="font-bold text-lg flex items-center gap-3"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Timeline</h3>
-            <p class="mt-3">[Enter timeline here]</p>
-          </div>
-
-        </div>
+<main class="strategic-plan-page">
+  <section class="strategic-plan-hero">
+    <div class="strategic-plan-container">
+      <nav class="strategic-plan-breadcrumb" aria-label="Breadcrumb">
+        <a href="{% url 'home' %}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Strategic Plan</span>
+      </nav>
+      <p class="strategic-plan-eyebrow">Strategic direction</p>
+      <h1 id="strategic-plan-title">{{ page.title|default:'Our Strategic Plan' }}</h1>
+      <p class="strategic-plan-lead">The school’s strategic plan guides institutional priorities, implementation, and continuous improvement.</p>
+      <div class="strategic-plan-actions">
+        {% if page_has_content or page.sections %}
+        <a class="strategic-plan-action strategic-plan-action-primary" href="#strategic-plan-content">Explore the plan</a>
+        {% endif %}
+        {% for document in page_documents %}
+        <a class="strategic-plan-action" href="{{ document.url }}" target="_blank" rel="noopener noreferrer">View or download {{ document.title }}</a>
+        {% endfor %}
       </div>
-    </article>
-  </div>
-</section>
+    </div>
+  </section>
 
+  <div class="strategic-plan-container strategic-plan-body">
+    {% if page_has_content or page.sections %}
+    <article id="strategic-plan-content" class="strategic-plan-content" aria-label="Strategic Plan content">
+      <nav class="strategic-plan-toc" aria-label="Strategic Plan contents" hidden>
+        <h2>On this page</h2>
+        <ol></ol>
+      </nav>
+      {% include 'boarding/page_sections.html' %}
+    </article>
+    {% else %}
+    <section id="strategic-plan-content" class="strategic-plan-unavailable" aria-labelledby="strategic-plan-unavailable-title">
+      <h2 id="strategic-plan-unavailable-title">Strategic Plan information</h2>
+      <p>Strategic Plan information is not currently available online. Please <a href="{% url 'contact_page' %}">contact the school</a> for assistance.</p>
+    </section>
+    {% endif %}
+
+    {% if page_documents %}
+    <section class="strategic-plan-documents" aria-labelledby="strategic-plan-documents-title">
+      <h2 id="strategic-plan-documents-title">Supporting documents</h2>
+      <ul>
+        {% for document in page_documents %}
+        <li>
+          <div>
+            <h3>{{ document.title }}</h3>
+            {% if document.description %}<p>{{ document.description }}</p>{% endif %}
+            {% if document.uploaded_at %}<time datetime="{{ document.uploaded_at|date:'c' }}">Updated {{ document.uploaded_at|date:'j F Y' }}</time>{% endif %}
+          </div>
+          <a href="{{ document.url }}" target="_blank" rel="noopener noreferrer">View or download {{ document.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  </div>
+</main>
+
+<style>
+  .strategic-plan-page { background: #fff; color: #475569; font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; }
+  .strategic-plan-container { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+  .strategic-plan-hero { padding: clamp(2rem, 5vw, 3.5rem) 0; background: linear-gradient(115deg, #1E3A5F, #152A45); color: #fff; }
+  .strategic-plan-breadcrumb { display: flex; align-items: center; gap: .6rem; color: #E2E8F0; font-size: .9rem; }
+  .strategic-plan-breadcrumb a { display: inline-flex; min-height: 44px; align-items: center; color: inherit; text-decoration: underline; text-underline-offset: .18em; }
+  .strategic-plan-breadcrumb a:focus-visible, .strategic-plan-action:focus-visible, .strategic-plan-content a:focus-visible, .strategic-plan-unavailable a:focus-visible, .strategic-plan-documents a:focus-visible { outline: 3px solid #93C5FD; outline-offset: 3px; border-radius: .35rem; }
+  .strategic-plan-eyebrow { margin: .9rem 0 .35rem; color: #DBEAFE; font-size: .76rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+  .strategic-plan-hero h1 { margin: 0; color: #fff; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.2; }
+  .strategic-plan-lead { max-width: 54rem; margin: .75rem 0 0; color: #F1F5F9; font-size: clamp(1rem, 2vw, 1.1rem); line-height: 1.75; }
+  .strategic-plan-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+  .strategic-plan-action { display: inline-flex; min-height: 44px; align-items: center; padding: .55rem 1rem; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; color: #fff; font-weight: 600; text-decoration: none; transition: background-color .2s ease; }
+  .strategic-plan-action:hover { background: rgba(255,255,255,.12); }
+  .strategic-plan-action-primary { border-color: #2B6CB0; background: #2B6CB0; }
+  .strategic-plan-action-primary:hover { background: #1E3A5F; }
+  .strategic-plan-body { padding-block: clamp(2rem, 5vw, 4rem); }
+  .strategic-plan-content { max-width: 68rem; margin-inline: auto; color: #475569; font-size: 1.0625rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .strategic-plan-content > * + * { margin-top: 1.25rem; }
+  .strategic-plan-content h2, .strategic-plan-content h3, .strategic-plan-content h4 { color: #1E3A5F; font-weight: 600; line-height: 1.35; scroll-margin-top: 7rem; }
+  .strategic-plan-content h2 { margin-top: 2rem; font-size: clamp(1.45rem, 3vw, 1.9rem); }
+  .strategic-plan-content h3 { margin-top: 1.5rem; font-size: clamp(1.2rem, 2.5vw, 1.45rem); }
+  .strategic-plan-content h4 { margin-top: 1.25rem; font-size: 1.1rem; }
+  .strategic-plan-content p { margin: .8rem 0; }
+  .strategic-plan-content ul, .strategic-plan-content ol { margin: .8rem 0; padding-left: 1.5rem; }
+  .strategic-plan-content li + li { margin-top: .4rem; }
+  .strategic-plan-content a, .strategic-plan-unavailable a { color: #2B6CB0; text-decoration: underline; text-underline-offset: .18em; }
+  .strategic-plan-content blockquote { margin: 1.25rem 0; padding: 1rem 1.25rem; border-left: 4px solid #2B6CB0; border-radius: 0 .75rem .75rem 0; background: #EBF4FF; }
+  .strategic-plan-content table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; border-spacing: 0; }
+  .strategic-plan-content th, .strategic-plan-content td { min-width: 8rem; padding: .75rem 1rem; border: 1px solid #CBD5E1; text-align: left; vertical-align: top; }
+  .strategic-plan-content th { background: #EBF4FF; color: #1E3A5F; font-weight: 600; }
+  .strategic-plan-toc { margin: 0 0 2rem; padding: 1.25rem 1.5rem; border: 1px solid rgba(30,58,95,.1); border-radius: 1rem; background: #F8FAFC; }
+  .strategic-plan-toc h2 { margin: 0; color: #1E3A5F; font-size: 1.15rem; font-weight: 600; }
+  .strategic-plan-toc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .35rem 1.5rem; margin: .7rem 0 0; padding-left: 1.25rem; }
+  .strategic-plan-toc a { color: #2B6CB0; text-decoration: underline; text-underline-offset: .15em; }
+  .strategic-plan-toc a:focus-visible { outline: 3px solid #2B6CB0; outline-offset: 3px; border-radius: .2rem; }
+  .strategic-plan-unavailable { max-width: 68rem; margin-inline: auto; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid rgba(30,58,95,.1); border-radius: 1rem; background: #F8FAFC; line-height: 1.75; }
+  .strategic-plan-unavailable h2, .strategic-plan-documents h2 { margin: 0; color: #1E3A5F; font-size: clamp(1.35rem, 2.8vw, 1.8rem); font-weight: 600; }
+  .strategic-plan-unavailable p { margin: .6rem 0 0; }
+  .strategic-plan-documents { max-width: 68rem; margin: 2.5rem auto 0; padding-top: 1.75rem; border-top: 1px solid #E2E8F0; }
+  .strategic-plan-documents ul { display: grid; gap: .85rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .strategic-plan-documents li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem; border: 1px solid rgba(30,58,95,.1); border-radius: 1rem; background: #F8FAFC; }
+  .strategic-plan-documents h3 { margin: 0; color: #1E3A5F; font-size: 1rem; font-weight: 600; }
+  .strategic-plan-documents p { margin: .3rem 0; line-height: 1.6; }
+  .strategic-plan-documents time { color: #64748B; font-size: .85rem; }
+  .strategic-plan-documents a { display: inline-flex; min-height: 44px; align-items: center; padding: .55rem .9rem; border-radius: 999px; background: #2B6CB0; color: #fff; font-size: .9rem; font-weight: 600; text-align: center; text-decoration: none; }
+  .strategic-plan-documents a:hover { background: #1E3A5F; }
+  @media (max-width: 640px) {
+    .strategic-plan-container { width: min(100% - 1.25rem, 72rem); }
+    .strategic-plan-documents li { align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .strategic-plan-page *, .strategic-plan-page *::before, .strategic-plan-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  }
+</style>
+
+<script>
+  (() => {
+    const content = document.querySelector('.strategic-plan-content');
+    const toc = document.querySelector('.strategic-plan-toc');
+    if (!content || !toc) return;
+    const headings = Array.from(content.querySelectorAll('h2, h3'))
+      .filter((heading) => heading.textContent.trim());
+    if (headings.length < 3) return;
+
+    const list = toc.querySelector('ol');
+    headings.forEach((heading, index) => {
+      if (!heading.id) heading.id = `strategic-plan-section-${index + 1}`;
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent.trim();
+      item.append(link);
+      list.append(item);
+    });
+    toc.hidden = false;
+  })();
+</script>
 {% endblock %}

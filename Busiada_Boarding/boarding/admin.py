@@ -4,7 +4,7 @@ from django import forms
 from django.utils.text import slugify
 from django.core.files.base import ContentFile
 import time
-from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, HistoryImage, SchoolAnthem, GalleryCategory
+from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, HistoryImage, SchoolAnthem, GalleryCategory, Leadership
 from .models import SiteSettings
 from .validators import compress_image, get_file_size_display
 
@@ -155,6 +155,30 @@ class GalleryCategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['order', 'name']
+
+
+@admin.register(Leadership)
+class LeadershipAdmin(admin.ModelAdmin):
+    list_display = ['name', 'position', 'role_category', 'is_active', 'order']
+    list_filter = ['role_category', 'is_active']
+    search_fields = ['name', 'position', 'description']
+    ordering = ['role_category', 'order', 'name']
+    readonly_fields = ['created_at', 'updated_at']
+    fieldsets = (
+        ('Leadership profile', {
+            'fields': ('name', 'position', 'role_category', 'description', 'portrait', 'is_active', 'order'),
+            'description': 'Active profiles are published on the School Leadership page. Portraits are optional; a matching SVG icon is shown when no portrait is uploaded.'
+        }),
+        ('Metadata', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if 'portrait' in form.files:
+            obj.portrait = compress_image(form.files['portrait'], quality=85)
+        super().save_model(request, obj, form, change)
 
 
 class PageImageInline(admin.TabularInline):

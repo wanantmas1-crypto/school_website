@@ -163,11 +163,14 @@ class SitePage(models.Model):
             allowed_tags = [
                 'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'span', 'div',
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre',
-                's', 'u', 'sub', 'sup'
+                's', 'u', 'sub', 'sup', 'table', 'thead', 'tbody', 'tfoot',
+                'tr', 'th', 'td', 'caption'
             ]
             allowed_attrs = {
                 '*': ['class', 'style'],
                 'a': ['href', 'title', 'rel', 'target'],
+                'th': ['scope', 'colspan', 'rowspan'],
+                'td': ['colspan', 'rowspan'],
             }
             try:
                 self.content = bleach.clean(self.content, tags=allowed_tags, attributes=allowed_attrs, strip=True)
@@ -373,6 +376,8 @@ class Leadership(models.Model):
         ('senior-master', 'Senior Master'),
         ('boarding-masters', 'Boarding Masters'),
         ('department-heads', 'Department Heads'),
+        ('student-leaders', 'Student Leaders'),
+        ('additional-leadership', 'Additional Leadership'),
     ]
     
     COLOR_CHOICES = [
@@ -389,6 +394,13 @@ class Leadership(models.Model):
     position = models.CharField(max_length=200, help_text='Position title (e.g., "Chairman", "Principal", "Head of Science")')
     name = models.CharField(max_length=200, help_text='Full name of the leader')
     description = models.CharField(max_length=255, blank=True, help_text='Optional position description or department')
+    portrait = models.ImageField(
+        upload_to='leadership/',
+        blank=True,
+        null=True,
+        validators=[validate_image_file_size],
+        help_text='Optional approved portrait. Active leadership entries are published on the School Leadership page.',
+    )
     order = models.PositiveIntegerField(default=0, help_text='Sort order within role category')
     color_scheme = models.CharField(max_length=50, choices=COLOR_CHOICES, default='slate', help_text='Card color gradient')
     is_active = models.BooleanField(default=True)

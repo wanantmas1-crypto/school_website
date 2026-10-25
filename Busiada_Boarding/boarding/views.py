@@ -1,8 +1,10 @@
 import os
+from html import unescape
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, HttpResponse
 from django.core.files.storage import default_storage
-from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem, GalleryCategory
+from django.utils.html import strip_tags
+from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem, GalleryCategory, Leadership
 from .utils import safe_file_url
 
 
@@ -27,6 +29,29 @@ ACADEMICS_844_RESOURCES = {
 
 def _safe_file_url(field_file):
     return safe_file_url(field_file)
+
+
+def _page_document_links(page):
+    if not page:
+        return []
+
+    documents = []
+    for document in page.documents.all():
+        url = document.external_url or _safe_file_url(document.file)
+        if url:
+            documents.append({
+                'title': document.title,
+                'description': document.description,
+                'uploaded_at': document.uploaded_at,
+                'url': url,
+            })
+    return documents
+
+
+def _has_page_content(page):
+    if not page:
+        return False
+    return bool(unescape(strip_tags(page.content or '')).strip())
 
 
 def _gallery_items_for_page(page):
@@ -105,7 +130,7 @@ STUDENT_LIFE_PAGES = {
         'intro': 'A secure, nurturing, and disciplined residential environment designed to foster independence, focus, and deep sisterhood among our girls.',
         'category': 'Boarding Life',
         'cards': [
-            {'title': 'Comfort & Security', 'body': '24/7 campus security, resident matrons, and spacious, well-ventilated dormitories support every learner’s personal well-being.'},
+            {'title': 'Comfort & Security', 'body': '24/7 school security, resident matrons, and spacious, well-ventilated dormitories support every learner’s personal well-being.'},
             {'title': 'Balanced Nutrition', 'body': 'Hygienically prepared, wholesome meals support the health and growth of our learners.'},
             {'title': 'Structured Daily Routine', 'body': 'A balanced timetable brings together morning preparation, classes, co-curricular activities, evening study, and rest.'},
         ],
@@ -183,7 +208,7 @@ STUDENT_LIFE_PAGES = {
         'cards': [
             {'title': 'Student Council Governance', 'body': 'A student leadership structure gives learners opportunities to participate constructively in school life.'},
             {'title': 'On-Campus Healthcare', 'body': 'The school sickbay and referral arrangements support learners who need medical attention.'},
-            {'title': 'Sanitation & Cleanliness', 'body': 'Hygiene, clean water, and personal care practices help maintain a healthy campus.'},
+            {'title': 'Sanitation & Cleanliness', 'body': 'Hygiene, clean water, and personal care practices help maintain a healthy school environment.'},
             {'title': 'Balanced Dietary Care', 'body': 'Nutritious meal planning supports learners’ energy and wellbeing.'},
             {'title': 'Safety & Anti-Bullying', 'body': 'Learners are encouraged to use open reporting channels. Bullying and unsafe conduct are not tolerated.'},
         ],
@@ -704,7 +729,11 @@ def strategic_plan(request):
             .prefetch_related('images', 'videos', 'documents')
             .first()
         )
-    return render(request, 'boarding/strategic_plan.html', {'page': page})
+    return render(request, 'boarding/strategic_plan.html', {
+        'page': page,
+        'page_has_content': _has_page_content(page),
+        'page_documents': _page_document_links(page),
+    })
 
 
 def service_charter(request):
@@ -721,7 +750,11 @@ def service_charter(request):
             .prefetch_related('images', 'videos', 'documents')
             .first()
         )
-    return render(request, 'boarding/service_charter.html', {'page': page})
+    return render(request, 'boarding/service_charter.html', {
+        'page': page,
+        'page_has_content': _has_page_content(page),
+        'page_documents': _page_document_links(page),
+    })
 
 
 def school_anthem(request):
@@ -761,7 +794,89 @@ def school_leadership(request):
             .prefetch_related('images', 'videos', 'documents')
             .first()
         )
-    return render(request, 'boarding/school_leadership.html', {'page': page})
+    section_config = [
+        {
+            'key': 'board',
+            'title': 'Board of Management',
+            'label': 'Governance',
+            'description': 'Provides strategic leadership, oversight, and institutional accountability.',
+            'icon': 'building',
+        },
+        {
+            'key': 'principal',
+            'title': 'Principal',
+            'label': 'Executive leadership',
+            'description': 'Provides visionary leadership and oversees daily school operations.',
+            'icon': 'leader',
+        },
+        {
+            'key': 'deputy',
+            'title': 'Deputy Principals',
+            'label': 'Organisation',
+            'description': 'Coordinate school administration, academic programmes, and institutional leadership.',
+            'icon': 'organisation',
+            'categories': ['deputy-academic', 'deputy-admin'],
+        },
+        {
+            'key': 'senior-master',
+            'title': 'Senior Masters',
+            'label': 'Academic coordination',
+            'description': 'Support academic coordination, learner guidance, and daily school operations.',
+            'icon': 'books',
+        },
+        {
+            'key': 'boarding-masters',
+            'title': 'Boarding Masters',
+            'label': 'Residential life',
+            'description': 'Oversee hostel routines, student welfare, and a supportive residential environment.',
+            'icon': 'home',
+        },
+        {
+            'key': 'department-heads',
+            'title': 'Academic Leadership',
+            'label': 'Teaching & learning',
+            'description': 'Lead departments and support quality teaching, learning, and curriculum delivery.',
+            'icon': 'books',
+        },
+        {
+            'key': 'student-leaders',
+            'title': 'Student Leaders',
+            'label': 'Student representation',
+            'description': 'Represent learners and strengthen communication, teamwork, and student participation.',
+            'icon': 'people',
+        },
+        {
+            'key': 'additional-leadership',
+            'title': 'Additional Leadership',
+            'label': 'Coordination',
+            'description': 'Provide focused coordination and support across the school community.',
+            'icon': 'coordination',
+        },
+    ]
+    active_leaders = Leadership.objects.filter(is_active=True).order_by(
+        'role_category', 'order', 'name'
+    )
+    for leader in active_leaders:
+        leader.portrait_url = _safe_file_url(leader.portrait)
+
+    leaders_by_category = {}
+    for leader in active_leaders:
+        leaders_by_category.setdefault(leader.role_category, []).append(leader)
+
+    sections = []
+    for config in section_config:
+        category_keys = config.get('categories', [config['key']])
+        members = [
+            leader
+            for category_key in category_keys
+            for leader in leaders_by_category.get(category_key, [])
+        ]
+        sections.append({**config, 'members': members})
+
+    return render(request, 'boarding/school_leadership.html', {
+        'page': page,
+        'leadership_sections': sections,
+    })
 
 
 def announcements(request):

@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
 from .admin import SchoolAnthemAdminForm, SitePageAdminForm, SiteSettingsAdminForm
-from .models import Announcement, Document, GalleryCategory, HistoryImage, PageImage, PageVideo, SchoolAnthem, SitePage, SiteSettings
+from .models import Announcement, Document, GalleryCategory, HistoryImage, Leadership, PageImage, PageVideo, SchoolAnthem, SitePage, SiteSettings
 
 
 TEST_MEDIA_ROOT = tempfile.mkdtemp()
@@ -69,6 +69,17 @@ class RichTextAdminFormTests(TestCase):
         self.assertIn('<h5>Verse</h5>', anthem.lyrics)
         self.assertIn('<u>Sing together</u>', anthem.lyrics)
 
+    def test_site_page_content_preserves_accessible_tables(self):
+        page = SitePage.objects.create(
+            slug='charter-table',
+            title='Charter table',
+            content='<table><thead><tr><th scope="col">Service</th></tr></thead><tbody><tr><td>Admissions</td></tr></tbody></table>',
+        )
+
+        self.assertIn('<table>', page.content)
+        self.assertIn('<th scope="col">Service</th>', page.content)
+        self.assertIn('<td>Admissions</td>', page.content)
+
 
 class AnnouncementAdminFieldsTests(TestCase):
     def test_announcement_accepts_media_live_event_and_external_links(self):
@@ -109,6 +120,7 @@ class PublicPagesTests(TestCase):
         response = self.client.get('/page/admission-process/')
 
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'class="dynamic-page-hero')
         self.assertContains(response, 'Complete Grade 9')
         self.assertContains(response, 'Your child finishes Junior School and sits for the KJSEA examination.')
         self.assertContains(response, 'https://www.knec.ac.ke')
@@ -132,6 +144,62 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'admission-step-apply')
         self.assertContains(response, 'admission-step-interview')
         self.assertContains(response, 'admission-step-enroll')
+
+    def test_service_charter_preserves_admin_content_and_shows_real_documents(self):
+        page = SitePage.objects.create(
+            slug='service-charter',
+            title='Our Service Charter',
+            content=(
+                '<h2>Our Service Commitment</h2><p>Approved charter content.</p>'
+                '<table><thead><tr><th scope="col">Service</th></tr></thead>'
+                '<tbody><tr><td>Admissions</td></tr></tbody></table>'
+            ),
+            status='published',
+        )
+        Document.objects.create(
+            page=page,
+            title='Published Charter PDF',
+            description='Official school service information.',
+            file='',
+            external_url='https://example.org/service-charter.pdf',
+        )
+
+        response = self.client.get('/service-charter/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Public service information')
+        self.assertContains(response, 'Approved charter content.')
+        self.assertContains(response, '<th scope="col">Service</th>', html=False)
+        self.assertContains(response, 'Published Charter PDF')
+        self.assertContains(response, 'https://example.org/service-charter.pdf')
+        self.assertNotContains(response, '[Enter')
+        self.assertNotContains(response, 'This template provides placeholders')
+        self.assertNotContains(response, 'class="dynamic-page-hero')
+
+    def test_service_charter_shows_empty_state_for_blank_rich_text_markup(self):
+        SitePage.objects.create(
+            slug='service-charter',
+            title='Service Charter',
+            content='<p><br></p>',
+            status='published',
+        )
+
+        response = self.client.get('/service-charter/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Charter information is not currently available online.')
+        self.assertNotContains(response, 'Read the charter')
+
+    def test_strategic_plan_omits_unpublished_sections_and_placeholder_content(self):
+        response = self.client.get('/strategic-plan/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Our Strategic Plan')
+        self.assertContains(response, 'Home')
+        self.assertContains(response, 'Strategic Plan information is not currently available online.')
+        self.assertNotContains(response, '[Enter')
+        self.assertNotContains(response, 'Key Initiatives')
+        self.assertNotContains(response, 'This is a template for the Strategic Plan')
 
     def test_school_chaplaincy_hides_empty_image_areas_without_admin_uploads(self):
         SitePage.objects.create(
@@ -430,6 +498,7 @@ class PublicPagesTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'site-nav')
+        self.assertContains(response, '>B.G.S.S</div>', html=False)
         self.assertContains(response, 'About')
         self.assertContains(response, '/school-anthem/')
         self.assertContains(response, '/school-leadership/')
@@ -455,10 +524,59 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'IntersectionObserver')
         self.assertContains(response, "classList.add('visible')")
 
+    def test_school_leadership_renders_active_profiles_with_svg_fallbacks(self):
+        Leadership.objects.create(
+            role_category='board',
+            position='Board Chair',
+            name='Amina Example',
+        )
+        Leadership.objects.create(
+            role_category='principal',
+            position='Principal',
+            name='Inactive Example',
+            is_active=False,
+        )
+
+        response = self.client.get('/school-leadership/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Board of Management')
+        self.assertContains(response, 'Amina Example')
+        self.assertContains(response, 'class="leadership-portrait-fallback"')
+        self.assertContains(response, 'aria-label="Profile icon for Board Chair"')
+        self.assertNotContains(response, 'Inactive Example')
+        self.assertContains(response, '@media (min-width: 480px)')
+        self.assertContains(response, '@media (min-width: 768px)')
+        self.assertContains(response, '@media (min-width: 1024px)')
+        self.assertContains(response, '@media (min-width: 1280px)')
+
+    @patch(
+        'boarding.views._safe_file_url',
+        side_effect=lambda file_field: (
+            '/media/leadership/chair.jpg'
+            if getattr(file_field, 'name', '') == 'leadership/chair.jpg'
+            else ''
+        ),
+    )
+    def test_school_leadership_portrait_replaces_svg_fallback(self, _safe_file_url):
+        Leadership.objects.create(
+            role_category='board',
+            position='Board Chair',
+            name='Amina Example',
+            portrait='leadership/chair.jpg',
+        )
+
+        response = self.client.get('/school-leadership/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<img src="/media/leadership/chair.jpg" alt="Portrait of Amina Example"')
+        self.assertNotContains(response, 'class="leadership-portrait-fallback"')
+
     def test_contact_page_renders_clean_contact_card_with_admin_ready_details(self):
         response = self.client.get('/contact/')
 
         self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'class="dynamic-page-hero')
         self.assertContains(response, 'Contact Us')
         self.assertContains(response, 'Reach the school office')
         self.assertContains(response, 'admissions, general inquiries, and official communication')
@@ -559,6 +677,8 @@ class FeePaymentPageTests(TestCase):
         response = self.client.get('/fees/')
 
         self.assert_fee_payment_content(response)
+        self.assertNotContains(response, 'class="dynamic-page-hero')
+        self.assertNotContains(response, '<p class="fee-payment-eyebrow">Busiada Girls Senior School</p>', html=False)
 
     def test_fee_payment_site_page_renders_the_same_guidance(self):
         SitePage.objects.create(
@@ -573,6 +693,8 @@ class FeePaymentPageTests(TestCase):
 
         self.assert_fee_payment_content(response)
         self.assertNotContains(response, 'Old payment copy should not replace the current instructions.')
+        self.assertNotContains(response, 'class="dynamic-page-hero')
+        self.assertNotContains(response, '<p class="fee-payment-eyebrow">Busiada Girls Senior School</p>', html=False)
 
 
 class AboutPageDynamicContentTests(TestCase):

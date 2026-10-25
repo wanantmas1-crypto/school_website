@@ -2,6 +2,7 @@
 
 {% block page_title %}{{ page.title }}{% endblock %}
 {% block page_subtitle %}{% if page.category %}{{ page.category }}{% endif %}{% endblock %}
+{% block page_header %}{% if page.slug != 'admission-process' and page.slug != 'fee-payment' %}{{ block.super }}{% endif %}{% endblock %}
 
 {% block page_content %}
     {% if featured_image_url %}
