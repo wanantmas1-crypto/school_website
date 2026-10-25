@@ -1,17 +1,73 @@
 import os
 import shutil
 import tempfile
+from html import unescape
 from unittest.mock import patch
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
-from .models import Announcement, Document, HistoryImage, PageImage, PageVideo, SitePage, SiteSettings
+from .admin import SchoolAnthemAdminForm, SitePageAdminForm, SiteSettingsAdminForm
+from .models import Announcement, Document, GalleryCategory, HistoryImage, PageImage, PageVideo, SchoolAnthem, SitePage, SiteSettings
 
 
 TEST_MEDIA_ROOT = tempfile.mkdtemp()
+
+
+class RichTextAdminFormTests(TestCase):
+    def test_admin_content_forms_load_the_rich_text_editor(self):
+        admin_user = get_user_model().objects.create_superuser(
+            username='editor-admin',
+            email='editor@example.com',
+            password='editor-test-password',
+        )
+        self.client.force_login(admin_user)
+
+        for path in (
+            '/admin/boarding/sitepage/add/',
+            '/admin/boarding/schoolanthem/add/',
+        ):
+            with self.subTest(path=path):
+                response = self.client.get(path)
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, 'boarding/js/quill_init.js')
+                self.assertContains(response, 'data-quill-editor="true"', html=False)
+
+    def test_content_fields_use_the_shared_rich_text_editor(self):
+        form_fields = (
+            (SitePageAdminForm(), 'content'),
+            (SiteSettingsAdminForm(), 'principal_message'),
+            (SchoolAnthemAdminForm(), 'lyrics'),
+        )
+
+        for form, field_name in form_fields:
+            with self.subTest(field=field_name):
+                self.assertEqual(form.fields[field_name].widget.attrs['data-quill-editor'], 'true')
+                self.assertIn('boarding/js/quill_init.js', form.media._js)
+
+    def test_rich_text_sanitizers_keep_common_editor_formatting(self):
+        page = SitePage.objects.create(
+            slug='formatted-page',
+            title='Formatted Page',
+            content='<p><u>Underline</u> and <sup>superscript</sup></p>',
+        )
+        settings = SiteSettings.objects.create(
+            principal_message='<p><s>Strike</s> and <sub>subscript</sub></p>',
+        )
+        anthem = SchoolAnthem.objects.create(
+            title='Formatted Anthem',
+            lyrics='<h5>Verse</h5><p><u>Sing together</u></p>',
+        )
+
+        self.assertIn('<u>Underline</u>', page.content)
+        self.assertIn('<sup>superscript</sup>', page.content)
+        self.assertIn('<s>Strike</s>', settings.principal_message)
+        self.assertIn('<sub>subscript</sub>', settings.principal_message)
+        self.assertIn('<h5>Verse</h5>', anthem.lyrics)
+        self.assertIn('<u>Sing together</u>', anthem.lyrics)
 
 
 class AnnouncementAdminFieldsTests(TestCase):
@@ -77,7 +133,7 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'admission-step-interview')
         self.assertContains(response, 'admission-step-enroll')
 
-    def test_school_chaplaincy_shows_image_placeholders_without_admin_uploads(self):
+    def test_school_chaplaincy_hides_empty_image_areas_without_admin_uploads(self):
         SitePage.objects.create(
             slug='school-chaplaincy',
             title='School Chaplaincy',
@@ -88,9 +144,10 @@ class PublicPagesTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Spiritual care, guidance, and pastoral support for every girl at Busiada.')
-        self.assertContains(response, 'No featured chaplaincy image uploaded')
-        self.assertContains(response, 'No chaplaincy gallery photos uploaded')
-        self.assertNotContains(response, 'chaplaincy-slide')
+        self.assertNotContains(response, 'chaplaincy-placeholder')
+        self.assertNotContains(response, '<section class="chaplaincy-gallery-section">', html=False)
+        self.assertNotContains(response, '<img class="chaplaincy-slide', html=False)
+        self.assertContains(response, 'chaplaincy-intro-no-image')
 
     @patch(
         'boarding.views._safe_file_url',
@@ -98,6 +155,7 @@ class PublicPagesTests(TestCase):
             'site_pages/chaplaincy-background.jpg': '/media/site_pages/chaplaincy-background.jpg',
             'site_pages/chaplaincy-featured.jpg': '/media/site_pages/chaplaincy-featured.jpg',
             'pages/chaplaincy-gallery.jpg': '/media/pages/chaplaincy-gallery.jpg',
+            'pages/chaplaincy-gallery-second.jpg': '/media/pages/chaplaincy-gallery-second.jpg',
         }.get(getattr(file_field, 'name', ''), ''),
     )
     def test_school_chaplaincy_uses_uploaded_page_images(self, _safe_file_url):
@@ -114,6 +172,12 @@ class PublicPagesTests(TestCase):
             title='Chapel gathering',
             caption='A moment of fellowship',
         )
+        PageImage.objects.create(
+            page=page,
+            image='pages/chaplaincy-gallery-second.jpg',
+            title='Community service',
+            order=1,
+        )
 
         response = self.client.get('/school-chaplaincy/')
 
@@ -121,6 +185,11 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, '/media/site_pages/chaplaincy-background.jpg')
         self.assertContains(response, '/media/site_pages/chaplaincy-featured.jpg')
         self.assertContains(response, '/media/pages/chaplaincy-gallery.jpg')
+        self.assertContains(response, '/media/pages/chaplaincy-gallery-second.jpg')
+        self.assertContains(response, 'chaplaincy-slide is-active')
+        self.assertEqual(response.content.count(b'class="chaplaincy-slide'), 3)
+        self.assertContains(response, 'transition: opacity 1.2s ease, transform 7s ease')
+        self.assertContains(response, '}, 6500);')
         self.assertContains(response, 'A moment of fellowship')
         self.assertContains(response, 'background: rgba(30, 58, 95, .52)')
     def test_history_page_renders_supplied_milestones_when_no_admin_entries(self):
@@ -192,7 +261,7 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'Parental & Stakeholder Engagement')
         self.assertContains(response, 'Additional Value-Added Services')
         self.assertContains(response, '/student-health/')
-        self.assertContains(response, '/page/guiding-and-counselling/')
+        self.assertContains(response, '/guiding-and-counselling/')
 
     def test_home_page_features_modern_ctas_and_contact_bar(self):
         SitePage.objects.create(
@@ -474,6 +543,9 @@ class FeePaymentPageTests(TestCase):
         self.assertContains(response, 'Busiada Girls’ High School')
         self.assertContains(response, '[Account Number]')
         self.assertContains(response, 'Cash Payment')
+        self.assertContains(response, 'Cash payments are discouraged.')
+        self.assertContains(response, 'fee-payment-cash-warning')
+        self.assertContains(response, 'pay only at the school accounts office during working hours')
         self.assertContains(response, 'working hours')
         self.assertContains(response, 'official receipt')
         self.assertContains(response, 'Important Instructions for Parents')
@@ -538,6 +610,31 @@ class SecurityHeadersTests(TestCase):
         self.assertIn('https://use.fontawesome.com', csp)
         self.assertIn('https://cdn.jsdelivr.net', csp)
 
+    def test_csp_allows_quill_script_redirect_host(self):
+        response = self.client.get('/admin/login/')
+
+        self.assertEqual(response.status_code, 200)
+        csp = response.headers.get('Content-Security-Policy', '')
+        self.assertIn('script-src', csp)
+        self.assertIn('https://cdn.jsdelivr.net', csp)
+
+
+class NavigationMenuTests(TestCase):
+    def test_shared_navigation_has_styled_desktop_menus_and_fullscreen_mobile_accordions(self):
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '.site-nav .dropdown-menu {')
+        self.assertContains(response, 'min-width: 15rem;')
+        self.assertContains(response, 'transition: opacity .16s ease, transform .16s ease;')
+        self.assertContains(response, 'height: 100dvh;')
+        self.assertContains(response, 'mobile-menu-close')
+        self.assertContains(response, 'data-mobile-target="mobile-about" aria-expanded="false" aria-controls="mobile-about"')
+        self.assertContains(response, 'Events & Announcements')
+        self.assertContains(response, '8-4-4 Curriculum')
+        self.assertContains(response, 'Revision Materials')
+        self.assertContains(response, 'mobile-menu-open')
+
 
 class AcademicsPageTests(TestCase):
     def test_academics_844_page_has_landing_and_resource_sections(self):
@@ -559,6 +656,39 @@ class AcademicsPageTests(TestCase):
         self.assertContains(response, 'finish strong and step confidently into the next stage of her education.')
         self.assertContains(response, 'href="#forms"')
         self.assertContains(response, 'href="#resources"')
+        self.assertContains(response, 'href="/academics/8-4-4/resources/assignments/"')
+        self.assertContains(response, 'href="/academics/8-4-4/resources/revision-materials/"')
+        self.assertContains(response, 'href="/academics/8-4-4/resources/past-kcse-papers/"')
+        self.assertTrue(SitePage.objects.filter(slug='844-assignments').exists())
+        self.assertTrue(SitePage.objects.filter(slug='844-revision-materials').exists())
+        self.assertTrue(SitePage.objects.filter(slug='844-past-kcse-papers').exists())
+
+    def test_844_resource_pages_show_empty_state_and_attached_documents(self):
+        response = self.client.get('/academics/8-4-4/resources/assignments/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Assignments')
+        self.assertContains(response, 'No resources available yet')
+        self.assertContains(response, 'Contact the school office')
+
+        page = SitePage.objects.get(slug='844-assignments')
+        Document.objects.create(
+            page=page,
+            title='Form 4 Mathematics Assignment',
+            description='Complete questions 1 through 10.',
+            external_url='https://example.org/form4-mathematics.pdf',
+        )
+        response = self.client.get('/academics/8-4-4/resources/assignments/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Form 4 Mathematics Assignment')
+        self.assertContains(response, 'Complete questions 1 through 10.')
+        self.assertContains(response, 'https://example.org/form4-mathematics.pdf')
+
+    def test_844_resource_view_rejects_unknown_resource(self):
+        response = self.client.get('/academics/8-4-4/resources/unknown/')
+
+        self.assertEqual(response.status_code, 404)
 
     def test_academics_view_uses_admin_page_when_present(self):
         page = SitePage.objects.create(
@@ -593,6 +723,14 @@ class AcademicsPageTests(TestCase):
         self.assertContains(response, 'What Parents Should Know')
         self.assertContains(response, 'Pathway Choice')
         self.assertContains(response, 'Core Values')
+        self.assertContains(response, '.cbe-parent-guidance { background: #1E3A5F; }')
+        self.assertContains(response, 'background: #EBF4FF;')
+        self.assertContains(response, 'color: #334155;')
+        self.assertContains(response, 'from-[#1E3A5F] to-[#152A45]')
+        self.assertContains(response, "font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif")
+        self.assertContains(response, 'border-radius: 24px')
+        self.assertContains(response, 'border-radius: 999px')
+        self.assertContains(response, '<svg', html=False)
         self.assertNotContains(response, 'STEM pathway images')
         self.assertNotContains(response, 'Social Sciences pathway images')
         self.assertNotContains(response, 'Arts and Sports Science pathway images')
@@ -847,3 +985,150 @@ class DynamicPageImageSourceTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Admin-managed boarding content.')
         self.assertContains(response, page.featured_image.url)
+
+    def test_student_life_pages_render_blueprint_content_and_hide_missing_media(self):
+        pages = (
+            ('/boarding/', 'Home Away from Home: Boarding Life at Busiada', 'Lights Out'),
+            ('/guiding-and-counselling/', 'Guidance & Psychological Support', 'CBE Pathway Advisory'),
+            ('/games-and-sports/', 'Sports & Athletic Excellence', 'Basketball, volleyball'),
+            ('/clubs-and-societies/', 'Clubs & Experiential Learning', 'Science & Robotics Club'),
+            ('/performing-and-visual-arts/', 'Performing & Visual Arts', 'Visual Arts & Design'),
+            ('/student-welfare/', 'Student Welfare & Governance', 'Safety & Anti-Bullying'),
+            ('/page/guiding-and-counselling/', 'Guidance & Psychological Support', 'CBE Pathway Advisory'),
+            ('/page/games-sports/', 'Sports & Athletic Excellence', 'Basketball, volleyball'),
+            ('/page/clubs-societies/', 'Clubs & Experiential Learning', 'Science & Robotics Club'),
+            ('/page/performing-visual-arts/', 'Performing & Visual Arts', 'Visual Arts & Design'),
+            ('/performing-visual-arts/', 'Performing & Visual Arts', 'Music & Dance'),
+            ('/page/student-welfare/', 'Student Welfare & Governance', 'Safety & Anti-Bullying'),
+        )
+
+        for url, heading, content in pages:
+            with self.subTest(url=url):
+                response = self.client.get(url)
+                body = unescape(response.content.decode('utf-8', errors='ignore'))
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(heading, body)
+                self.assertIn(content, body)
+                self.assertNotIn('<figure class="student-life-hero-image">', body)
+
+    def test_school_gallery_filters_and_opens_uploaded_full_size_images(self):
+        page = SitePage.objects.create(
+            slug='school-gallery',
+            title='Busiada in Pictures',
+            status='published',
+        )
+        photo = PageImage.objects.create(
+            page=page,
+            title='County athletics',
+            caption='School team',
+            image=self.uploaded_image('county-athletics.jpg'),
+            category=GalleryCategory.objects.get(slug='sports'),
+        )
+
+        response = self.client.get('/school-gallery/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-gallery-filter="sports"')
+        self.assertContains(response, 'data-gallery-category="sports"')
+        self.assertContains(response, photo.image.url)
+        self.assertContains(response, 'data-gallery-open')
+        self.assertContains(response, 'New photos for this category are coming soon.')
+        self.assertContains(response, 'aria-modal="true"')
+
+    def test_admin_can_create_categories_and_school_gallery_uses_them_as_filters(self):
+        category = GalleryCategory.objects.create(
+            name='Science Exhibitions',
+            slug='science-exhibitions',
+        )
+        page = SitePage.objects.create(
+            slug='school-gallery',
+            title='Busiada in Pictures',
+            status='published',
+        )
+        photo = PageImage.objects.create(
+            page=page,
+            title='Science fair',
+            image=self.uploaded_image('science-fair.jpg'),
+            category=category,
+        )
+
+        response = self.client.get('/school-gallery/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-gallery-filter="science-exhibitions"')
+        self.assertContains(response, 'Science Exhibitions')
+        self.assertContains(response, 'data-gallery-category="science-exhibitions"')
+        self.assertContains(response, photo.image.url)
+
+    def test_page_image_admin_exposes_category_dropdown_and_add_category_admin(self):
+        admin_user = get_user_model().objects.create_superuser(
+            username='gallery-admin',
+            email='gallery-admin@example.com',
+            password='gallery-test-password',
+        )
+        self.client.force_login(admin_user)
+        page = SitePage.objects.create(
+            slug='school-gallery-admin',
+            title='School Gallery Admin',
+            status='published',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='Existing gallery image',
+            image='site_pages/existing-gallery-image.jpg',
+        )
+
+        response = self.client.get(f'/admin/boarding/sitepage/{page.pk}/change/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="images-0-category"')
+        self.assertContains(response, 'Academics &amp; Labs')
+        self.assertContains(response, 'id="add_id_images-0-category"')
+        self.assertEqual(self.client.get('/admin/boarding/gallerycategory/add/').status_code, 200)
+
+    def test_school_gallery_shows_empty_state_without_image_placeholders(self):
+        response = self.client.get('/page/school-gallery/')
+        body = response.content.decode('utf-8', errors='ignore')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('New photos for this category are coming soon.', body)
+        self.assertNotIn('class="school-gallery-photo"', body)
+
+    def test_student_life_pages_display_admin_uploaded_videos_and_documents(self):
+        page = SitePage.objects.create(
+            slug='clubs-societies',
+            title='Clubs & Societies',
+            status='published',
+        )
+        video = PageVideo.objects.create(
+            page=page,
+            title='Robotics Club Showcase',
+            caption='Learners presenting a robotics project',
+            video=SimpleUploadedFile(
+                'robotics-showcase.mp4',
+                b'video-bytes',
+                content_type='video/mp4',
+            ),
+        )
+        document = Document.objects.create(
+            page=page,
+            title='Club Activities Handbook',
+            description='Guidance for club members.',
+            file=SimpleUploadedFile(
+                'club-handbook.pdf',
+                b'document-bytes',
+                content_type='application/pdf',
+            ),
+        )
+
+        response = self.client.get('/clubs-and-societies/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Robotics Club Showcase')
+        self.assertContains(response, 'Learners presenting a robotics project')
+        self.assertContains(response, 'student-life-video')
+        self.assertContains(response, video.video.url)
+        self.assertContains(response, 'Club Activities Handbook')
+        self.assertContains(response, 'Guidance for club members.')
+        self.assertContains(response, document.file.url)
+        self.assertContains(response, 'Downloads &amp; Documents')

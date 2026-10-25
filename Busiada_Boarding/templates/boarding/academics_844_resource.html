@@ -1,0 +1,165 @@
+{% extends 'boarding/base.html' %}
+
+{% block page_title %}{{ resource.title }} | 8-4-4 Learning Resources{% endblock %}
+
+{% block content %}
+<main class="resource-844-page">
+    <section class="resource-844-hero">
+        <div class="resource-844-wrap">
+            <a class="resource-844-back" href="{% url 'academics_844' %}#resources">← Back to 8-4-4 resources</a>
+            <p class="resource-844-eyebrow">Form 3 and Form 4 · Learning support</p>
+            <h1>{{ resource.title }}</h1>
+            <p>{{ resource.description }}</p>
+        </div>
+    </section>
+
+    <section class="resource-844-content" aria-labelledby="resource-844-list-title">
+        <div class="resource-844-wrap">
+            <div class="resource-844-heading">
+                <p class="resource-844-eyebrow">Learning materials</p>
+                <h2 id="resource-844-list-title">{{ resource.title }}</h2>
+                <p>Open or download materials shared by the school for 8-4-4 learners.</p>
+            </div>
+
+            {% if downloads %}
+            <div class="resource-844-list">
+                {% for item in downloads %}
+                <article class="resource-844-item">
+                    <div>
+                        <h3>{{ item.document.title }}</h3>
+                        {% if item.document.description %}
+                        <p>{{ item.document.description }}</p>
+                        {% endif %}
+                        {% if item.document.uploaded_at %}
+                        <time datetime="{{ item.document.uploaded_at|date:'c' }}">Added {{ item.document.uploaded_at|date:'j M Y' }}</time>
+                        {% endif %}
+                    </div>
+                    <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">Open resource</a>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="resource-844-empty">
+                <h3>No resources available yet</h3>
+                <p>Materials for this section will be posted here. Please check back later.</p>
+            </div>
+            {% endif %}
+
+            <p class="resource-844-help">
+                Need help? <a href="{% url 'contact_page' %}">Contact the school office</a>.
+            </p>
+        </div>
+    </section>
+</main>
+
+<style>
+    .resource-844-page {
+        --resource-navy: #1E3A5F;
+        --resource-blue: #2B6CB0;
+        --resource-text: #475569;
+        color: var(--resource-text);
+        background: #F8FAFC;
+        font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    .resource-844-wrap { width: min(100% - 2rem, 72rem); margin: 0 auto; }
+    .resource-844-hero {
+        padding: clamp(3.5rem, 8vw, 6rem) 0;
+        background: linear-gradient(125deg, #1E3A5F, #152A45);
+        color: #fff;
+    }
+    .resource-844-back {
+        display: inline-block;
+        margin-bottom: 2rem;
+        color: #F8F1E3;
+        font-size: .92rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .resource-844-back:hover { color: #fff; text-decoration: underline; }
+    .resource-844-eyebrow {
+        margin: 0 0 .65rem;
+        color: var(--resource-blue);
+        font-size: .76rem;
+        font-weight: 600;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+    .resource-844-hero .resource-844-eyebrow { color: #F8F1E3; }
+    .resource-844-hero h1 {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(2.25rem, 6vw, 4rem);
+        font-weight: 700;
+        line-height: 1.15;
+    }
+    .resource-844-hero p:last-child {
+        max-width: 44rem;
+        margin: 1rem 0 0;
+        color: rgba(255,255,255,.88);
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+    .resource-844-content { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+    .resource-844-heading { margin-bottom: 1.5rem; }
+    .resource-844-heading h2 {
+        margin: 0;
+        color: var(--resource-navy);
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-weight: 600;
+    }
+    .resource-844-heading > p:last-child {
+        margin: .5rem 0 0;
+        line-height: 1.75;
+    }
+    .resource-844-list { display: grid; gap: .9rem; }
+    .resource-844-item,
+    .resource-844-empty {
+        padding: 1.25rem;
+        border: 1px solid rgba(30,58,95,.1);
+        border-radius: 1.25rem;
+        background: #fff;
+        box-shadow: 0 14px 32px rgba(30,58,95,.06);
+    }
+    .resource-844-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .resource-844-item h3,
+    .resource-844-empty h3 {
+        margin: 0;
+        color: var(--resource-navy);
+        font-size: 1.08rem;
+        font-weight: 600;
+    }
+    .resource-844-item p,
+    .resource-844-empty p {
+        margin: .35rem 0 0;
+        line-height: 1.7;
+    }
+    .resource-844-item time {
+        display: inline-block;
+        margin-top: .45rem;
+        color: #64748B;
+        font-size: .82rem;
+    }
+    .resource-844-item > a {
+        flex: 0 0 auto;
+        padding: .7rem 1.1rem;
+        border-radius: 999px;
+        background: var(--resource-blue);
+        color: #fff;
+        font-size: .9rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .resource-844-item > a:hover { background: var(--resource-navy); }
+    .resource-844-help { margin: 1.5rem 0 0; }
+    .resource-844-help a { color: var(--resource-blue); font-weight: 600; }
+    @media (max-width: 600px) {
+        .resource-844-item { align-items: flex-start; flex-direction: column; }
+        .resource-844-item > a { width: 100%; text-align: center; }
+    }
+</style>
+{% endblock %}

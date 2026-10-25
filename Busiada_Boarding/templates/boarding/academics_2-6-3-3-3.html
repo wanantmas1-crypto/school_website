@@ -7,24 +7,43 @@
 {% block content %}
 <style>
   .cbe-page {
-    --ink: #24364b;
-    --soft: #f7f8f6;
-    --line: #dce5df;
-    --forest: #1e3a5f;
-    --leaf: #527d68;
-    --sun: #d4a017;
-    --coral: #527d68;
+    --ink: #475569;
+    --soft: #F8FAFC;
+    --line: rgba(30, 58, 95, .1);
+    --forest: #1E3A5F;
+    --leaf: #2B6CB0;
     background: var(--soft);
     color: var(--ink);
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    line-height: 1.75;
   }
 
   .cbe-page h2,
   .cbe-page h3,
-  .cbe-page h4 { color: var(--forest); }
+  .cbe-page h4 {
+    color: var(--forest);
+    font-weight: 600;
+  }
 
-  .cbe-page .cbe-eyebrow { color: var(--leaf); }
+  .cbe-page .cbe-eyebrow {
+    color: var(--leaf);
+    font-weight: 600;
+  }
 
-  .cbe-section { padding: 4.5rem 1rem; }
+  .cbe-page .font-black,
+  .cbe-page .font-extrabold { font-weight: 600; }
+
+  .cbe-page [role="banner"] h1 { font-weight: 700; }
+
+  .cbe-section {
+    padding: 4.5rem 1rem;
+    background: #F8FAFC;
+  }
+
+  .cbe-page > section:nth-of-type(2) { background: #FDF8F0; }
+  .cbe-page > section:nth-of-type(3) { background: #F8FAFC; }
+  .cbe-page > section:nth-of-type(4) { background: #EBF4FF; }
+
   .cbe-wrap { width: min(1120px, 100%); margin: 0 auto; }
 
   .cbe-eyebrow {
@@ -34,23 +53,44 @@
     text-transform: uppercase;
   }
 
+  .cbe-page [role="banner"] .cbe-hero-copy p { color: rgba(255, 255, 255, .88); }
+  .cbe-page [role="banner"] .text-white { color: #fff; }
+  .cbe-page [role="banner"] .text-white\/85 { color: rgba(255, 255, 255, .85); }
+  .cbe-page .cbe-parent-guidance { background: #1E3A5F; }
+  .cbe-page .cbe-parent-guidance > p { color: #F8F1E3; }
+  .cbe-page .cbe-parent-guidance .cbe-parent-note {
+    border: 1px solid rgba(30, 58, 95, .1);
+    background: #EBF4FF;
+    color: #334155;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cbe-card,
+    .cbe-action,
+    .cbe-reveal { transition: none; }
+    .cbe-card:hover,
+    .cbe-card:focus-within,
+    .cbe-action:hover,
+    .cbe-action:focus-visible { transform: none; }
+  }
+
   .cbe-card {
     border: 1px solid var(--line);
-    border-radius: 1rem;
+    border-radius: 24px;
     background: #fff;
-    box-shadow: 0 14px 32px rgba(23, 35, 31, .07);
+    box-shadow: 0 14px 32px rgba(30, 58, 95, .07);
     transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
   }
 
   .cbe-card:hover,
   .cbe-card:focus-within {
     transform: translateY(-3px);
-    border-color: rgba(31, 122, 92, .35);
-    box-shadow: 0 20px 42px rgba(23, 35, 31, .12);
+    border-color: rgba(43, 108, 176, .35);
+    box-shadow: 0 20px 42px rgba(30, 58, 95, .12);
   }
 
   .cbe-action {
-    border-radius: .375rem;
+    border-radius: 999px;
     transition: transform .2s ease, background-color .2s ease, border-color .2s ease;
   }
 
@@ -68,13 +108,6 @@
     transform: translateY(0);
   }
 
-  .cbe-hero-slide {
-    opacity: 0;
-    transition: opacity 1.2s ease;
-  }
-
-  .cbe-hero-slide.is-active { opacity: 1; }
-
   .pathway-rule {
     height: 4px;
     width: 4rem;
@@ -90,8 +123,8 @@
   .pathway-media {
     overflow: hidden;
     border: 1px solid var(--line);
-    border-radius: 1rem;
-    background: #f1f5f2;
+    border-radius: 1.25rem;
+    background: #F1F5F9;
   }
 
   .pathway-media img {
@@ -101,31 +134,14 @@
     object-fit: cover;
   }
 
-  .pathway-media-placeholder {
-    display: flex;
-    min-height: 12rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: .4rem;
-    padding: 1rem;
-    color: #526658;
-    text-align: center;
-  }
-
-  .pathway-media-placeholder i {
-    color: var(--leaf);
-    font-size: 1.5rem;
-  }
-
   .pathway-population {
     display: inline-flex;
     align-items: center;
     margin-top: 1rem;
     padding: .4rem .75rem;
     border-radius: 999px;
-    background: #eaf2ed;
-    color: #365b47;
+    background: #EBF4FF;
+    color: #1E3A5F;
     font-size: .85rem;
     font-weight: 700;
   }
@@ -136,7 +152,7 @@
 </style>
 
 <div class="cbe-page">
-  <section role="banner" aria-label="CBE 2-6-3-3-3 overview" class="relative min-h-[620px] overflow-hidden bg-[#1E3A5F] text-white">
+  <section role="banner" aria-label="CBE 2-6-3-3-3 overview" class="relative min-h-[620px] overflow-hidden bg-gradient-to-br from-[#1E3A5F] to-[#152A45] text-white">
     <div class="absolute inset-0">
       {% if page_background_image_url %}
         <img
@@ -146,58 +162,58 @@
           aria-hidden="true"
         >
       {% else %}
-        <div class="absolute inset-0 bg-gradient-to-br from-[#152A45] via-[#1E3A5F] to-[#315B50]"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-[#1E3A5F] to-[#152A45]"></div>
       {% endif %}
     </div>
-    <div class="absolute inset-0 bg-[#1E3A5F]/75" aria-hidden="true"></div>
-    <div class="absolute inset-x-0 bottom-0 h-24 bg-[#f6f8f7]" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-[#152A45]/60" aria-hidden="true"></div>
+    <div class="absolute inset-x-0 bottom-0 h-24 bg-[#FDF8F0]" aria-hidden="true"></div>
 
     <div class="cbe-wrap relative grid min-h-[620px] gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_.95fr] lg:items-end lg:px-8 lg:py-20">
-      <div class="pb-12 lg:pb-20">
-        <p class="text-sm font-black uppercase tracking-[.18em] text-[#D4A017]">Competency Based Education</p>
+      <div class="cbe-hero-copy pb-12 lg:pb-20">
+        <p class="text-sm font-semibold uppercase tracking-[.18em] text-[#F8F1E3]">Competency Based Education</p>
         <h1 class="mt-5 max-w-3xl text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">CBE at Busiada Girls Senior School</h1>
         <p class="mt-6 max-w-2xl text-base leading-8 text-white/88 sm:text-lg">
           The future of learning at Busiada — where every girl chooses a pathway, builds real skills, and prepares for life beyond school.
         </p>
         <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-          <a href="#pathways" class="cbe-action inline-flex items-center justify-center gap-2 bg-[#C41E3A] px-5 py-3 text-sm font-black text-white shadow-lg shadow-black/20 hover:bg-[#A61830] focus:outline-none focus:ring-2 focus:ring-[#D4A017]">
-            <i class="fa-solid fa-route" aria-hidden="true"></i>
+          <a href="#pathways" class="cbe-action inline-flex items-center justify-center gap-2 bg-[#2B6CB0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 hover:bg-[#1E3A5F] focus:outline-none focus:ring-2 focus:ring-[#F8F1E3]">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M7 15l4-4 3 3 5-7"/></svg>
             Explore Pathways
           </a>
-          <a href="/page/admission-process/" class="cbe-action inline-flex items-center justify-center gap-2 border border-white/30 bg-white/12 px-5 py-3 text-sm font-black text-white hover:bg-white/18 focus:outline-none focus:ring-2 focus:ring-[#D4A017]">
-            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+          <a href="/page/admission-process/" class="cbe-action inline-flex items-center justify-center gap-2 border border-white/30 bg-white/12 px-6 py-3 text-sm font-semibold text-white hover:bg-white/18 focus:outline-none focus:ring-2 focus:ring-[#F8F1E3]">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6m-6 4h6m-6 4h6m-8 7h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2.2a3 3 0 0 0-5.6 0H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
             Admission Process
           </a>
         </div>
       </div>
 
       <div class="relative pb-4">
-        <div class="grid gap-3 rounded-lg border border-white/20 bg-white p-4 text-[#17231f] shadow-2xl">
-          <div class="flex items-center justify-between border-b border-[#d8e3dc] pb-4">
+        <div class="grid gap-3 rounded-3xl border border-white/20 bg-white p-5 text-[#334155] shadow-2xl sm:p-6">
+          <div class="flex items-center justify-between border-b border-[#1E3A5F/10] pb-4">
             <div>
-              <p class="text-xs font-black uppercase tracking-[.16em] text-[#6b7a72]">Senior School</p>
-              <p class="mt-1 text-2xl font-black text-[#123b2f]">Grade 10 to 12</p>
+              <p class="text-xs font-black uppercase tracking-[.16em] text-[#475569]">Senior School</p>
+              <p class="mt-1 text-2xl font-black text-[#1E3A5F]">Grade 10 to 12</p>
             </div>
-            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#c94f3d] text-white">
-              <i class="fa-solid fa-graduation-cap text-xl" aria-hidden="true"></i>
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2B6CB0] text-white">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m2 9 10-5 10 5-10 5L2 9Zm4 2v5c3.5 2.7 8.5 2.7 12 0v-5m4-2v6"/></svg>
             </span>
           </div>
           <div class="grid grid-cols-3 gap-3 text-center">
-            <div class="rounded-lg bg-[#eaf5ef] p-4">
-              <p class="text-3xl font-black text-[#1f7a5c]">3</p>
-              <p class="mt-1 text-xs font-bold text-[#43524b]">Pathways</p>
+            <div class="rounded-lg bg-[#EBF4FF] p-4">
+              <p class="text-3xl font-black text-[#2B6CB0]">3</p>
+              <p class="mt-1 text-xs font-bold text-[#334155]">Pathways</p>
             </div>
-            <div class="rounded-lg bg-[#fff4df] p-4">
-              <p class="text-3xl font-black text-[#b46f00]">6</p>
-              <p class="mt-1 text-xs font-bold text-[#43524b]">Core Areas</p>
+            <div class="rounded-lg bg-[#F8F1E3] p-4">
+              <p class="text-3xl font-black text-[#2B6CB0]">6</p>
+              <p class="mt-1 text-xs font-bold text-[#334155]">Core Areas</p>
             </div>
-            <div class="rounded-lg bg-[#fdecea] p-4">
-              <p class="text-3xl font-black text-[#c94f3d]">12</p>
-              <p class="mt-1 text-xs font-bold text-[#43524b]">Final Grade</p>
+            <div class="rounded-lg bg-[#EBF4FF] p-4">
+              <p class="text-3xl font-black text-[#2B6CB0]">12</p>
+              <p class="mt-1 text-xs font-bold text-[#334155]">Final Grade</p>
             </div>
           </div>
-          <div class="rounded-lg bg-[#1E3A5F] p-5 text-white">
-            <p class="text-sm font-black text-[#D4A017]">Learner profile</p>
+          <div class="rounded-2xl bg-[#1E3A5F] p-5 text-white">
+            <p class="text-sm font-semibold text-[#F8F1E3]">Learner profile</p>
             <p class="mt-2 text-sm leading-6 text-white/85">Confident, skilled, ethical and ready to serve beyond school.</p>
           </div>
         </div>
@@ -210,16 +226,16 @@
       <div class="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
         <div>
           <p class="cbe-eyebrow">Why CBE Matters</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Learning that turns knowledge into ability.</h2>
-          <p class="mt-4 text-base leading-8 text-[#53635b]">
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#1E3A5F] sm:text-4xl">Learning that turns knowledge into ability.</h2>
+          <p class="mt-4 text-base leading-8 text-[#475569]">
             CBE focuses on what a learner can do, not just what she can remember. It helps every girl discover her strengths, develop useful skills, and prepare for university, TVET, employment, or entrepreneurship.
           </p>
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
-          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Learners choose a pathway based on interest and ability.</p></article>
-          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Skills, values, and character are emphasized.</p></article>
-          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Learning prepares girls for real life and further education.</p></article>
-          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#24364b]">Talent development goes hand in hand with academics.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#334155]">Learners choose a pathway based on interest and ability.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#334155]">Skills, values, and character are emphasized.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#334155]">Learning prepares girls for real life and further education.</p></article>
+          <article class="cbe-card p-5"><p class="font-bold leading-6 text-[#334155]">Talent development goes hand in hand with academics.</p></article>
         </div>
       </div>
     </div>
@@ -230,21 +246,21 @@
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div class="max-w-3xl">
           <p class="cbe-eyebrow">Our Three Career Pathways</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f] sm:text-4xl">Choose a pathway. Grow your potential.</h2>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#1E3A5F] sm:text-4xl">Choose a pathway. Grow your potential.</h2>
         </div>
-        <p class="max-w-md text-sm leading-6 text-[#53635b]">Each pathway connects learner interests and abilities with meaningful skills and future opportunities.</p>
+        <p class="max-w-md text-sm leading-6 text-[#475569]">Each pathway connects learner interests and abilities with meaningful skills and future opportunities.</p>
       </div>
 
       <div class="mt-10 grid gap-5 lg:grid-cols-3">
         <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="pathway-rule bg-[#527d68]"></div>
-              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">STEM</h3>
-              <p class="mt-1 text-sm font-semibold text-[#527d68]">Science, Technology, Engineering &amp; Mathematics</p>
+              <div class="pathway-rule bg-[#2B6CB0]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1E3A5F]">STEM</h3>
+              <p class="mt-1 text-sm font-semibold text-[#2B6CB0]">Science, Technology, Engineering &amp; Mathematics</p>
             </div>
-            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#eaf2ed] text-[#527d68]">
-              <i class="fa-solid fa-atom text-xl" aria-hidden="true"></i>
+              <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EBF4FF] text-[#2B6CB0]">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><ellipse cx="12" cy="12" rx="9" ry="4.5"/><ellipse cx="12" cy="12" rx="9" ry="4.5" transform="rotate(60 12 12)"/></svg>
             </span>
           </div>
           {% if page.stem_learner_population != None %}
@@ -259,10 +275,10 @@
             {% endfor %}
           </div>
           {% endif %}
-          <p class="mt-4 text-sm leading-6 text-[#53635b]">Problem-solving, innovation, scientific thinking, and technology.</p>
-          <div class="mt-6 border-t border-[#d8e3dc] pt-5">
-            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
-            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+          <p class="mt-4 text-sm leading-6 text-[#475569]">Problem-solving, innovation, scientific thinking, and technology.</p>
+          <div class="mt-6 border-t border-[#1E3A5F/10] pt-5">
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#2B6CB0]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#334155]">
               <li>Medicine, Nursing, Engineering, Computer Science</li>
               <li>Agriculture, Architecture, Data Science</li>
               <li>Environmental Science, Pharmacy</li>
@@ -273,12 +289,12 @@
         <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="pathway-rule bg-[#d4a017]"></div>
-              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">Social Sciences</h3>
-              <p class="mt-1 text-sm font-semibold text-[#527d68]">Languages, Humanities &amp; Business</p>
+              <div class="pathway-rule bg-[#2B6CB0]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1E3A5F]">Social Sciences</h3>
+              <p class="mt-1 text-sm font-semibold text-[#2B6CB0]">Languages, Humanities &amp; Business</p>
             </div>
-            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#fff4df] text-[#b46f00]">
-              <i class="fa-solid fa-landmark text-xl" aria-hidden="true"></i>
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F8F1E3] text-[#2B6CB0]">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m3 9 9-5 9 5M4 20h16M6 10v7m4-7v7m4-7v7m4-7v7"/></svg>
             </span>
           </div>
           {% if page.social_sciences_learner_population != None %}
@@ -293,10 +309,10 @@
             {% endfor %}
           </div>
           {% endif %}
-          <p class="mt-4 text-sm leading-6 text-[#53635b]">Communication, leadership, society, and enterprise.</p>
-          <div class="mt-6 border-t border-[#d8e3dc] pt-5">
-            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
-            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+          <p class="mt-4 text-sm leading-6 text-[#475569]">Communication, leadership, society, and enterprise.</p>
+          <div class="mt-6 border-t border-[#1E3A5F/10] pt-5">
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#2B6CB0]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#334155]">
               <li>Law, Journalism, Teaching, Business, Banking</li>
               <li>Diplomacy, Public Administration, Social Work</li>
               <li>Entrepreneurship</li>
@@ -307,12 +323,12 @@
         <article class="cbe-card bg-white p-6 shadow-md" tabindex="0">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="pathway-rule bg-[#527d68]"></div>
-              <h3 class="mt-5 text-2xl font-black text-[#1e3a5f]">Arts &amp; Sports Science</h3>
-              <p class="mt-1 text-sm font-semibold text-[#527d68]">Creative Arts &amp; Sports</p>
+              <div class="pathway-rule bg-[#2B6CB0]"></div>
+              <h3 class="mt-5 text-2xl font-black text-[#1E3A5F]">Arts &amp; Sports Science</h3>
+              <p class="mt-1 text-sm font-semibold text-[#2B6CB0]">Creative Arts &amp; Sports</p>
             </div>
-            <span class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#eaf2ed] text-[#527d68]">
-              <i class="fa-solid fa-palette text-xl" aria-hidden="true"></i>
+            <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EBF4FF] text-[#2B6CB0]">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 0 0 18h1.2a2 2 0 0 0 1.5-3.3 1.9 1.9 0 0 1 1.4-3.2H18a3 3 0 0 0 3-3c0-4.7-4-8.5-9-8.5Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="11" cy="7.5" r="1"/><circle cx="15" cy="8.5" r="1"/></svg>
             </span>
           </div>
           {% if pathway_images.arts_sports %}
@@ -324,10 +340,10 @@
             {% endfor %}
           </div>
           {% endif %}
-          <p class="mt-4 text-sm leading-6 text-[#53635b]">Creativity, talent development, performance, and physical excellence.</p>
-          <div class="mt-6 border-t border-[#d8e3dc] pt-5">
-            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#527d68]">Possible Careers</h4>
-            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#28352f]">
+          <p class="mt-4 text-sm leading-6 text-[#475569]">Creativity, talent development, performance, and physical excellence.</p>
+          <div class="mt-6 border-t border-[#1E3A5F/10] pt-5">
+            <h4 class="text-xs font-black uppercase tracking-[.16em] text-[#2B6CB0]">Possible Careers</h4>
+            <ul class="mt-3 grid gap-2 text-sm font-medium leading-6 text-[#334155]">
               <li>Music, Theatre, Film, Fine Arts</li>
               <li>Sports Coaching, Sports Management</li>
               <li>Media Production, Event Management, Creative Design</li>
@@ -338,43 +354,43 @@
     </div>
   </section>
 
-  <section class="cbe-section cbe-reveal bg-[#f6f8f7]" data-cbe-reveal>
+  <section class="cbe-section cbe-reveal bg-[#F8FAFC]" data-cbe-reveal>
     <div class="cbe-wrap">
       <div class="grid gap-8 lg:grid-cols-2">
-        <article class="rounded-3xl border border-[#d8e3dc] bg-white p-6 shadow-sm sm:p-8">
+        <article class="rounded-3xl border border-[#1E3A5F/10] bg-white p-6 shadow-sm sm:p-8">
           <p class="cbe-eyebrow">Core Values</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f]">Guiding learning and life.</h2>
-          <p class="mt-4 text-sm leading-7 text-[#53635b]">These values guide learning and life at Busiada under CBE.</p>
-          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm font-bold text-[#24364b] sm:grid-cols-3">
-            <li class="rounded-lg bg-[#f6f8f7] p-4">Integrity</li>
-            <li class="rounded-lg bg-[#eaf5ef] p-4">Responsibility</li>
-            <li class="rounded-lg bg-[#f6f8f7] p-4">Respect</li>
-            <li class="rounded-lg bg-[#eaf5ef] p-4">Excellence</li>
-            <li class="rounded-lg bg-[#f6f8f7] p-4">Service</li>
-            <li class="rounded-lg bg-[#eaf5ef] p-4">Discipline</li>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#1E3A5F]">Guiding learning and life.</h2>
+          <p class="mt-4 text-sm leading-7 text-[#475569]">These values guide learning and life at Busiada under CBE.</p>
+          <ul class="mt-6 grid grid-cols-2 gap-3 text-sm font-bold text-[#334155] sm:grid-cols-3">
+            <li class="rounded-lg bg-[#F8FAFC] p-4">Integrity</li>
+            <li class="rounded-lg bg-[#EBF4FF] p-4">Responsibility</li>
+            <li class="rounded-lg bg-[#F8FAFC] p-4">Respect</li>
+            <li class="rounded-lg bg-[#EBF4FF] p-4">Excellence</li>
+            <li class="rounded-lg bg-[#F8FAFC] p-4">Service</li>
+            <li class="rounded-lg bg-[#EBF4FF] p-4">Discipline</li>
           </ul>
         </article>
 
-        <article class="rounded-3xl border border-[#d8e3dc] bg-white p-6 shadow-sm sm:p-8">
+        <article class="rounded-3xl border border-[#1E3A5F/10] bg-white p-6 shadow-sm sm:p-8">
           <p class="cbe-eyebrow">Pillars of CBE at Busiada</p>
-          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#123b2f]">What we stand on.</h2>
-          <ul class="mt-6 space-y-4 text-sm leading-6 text-[#53635b]">
-            <li><strong class="text-[#123b2f]">Pathway Choice</strong> — Every girl selects a path that matches her strengths.</li>
-            <li><strong class="text-[#123b2f]">Skill Development</strong> — Focus on practical and useful competencies.</li>
-            <li><strong class="text-[#123b2f]">Character Formation</strong> — Values and discipline are part of daily learning.</li>
-            <li><strong class="text-[#123b2f]">Talent Nurturing</strong> — Arts, sports, and leadership are fully supported.</li>
-            <li><strong class="text-[#123b2f]">Future Readiness</strong> — Preparation for university, TVET, work, and life.</li>
+          <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-[#1E3A5F]">What we stand on.</h2>
+          <ul class="mt-6 space-y-4 text-sm leading-6 text-[#475569]">
+            <li><strong class="text-[#1E3A5F]">Pathway Choice</strong> — Every girl selects a path that matches her strengths.</li>
+            <li><strong class="text-[#1E3A5F]">Skill Development</strong> — Focus on practical and useful competencies.</li>
+            <li><strong class="text-[#1E3A5F]">Character Formation</strong> — Values and discipline are part of daily learning.</li>
+            <li><strong class="text-[#1E3A5F]">Talent Nurturing</strong> — Arts, sports, and leadership are fully supported.</li>
+            <li><strong class="text-[#1E3A5F]">Future Readiness</strong> — Preparation for university, TVET, work, and life.</li>
           </ul>
         </article>
       </div>
 
-      <div class="mt-8 rounded-3xl border border-[#d8e3dc] bg-[#1e3a5f] p-6 text-white shadow-sm sm:p-8">
-        <p class="text-xs font-black uppercase tracking-[.16em] text-[#bfe2cc]">What Parents Should Know</p>
+      <div class="cbe-parent-guidance mt-8 rounded-3xl border border-white/15 p-6 text-white shadow-sm sm:p-8">
+        <p class="text-xs font-black uppercase tracking-[.16em] text-[#F8F1E3]">What Parents Should Know</p>
         <div class="mt-5 grid gap-4 sm:grid-cols-2">
-          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">CBE allows early specialisation through pathways.</p>
-          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">Learners still take core subjects: English, Kiswahili, PE, and Community Service Learning.</p>
-          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">The system values both academic ability and practical skills.</p>
-          <p class="rounded-lg bg-white/10 p-4 text-sm leading-6">Success is measured by competence, character, and readiness for the next stage.</p>
+          <p class="cbe-parent-note rounded-xl p-4 text-sm leading-6">CBE allows early specialisation through pathways.</p>
+          <p class="cbe-parent-note rounded-xl p-4 text-sm leading-6">Learners still take core subjects: English, Kiswahili, PE, and Community Service Learning.</p>
+          <p class="cbe-parent-note rounded-xl p-4 text-sm leading-6">The system values both academic ability and practical skills.</p>
+          <p class="cbe-parent-note rounded-xl p-4 text-sm leading-6">Success is measured by competence, character, and readiness for the next stage.</p>
         </div>
       </div>
     </div>
@@ -400,15 +416,6 @@
     sections.forEach((section) => observer.observe(section));
   }
 
-  const slides = document.querySelectorAll('.cbe-hero-slide');
-  if (slides.length > 1) {
-    let active = 0;
-    window.setInterval(() => {
-      slides[active].classList.remove('is-active');
-      active = (active + 1) % slides.length;
-      slides[active].classList.add('is-active');
-    }, 6000);
-  }
 })();
 </script>
 {% endblock %}

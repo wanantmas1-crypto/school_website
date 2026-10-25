@@ -1,9 +1,28 @@
 import os
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.core.files.storage import default_storage
-from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem
+from .models import Inquiry, SitePage, PageVideo, Announcement, HistoryImage, SchoolAnthem, GalleryCategory
 from .utils import safe_file_url
+
+
+ACADEMICS_844_RESOURCES = {
+    'assignments': {
+        'page_slug': '844-assignments',
+        'title': 'Assignments',
+        'description': 'Assignments and practical tasks for Form 3 and Form 4 learners.',
+    },
+    'revision-materials': {
+        'page_slug': '844-revision-materials',
+        'title': 'Revision Materials',
+        'description': 'Revision notes, summaries, and study materials for 8-4-4 learners.',
+    },
+    'past-kcse-papers': {
+        'page_slug': '844-past-kcse-papers',
+        'title': 'Past KCSE Papers',
+        'description': 'Past KCSE examination papers for practice and exam preparation.',
+    },
+}
 
 
 def _safe_file_url(field_file):
@@ -11,28 +30,36 @@ def _safe_file_url(field_file):
 
 
 def _gallery_items_for_page(page):
+    return _page_gallery_items(page, include_featured=True)
+
+
+def _page_gallery_items(page, include_featured):
     items = []
     if not page:
         return items
 
-    try:
-        featured_image = getattr(page, 'featured_image', None)
-        featured_url = _safe_file_url(featured_image)
-        if featured_url:
-            items.append({
-                'src': featured_url,
-                'srcset': '',
-                'title': getattr(page, 'title', '') or 'Featured image',
-                'caption': '',
-                'description': '',
-                'uploaded_at': getattr(page, 'updated_at', None),
-                'alt': getattr(page, 'title', '') or 'Featured image',
-            })
-    except Exception:
-        pass
+    if include_featured:
+        try:
+            featured_image = getattr(page, 'featured_image', None)
+            featured_url = _safe_file_url(featured_image)
+            if featured_url:
+                items.append({
+                    'src': featured_url,
+                    'srcset': '',
+                    'title': getattr(page, 'title', '') or 'Featured image',
+                    'caption': '',
+                    'description': '',
+                    'category': '',
+                    'uploaded_at': getattr(page, 'updated_at', None),
+                    'alt': getattr(page, 'title', '') or 'Featured image',
+                })
+        except Exception:
+            pass
 
     try:
-        for img in getattr(page, 'images', None).all() if getattr(page, 'images', None) is not None else []:
+        page_images = getattr(page, 'images', None)
+        image_queryset = page_images.select_related('category') if page_images is not None else []
+        for img in image_queryset:
             url = _safe_file_url(getattr(img, 'image', None))
             if not url:
                 continue
@@ -49,6 +76,7 @@ def _gallery_items_for_page(page):
                 'title': getattr(img, 'title', '') or 'Photo',
                 'caption': getattr(img, 'caption', '') or '',
                 'description': getattr(img, 'description', '') or '',
+                'category': img.category.slug if getattr(img, 'category_id', None) else '',
                 'uploaded_at': getattr(img, 'uploaded_at', None),
                 'alt': getattr(img, 'title', '') or getattr(page, 'title', '') or 'Photo',
             })
@@ -68,6 +96,143 @@ def _render_dynamic_page(request, page, template_name='boarding/site_page.html',
         'featured_image_url': featured_image_url,
         'featured_image_srcset': featured_image_srcset,
         'gallery_items': gallery_items,
+    })
+
+
+STUDENT_LIFE_PAGES = {
+    'boarding': {
+        'title': 'Home Away from Home: Boarding Life at Busiada',
+        'intro': 'A secure, nurturing, and disciplined residential environment designed to foster independence, focus, and deep sisterhood among our girls.',
+        'category': 'Boarding Life',
+        'cards': [
+            {'title': 'Comfort & Security', 'body': '24/7 campus security, resident matrons, and spacious, well-ventilated dormitories support every learner’s personal well-being.'},
+            {'title': 'Balanced Nutrition', 'body': 'Hygienically prepared, wholesome meals support the health and growth of our learners.'},
+            {'title': 'Structured Daily Routine', 'body': 'A balanced timetable brings together morning preparation, classes, co-curricular activities, evening study, and rest.'},
+        ],
+        'sections': [
+            {'title': 'A balanced day', 'items': [
+                'Morning Devotions & Prep — 5:00 AM–6:00 AM',
+                'Classes & Practical Lessons — 8:00 AM–4:00 PM',
+                'Games, Clubs & Co-curriculars — 4:15 PM–5:30 PM',
+                'Evening Preps & Personal Study — 6:30 PM–9:30 PM',
+                'Lights Out — 10:00 PM',
+            ]},
+            {'title': 'Parent information', 'items': [
+                'Please confirm the essential personal items required for boarders with the school before opening day.',
+                'Visiting days and weekend exeats follow the school’s current parent communication and approval policy.',
+            ]},
+        ],
+    },
+    'guiding-and-counselling': {
+        'title': 'Guidance & Psychological Support',
+        'intro': 'Empowering every learner with emotional resilience, personal confidence, moral clarity, and academic mentorship.',
+        'category': 'Student Life',
+        'cards': [
+            {'title': 'CBE Pathway Advisory', 'body': 'Support for learners as they explore strengths and pathways in STEM, Social Sciences, and Arts & Sports Science.'},
+            {'title': 'Personal & Emotional Counselling', 'body': 'Individual support for adolescent development, time management, stress, and self-esteem.'},
+            {'title': 'Life Skills & Mentorship', 'body': 'Group learning on discipline, financial literacy, digital responsibility, and interpersonal relationships.'},
+            {'title': 'Peer Counselling', 'body': 'Student leaders help build positive peer support and a caring dormitory culture.'},
+        ],
+        'callout': {'title': 'A respectful, private space', 'body': 'Counselling conversations are handled with empathy and privacy, with appropriate support and referrals when needed.'},
+    },
+    'games-sports': {
+        'title': 'Sports & Athletic Excellence',
+        'intro': 'Building physical fitness, sportsmanship, resilience, and leadership through active sports engagement.',
+        'category': 'Student Life',
+        'cards': [
+            {'title': 'Ball Games', 'body': 'Basketball, volleyball, football, netball, and handball.'},
+            {'title': 'Track & Field', 'body': 'Sprints, middle- and long-distance races, jumps, and throws.'},
+            {'title': 'Indoor & Strategic Games', 'body': 'Chess, table tennis, and badminton.'},
+        ],
+        'sections': [
+            {'title': 'CBE Arts & Sports Science pathway', 'body': 'Sport can build a foundation for further learning and careers in coaching, physical education, sports management, and sports journalism.', 'items': []},
+            {'title': 'Competition and participation', 'body': 'School teams take part in zonal, county, and regional activities, building teamwork, resilience, and sportsmanship through competition.', 'items': []},
+        ],
+    },
+    'clubs-societies': {
+        'title': 'Clubs & Experiential Learning',
+        'intro': 'Where passion meets innovation, public speaking, creativity, and community service.',
+        'category': 'Student Life',
+        'cards': [
+            {'title': 'STEM & Innovation', 'body': 'Computer & Coding Club, Science & Robotics Club, and Young Farmers & Environmental Club.'},
+            {'title': 'Academic & Debate', 'body': 'Journalism & Media Club, Writers & Debating Society, and French and Kiswahili language clubs.'},
+            {'title': 'Leadership & Service', 'body': 'President’s Award Scheme, Girl Guides, Red Cross, St. John Ambulance, and Christian Union / YCS.'},
+        ],
+        'sections': [
+            {'title': 'Community Service Learning', 'body': 'Club projects can help learners apply classroom knowledge through meaningful service. Learners should record activities and hours according to the school’s CBE guidance.', 'items': []},
+        ],
+    },
+    'performing-visual-arts': {
+        'title': 'Performing & Visual Arts',
+        'intro': 'Celebrating creativity, cultural diversity, and aesthetic expression through music, drama, dance, and fine art.',
+        'category': 'Student Life',
+        'cards': [
+            {'title': 'Music & Dance', 'body': 'Vocal training, instrumental mastery, traditional folk dances, and choral performance.'},
+            {'title': 'Theatre & Drama', 'body': 'Scriptwriting, stage acting, solo verses, public speaking, and theatrical production.'},
+            {'title': 'Visual Arts & Design', 'body': 'Drawing, painting, sculpture, graphic design, and textile crafting.'},
+        ],
+        'sections': [
+            {'title': 'Festivals & exhibitions', 'body': 'Showcase annual entries, performances, and verified awards from the Kenya National Music Festivals and Kenya Schools and Colleges Drama Festivals.', 'items': []},
+            {'title': 'Arts & Sports Science pathway', 'body': 'Creative practice connects with the Arts & Sports Science pathway and supports learners as they develop artistic skills and portfolios.', 'items': []},
+        ],
+    },
+    'student-welfare': {
+        'title': 'Student Welfare & Governance',
+        'intro': 'Ensuring every learner’s health, safety, rights, and leadership voice are prioritized in a caring environment.',
+        'category': 'Student Life',
+        'cards': [
+            {'title': 'Student Council Governance', 'body': 'A student leadership structure gives learners opportunities to participate constructively in school life.'},
+            {'title': 'On-Campus Healthcare', 'body': 'The school sickbay and referral arrangements support learners who need medical attention.'},
+            {'title': 'Sanitation & Cleanliness', 'body': 'Hygiene, clean water, and personal care practices help maintain a healthy campus.'},
+            {'title': 'Balanced Dietary Care', 'body': 'Nutritious meal planning supports learners’ energy and wellbeing.'},
+            {'title': 'Safety & Anti-Bullying', 'body': 'Learners are encouraged to use open reporting channels. Bullying and unsafe conduct are not tolerated.'},
+        ],
+    },
+}
+
+
+def _render_student_life_page(request, slug):
+    page_data = STUDENT_LIFE_PAGES[slug]
+    page, _created = SitePage.objects.get_or_create(
+        slug=slug,
+        defaults={
+            'title': page_data['title'],
+            'category': page_data['category'],
+            'content': '',
+            'status': 'published',
+        },
+    )
+    page = SitePage.objects.prefetch_related('images', 'videos', 'documents').get(pk=page.pk)
+    video_items = []
+    for video in page.videos.all():
+        video_url = video.display_url()
+        if video_url:
+            video_items.append({
+                'src': video_url,
+                'external': bool(video.external_url),
+                'title': video.title or 'School video',
+                'caption': video.caption,
+                'description': video.description,
+            })
+
+    document_items = []
+    for document in page.documents.all():
+        document_url = document.display_url()
+        if document_url:
+            document_items.append({
+                'url': document_url,
+                'title': document.title,
+                'description': document.description,
+                'uploaded_at': document.uploaded_at,
+            })
+
+    return render(request, 'boarding/student_life_page.html', {
+        'page': page,
+        'student_life': page_data,
+        'featured_image_url': _safe_file_url(page.featured_image),
+        'gallery_items': _page_gallery_items(page, include_featured=False),
+        'video_items': video_items,
+        'document_items': document_items,
     })
 
 
@@ -196,21 +361,32 @@ def school_chaplaincy(request):
 
     page_background_image_url = _safe_file_url(getattr(page, 'background_image', None))
     featured_image_url = _safe_file_url(getattr(page, 'featured_image', None))
+    featured_images = []
     gallery_images = []
+    if featured_image_url:
+        featured_images.append({
+            'image_url': featured_image_url,
+            'title': 'School chaplaincy',
+            'caption': '',
+        })
+
     for image in page.images.all():
         image_url = _safe_file_url(getattr(image, 'image', None))
         if image_url:
-            gallery_images.append({
+            image_data = {
                 'image_url': image_url,
                 'title': image.title,
                 'caption': image.caption,
                 'description': image.description,
-            })
+            }
+            featured_images.append(image_data)
+            gallery_images.append(image_data)
 
     return render(request, 'boarding/chaplaincy.html', {
         'page': page,
         'page_background_image_url': page_background_image_url,
         'featured_image_url': featured_image_url,
+        'featured_images': featured_images,
         'gallery_images': gallery_images,
     })
 
@@ -252,6 +428,17 @@ def academics(request):
 
 
 def academics_844(request):
+    for resource in ACADEMICS_844_RESOURCES.values():
+        SitePage.objects.get_or_create(
+            slug=resource['page_slug'],
+            defaults={
+                'title': resource['title'],
+                'category': '8-4-4 Learning Resources',
+                'content': '',
+                'status': 'published',
+            },
+        )
+
     context = {
         'title': '8-4-4 Curriculum',
         'content': (
@@ -260,6 +447,32 @@ def academics_844(request):
         ),
     }
     return render(request, 'boarding/academics_844.html', context)
+
+
+def academics_844_resource(request, slug):
+    resource = ACADEMICS_844_RESOURCES.get(slug)
+    if resource is None:
+        raise Http404('8-4-4 resource not found')
+
+    page, _created = SitePage.objects.get_or_create(
+        slug=resource['page_slug'],
+        defaults={
+            'title': resource['title'],
+            'category': '8-4-4 Learning Resources',
+            'content': '',
+            'status': 'published',
+        },
+    )
+    downloads = []
+    for document in page.documents.all():
+        url = document.display_url()
+        if url:
+            downloads.append({'document': document, 'url': url})
+    return render(request, 'boarding/academics_844_resource.html', {
+        'page': page,
+        'resource': resource,
+        'downloads': downloads,
+    })
 
 
 def academics_26333(request):
@@ -312,45 +525,7 @@ def academics_26333(request):
 
 
 def boarding_page(request):
-    page = (
-        SitePage.objects
-        .filter(slug='boarding', status='published')
-        .prefetch_related('images', 'videos', 'documents')
-        .first()
-    )
-
-    if not page:
-        page = (
-            SitePage.objects
-            .filter(slug='boarding')
-            .prefetch_related('images', 'videos', 'documents')
-            .first()
-        )
-
-    if not page:
-        page, _created = SitePage.objects.get_or_create(
-            slug='boarding',
-            defaults={
-                'title': 'Boarding Life',
-                'category': 'Boarding',
-                'content': (
-                    '<p>Update this page from Django Admin to manage the Boarding page content.</p>'
-                    '<p>You can add rich text, images, videos, and documents here.</p>'
-                ),
-                'status': 'published',
-            },
-        )
-
-    return _render_dynamic_page(request, page)
-
-STATIC_PAGE_TEMPLATES = {
-    'guiding-and-counselling': 'boarding/guiding_and_counselling.html',
-    'games-sports': 'boarding/games_sports.html',
-    'clubs-societies': 'boarding/clubs_societies.html',
-    'student-welfare': 'boarding/student_welfare.html',
-    'performing-visual-arts': 'boarding/performing_visual_arts.html',
-}
-
+    return _render_student_life_page(request, 'boarding')
 
 def student_health(request):
     return render(request, 'boarding/student_health.html', {
@@ -360,21 +535,31 @@ def student_health(request):
 
 
 def performing_visual_arts(request):
-    return render(request, 'boarding/performing_visual_arts.html', {
-        'page_title': 'Performing & Visual Arts',
-        'page_subtitle': 'Creativity, expression and cultural growth',
-    })
+    return _render_student_life_page(request, 'performing-visual-arts')
 
 
 def site_page(request, slug):
-    page = SitePage.objects.filter(slug=slug).prefetch_related('images', 'videos', 'documents').first()
-    if page is None and slug in STATIC_PAGE_TEMPLATES:
-        return render(request, STATIC_PAGE_TEMPLATES[slug], {
-            'slug': slug,
-            'page_title': slug.replace('-', ' ').title(),
-            'page_subtitle': 'Student life and support services',
+    if slug in STUDENT_LIFE_PAGES:
+        return _render_student_life_page(request, slug)
+
+    if slug == 'school-gallery':
+        page, _created = SitePage.objects.get_or_create(
+            slug=slug,
+            defaults={
+                'title': 'Busiada in Pictures',
+                'category': 'Student Life',
+                'content': '',
+                'status': 'published',
+            },
+        )
+        page = SitePage.objects.prefetch_related('images').get(pk=page.pk)
+        return render(request, 'boarding/school_gallery.html', {
+            'page': page,
+            'gallery_items': _page_gallery_items(page, include_featured=False),
+            'gallery_categories': GalleryCategory.objects.all(),
         })
 
+    page = SitePage.objects.filter(slug=slug).prefetch_related('images', 'videos', 'documents').first()
     page = get_object_or_404(
         SitePage.objects.prefetch_related('images', 'videos', 'documents'),
         slug=slug,

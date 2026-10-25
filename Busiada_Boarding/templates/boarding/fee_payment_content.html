@@ -78,7 +78,10 @@
                     <h3>Cash Payment</h3>
                 </div>
             </div>
-            <p>Parents may pay at the school accounts office during working hours. Always collect an official receipt for the payment.</p>
+            <div class="fee-payment-cash-warning" role="note" aria-label="Cash payment warning">
+                <strong>Cash payments are discouraged.</strong>
+                Please use M-Pesa or bank transfer whenever possible. If paying by cash is unavoidable, pay only at the school accounts office during working hours and collect an official receipt.
+            </div>
         </article>
     </div>
 
@@ -237,6 +240,21 @@
         border-left: 3px solid #c27a13;
         border-radius: .4rem;
         background: #fff8e6;
+    }
+    .fee-payment-cash-warning {
+        padding: .9rem 1rem;
+        border: 1px solid #f1b8be;
+        border-left: 4px solid #c2414b;
+        border-radius: .75rem;
+        background: #fff1f2;
+        color: #7f1d2d;
+        font-size: .92rem;
+        line-height: 1.7;
+    }
+    .fee-payment-cash-warning strong {
+        display: block;
+        margin-bottom: .25rem;
+        color: #991b1b;
     }
     .fee-payment-notes {
         display: flex;

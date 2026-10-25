@@ -80,7 +80,8 @@ class SiteSettings(models.Model):
             if bleach:
                 allowed_tags = [
                     'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'span', 'div',
-                    'h1', 'h2', 'h3', 'h4', 'blockquote', 'code', 'pre', 'img', 'figure', 'figcaption'
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre',
+                    's', 'u', 'sub', 'sup', 'img', 'figure', 'figcaption'
                 ]
                 allowed_attrs = {
                     '*': ['class', 'style'],
@@ -161,7 +162,8 @@ class SitePage(models.Model):
         if bleach and self.content:
             allowed_tags = [
                 'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'a', 'span', 'div',
-                'h1', 'h2', 'h3', 'h4', 'blockquote', 'code', 'pre'
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre',
+                's', 'u', 'sub', 'sup'
             ]
             allowed_attrs = {
                 '*': ['class', 'style'],
@@ -193,7 +195,22 @@ class HistoryImage(models.Model):
         ordering = ['year', 'created_at']
 
 
+class GalleryCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = 'gallery category'
+        verbose_name_plural = 'gallery categories'
+
+
 class PageImage(models.Model):
+
     page = models.ForeignKey(SitePage, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(
         upload_to=image_upload_to,
@@ -203,6 +220,14 @@ class PageImage(models.Model):
     title = models.CharField(max_length=200, blank=True)
     caption = models.CharField(max_length=250, blank=True)
     description = models.TextField(blank=True)
+    category = models.ForeignKey(
+        GalleryCategory,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='page_images',
+        help_text='Used by the School Gallery filters.',
+    )
     order = models.PositiveIntegerField(default=0)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -415,7 +440,8 @@ class SchoolAnthem(models.Model):
         if bleach and self.lyrics:
             allowed_tags = [
                 'p', 'br', 'strong', 'em', 'ul', 'ol', 'li', 'span', 'div',
-                'h1', 'h2', 'h3', 'h4', 'blockquote'
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre',
+                's', 'u', 'sub', 'sup'
             ]
             allowed_attrs = {
                 '*': ['class', 'style'],

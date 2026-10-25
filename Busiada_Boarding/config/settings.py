@@ -208,6 +208,7 @@ CSP_SCRIPT_SRC = (
     "https://unpkg.com",
     "https://cdn.tailwindcss.com",
     "https://cdn.quilljs.com",
+    "https://cdn.jsdelivr.net",
 )
 
 CSP_FONT_SRC = (

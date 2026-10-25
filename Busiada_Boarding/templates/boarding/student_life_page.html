@@ -1,0 +1,188 @@
+{% extends 'boarding/base.html' %}
+
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+
+{% block content %}
+<main class="student-life-page">
+  <section class="student-life-hero">
+    <div class="student-life-container student-life-hero-grid">
+      <div>
+        <p class="student-life-eyebrow">{{ student_life.category }}</p>
+        <h1>{{ student_life.title }}</h1>
+        <p class="student-life-intro">{{ student_life.intro }}</p>
+      </div>
+      {% if featured_image_url %}
+      <figure class="student-life-hero-image">
+        <img src="{{ featured_image_url }}" alt="{{ student_life.title }}" fetchpriority="high">
+      </figure>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="student-life-section student-life-section-cream">
+    <div class="student-life-container">
+      <div class="student-life-card-grid">
+        {% for card in student_life.cards %}
+        <article class="student-life-card">
+          <span class="student-life-card-mark" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.body }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {% if student_life.sections %}
+  <section class="student-life-section student-life-section-blue">
+    <div class="student-life-container student-life-detail-grid">
+      {% for section in student_life.sections %}
+      <article class="student-life-detail-card">
+        <h2>{{ section.title }}</h2>
+        {% if section.body %}<p>{{ section.body }}</p>{% endif %}
+        {% if section.items %}
+        <ul>
+          {% for item in section.items %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if student_life.callout %}
+  <section class="student-life-section">
+    <aside class="student-life-callout student-life-container">
+      <div>
+        <p class="student-life-eyebrow">Our commitment</p>
+        <h2>{{ student_life.callout.title }}</h2>
+        <p>{{ student_life.callout.body }}</p>
+      </div>
+    </aside>
+  </section>
+  {% endif %}
+
+  {% if page.content %}
+  <section class="student-life-section student-life-section-neutral">
+    <div class="student-life-container student-life-admin-content">{{ page.content|safe }}</div>
+  </section>
+  {% endif %}
+
+  {% if gallery_items %}
+    {% include 'boarding/partials/dynamic_media_gallery.html' %}
+  {% endif %}
+
+  {% if video_items %}
+  <section class="student-life-section student-life-section-blue" aria-labelledby="student-life-videos-heading">
+    <div class="student-life-container">
+      <div class="student-life-section-heading">
+        <p class="student-life-eyebrow">On campus</p>
+        <h2 id="student-life-videos-heading">Videos</h2>
+      </div>
+      <div class="student-life-media-grid">
+        {% for video in video_items %}
+        <article class="student-life-media-card">
+          {% if video.external %}
+          <a class="student-life-external-video" href="{{ video.src }}" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 10 6-10 6z" /></svg>
+            <span>Watch video</span>
+          </a>
+          {% else %}
+          <video class="student-life-video" controls preload="metadata" playsinline>
+            <source src="{{ video.src }}">
+            Your browser does not support the video tag.
+          </video>
+          {% endif %}
+          <div class="student-life-media-copy">
+            <h3>{{ video.title }}</h3>
+            {% if video.caption %}<p>{{ video.caption }}</p>{% endif %}
+            {% if video.description %}<p>{{ video.description }}</p>{% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if document_items %}
+  <section class="student-life-section student-life-section-cream" aria-labelledby="student-life-documents-heading">
+    <div class="student-life-container">
+      <div class="student-life-section-heading">
+        <p class="student-life-eyebrow">Helpful information</p>
+        <h2 id="student-life-documents-heading">Downloads &amp; Documents</h2>
+      </div>
+      <div class="student-life-document-list">
+        {% for document in document_items %}
+        <article class="student-life-document-card">
+          <div class="student-life-document-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v6h5M10 14h6M10 17h6" /></svg>
+          </div>
+          <div class="student-life-document-copy">
+            <h3>{{ document.title }}</h3>
+            {% if document.description %}<p>{{ document.description }}</p>{% endif %}
+            <time datetime="{{ document.uploaded_at|date:'c' }}">Added {{ document.uploaded_at|date:'d M Y' }}</time>
+          </div>
+          <a class="student-life-download-button" href="{{ document.url }}" target="_blank" rel="noopener noreferrer">Open document</a>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</main>
+
+<style>
+  .student-life-page { background: #F8FAFC; color: #334155; }
+  .student-life-container { width: min(100% - 2rem, 74rem); margin-inline: auto; }
+  .student-life-hero { padding: clamp(3rem, 8vw, 6.5rem) 0; color: #fff; background: linear-gradient(120deg, #1E3A5F, #152A45); }
+  .student-life-hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(16rem, .8fr); align-items: center; gap: clamp(2rem, 5vw, 4rem); }
+  .student-life-eyebrow { margin: 0 0 .75rem; color: #BFDBFE; font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  .student-life-hero h1 { max-width: 52rem; margin: 0; color: #fff !important; font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.1; }
+  .student-life-intro { max-width: 48rem; margin: 1.25rem 0 0; color: #E2E8F0; font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 1.8; }
+  .student-life-hero-image { margin: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.25); border-radius: 1.5rem; box-shadow: 0 24px 70px rgba(0,0,0,.2); }
+  .student-life-hero-image img { display: block; width: 100%; max-height: 26rem; aspect-ratio: 4 / 3; object-fit: cover; }
+  .student-life-section { padding: clamp(2.5rem, 6vw, 4.5rem) 0; }
+  .student-life-section-cream { background: #FDF8F0; }
+  .student-life-section-blue { background: #EBF4FF; }
+  .student-life-section-neutral { background: #F1F5F9; }
+  .student-life-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1.25rem; }
+  .student-life-card, .student-life-detail-card { padding: clamp(1.35rem, 3vw, 2rem); border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; box-shadow: 0 16px 45px -35px rgba(21,42,69,.38); }
+  .student-life-card-mark { display: inline-flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center; border-radius: 50%; background: #EBF4FF; color: #2B6CB0; font-size: .78rem; font-weight: 700; }
+  .student-life-card h2, .student-life-detail-card h2, .student-life-callout h2 { margin: 1rem 0 .55rem; color: #1E3A5F; font-size: 1.2rem; font-weight: 600; line-height: 1.35; }
+  .student-life-card p, .student-life-detail-card p, .student-life-callout p { margin: 0; color: #475569; line-height: 1.75; }
+  .student-life-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 1.25rem; }
+  .student-life-detail-card h2 { margin-top: 0; font-size: 1.35rem; }
+  .student-life-detail-card ul { display: grid; gap: .7rem; margin: 1rem 0 0; padding-left: 1.25rem; color: #475569; line-height: 1.7; }
+  .student-life-callout { padding: clamp(1.5rem, 4vw, 2.5rem); border: 1px solid rgba(43,108,176,.2); border-left: 5px solid #2B6CB0; border-radius: 1.25rem; background: #EBF4FF; }
+  .student-life-callout h2 { margin-top: 0; font-size: 1.5rem; }
+  .student-life-admin-content { padding: clamp(1.5rem, 4vw, 2.5rem); border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; color: #475569; line-height: 1.8; }
+  .student-life-admin-content h2, .student-life-admin-content h3 { color: #1E3A5F; }
+  .student-life-section-heading { margin-bottom: 1.5rem; }
+  .student-life-section-heading .student-life-eyebrow { color: #2B6CB0; }
+  .student-life-section-heading h2 { margin: 0; color: #1E3A5F; font-size: clamp(1.65rem, 4vw, 2.25rem); font-weight: 600; }
+  .student-life-media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1.25rem; }
+  .student-life-media-card { overflow: hidden; border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; box-shadow: 0 16px 45px -35px rgba(21,42,69,.38); }
+  .student-life-video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #152A45; object-fit: contain; }
+  .student-life-external-video { display: flex; min-height: 12rem; align-items: center; justify-content: center; gap: .65rem; background: linear-gradient(120deg, #1E3A5F, #152A45); color: #fff; font-weight: 600; text-decoration: none; }
+  .student-life-external-video:hover { background: #152A45; color: #fff; }
+  .student-life-external-video svg { width: 1.5rem; fill: currentColor; }
+  .student-life-media-copy { padding: 1.2rem 1.35rem 1.4rem; }
+  .student-life-media-copy h3, .student-life-document-copy h3 { margin: 0; color: #1E3A5F; font-size: 1.1rem; font-weight: 600; }
+  .student-life-media-copy p, .student-life-document-copy p { margin: .4rem 0 0; color: #475569; line-height: 1.65; }
+  .student-life-document-list { display: grid; gap: .85rem; }
+  .student-life-document-card { display: flex; align-items: center; gap: 1rem; padding: 1.15rem 1.25rem; border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; box-shadow: 0 12px 32px -28px rgba(21,42,69,.38); }
+  .student-life-document-icon { display: grid; width: 2.75rem; height: 2.75rem; flex: 0 0 auto; place-items: center; border-radius: .9rem; background: #EBF4FF; color: #2B6CB0; }
+  .student-life-document-icon svg { width: 1.4rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .student-life-document-copy { flex: 1; min-width: 0; }
+  .student-life-document-copy time { display: block; margin-top: .45rem; color: #64748B; font-size: .8rem; }
+  .student-life-download-button { flex: 0 0 auto; padding: .65rem 1rem; border-radius: 999px; background: #2B6CB0; color: #fff; font-size: .9rem; font-weight: 600; text-decoration: none; transition: background-color .2s ease; }
+  .student-life-download-button:hover { background: #152A45; color: #fff; }
+  .student-life-download-button:focus-visible, .student-life-external-video:focus-visible { outline: 3px solid rgba(43,108,176,.4); outline-offset: 3px; }
+  @media (max-width: 700px) { .student-life-hero-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .student-life-document-card { align-items: flex-start; flex-wrap: wrap; } .student-life-download-button { margin-left: 3.75rem; } }
+  @media (prefers-reduced-motion: reduce) { .student-life-page *, .student-life-page *::before, .student-life-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+</style>
+{% endblock %}

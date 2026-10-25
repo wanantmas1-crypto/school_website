@@ -50,16 +50,19 @@
                     <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
                     <h3>Assignments</h3>
                     <p>Weekly tasks and practical exercises that keep learners on track.</p>
+                    <a class="curriculum-844-resource-link" href="{% url 'academics_844_resource' slug='assignments' %}">View assignments</a>
                 </article>
                 <article class="curriculum-844-card curriculum-844-resource-card">
                     <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></span>
                     <h3>Revision Materials</h3>
                     <p>Notes, summaries, and structured revision tools for effective exam preparation.</p>
+                    <a class="curriculum-844-resource-link" href="{% url 'academics_844_resource' slug='revision-materials' %}">View revision materials</a>
                 </article>
                 <article class="curriculum-844-card curriculum-844-resource-card">
                     <span class="curriculum-844-resource-icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
                     <h3>Past KCSE Papers</h3>
                     <p>Practice with previous examination papers to build confidence and exam technique.</p>
+                    <a class="curriculum-844-resource-link" href="{% url 'academics_844_resource' slug='past-kcse-papers' %}">View past papers</a>
                 </article>
             </div>
         </section>
@@ -277,6 +280,28 @@
     }
     .curriculum-844-resource-card p {
         font-size: .92rem;
+    }
+    .curriculum-844-resource-link {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: .45rem;
+        margin-top: .9rem;
+        color: var(--curriculum-blue);
+        font-size: .92rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+    .curriculum-844-resource-link::after {
+        content: "→";
+        transition: transform .2s ease;
+    }
+    .curriculum-844-resource-link:hover { color: var(--curriculum-navy); }
+    .curriculum-844-resource-link:hover::after { transform: translateX(3px); }
+    .curriculum-844-resource-link:focus-visible {
+        border-radius: .25rem;
+        outline: 3px solid var(--curriculum-blue);
+        outline-offset: 3px;
     }
     .curriculum-844-closing {
         display: flex;

@@ -632,6 +632,219 @@
         .mobile-menu-scroll {
             width: 100%;
         }
+        @media (min-width: 1024px) {
+            .site-nav .dropdown-menu {
+                z-index: 1010;
+                min-width: 15rem;
+                margin-top: .55rem;
+                padding: .5rem;
+                border: 1px solid rgba(30, 58, 95, .12);
+                border-radius: .85rem;
+                background: #fff;
+                background-color: #fff !important;
+                box-shadow: 0 18px 45px rgba(15, 23, 42, .18);
+                color: #1e3a5f !important;
+                opacity: 0;
+                transform: translateY(-.35rem) scale(.98);
+                transform-origin: top left;
+                transition: opacity .16s ease, transform .16s ease;
+            }
+            .site-nav .dropdown-menu:not(.hidden) {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            .site-nav .dropdown-menu.is-closing {
+                opacity: 0;
+                transform: translateY(-.35rem) scale(.98);
+            }
+            .site-nav .dropdown-link {
+                min-height: 2.75rem;
+                padding: .65rem .85rem;
+                border-radius: .55rem;
+                color: #1e3a5f;
+                font-size: .9rem;
+                font-weight: 500;
+                transition: background-color .16s ease, color .16s ease;
+            }
+            .site-nav .dropdown-link i {
+                width: 1rem;
+                flex: 0 0 1rem;
+                color: #2b6cb0;
+                transition: color .16s ease;
+            }
+            .site-nav .dropdown-link:hover,
+            .site-nav .dropdown-link:focus-visible {
+                background: #ebf4ff;
+                color: #152a45;
+                outline: none;
+                transform: none;
+                box-shadow: none;
+            }
+            .site-nav .dropdown-link:hover i,
+            .site-nav .dropdown-link:focus-visible i {
+                color: #1e3a5f;
+            }
+            .site-nav .nav-dropdown-trigger[aria-expanded="true"] {
+                background: rgba(255, 255, 255, .14);
+            }
+        }
+        #mobile-menu[hidden] {
+            display: none !important;
+        }
+        #mobile-menu.hidden {
+            display: none;
+        }
+        @media (max-width: 1023px) {
+            #mobile-menu {
+                position: fixed;
+                z-index: 1002;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100vh;
+                height: 100dvh;
+                padding: max(1rem, env(safe-area-inset-top)) 1.25rem max(1rem, env(safe-area-inset-bottom));
+                overflow: hidden;
+                background: linear-gradient(155deg, #1e3a5f 0%, #152a45 58%, #0a1b30 100%);
+                opacity: 0;
+                transform: translateY(-.5rem);
+                transition: opacity .22s ease, transform .22s ease;
+                pointer-events: none;
+            }
+            #mobile-menu.is-open {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+            .mobile-menu-header {
+                display: flex;
+                flex: 0 0 auto;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: .25rem 0 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, .16);
+            }
+            .mobile-menu-title {
+                color: #f8f1e3;
+                font-size: 1.1rem;
+                font-weight: 700;
+                letter-spacing: .01em;
+            }
+            .mobile-menu-close {
+                display: inline-flex;
+                min-width: 2.9rem;
+                min-height: 2.9rem;
+                align-items: center;
+                justify-content: center;
+                gap: .5rem;
+                border: 1px solid rgba(255, 255, 255, .28);
+                border-radius: .8rem;
+                background: rgba(255, 255, 255, .1);
+                color: #fff;
+                font-size: .9rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color .16s ease;
+            }
+            .mobile-menu-close:hover,
+            .mobile-menu-close:focus-visible {
+                background: rgba(255, 255, 255, .2);
+                outline: 2px solid #f8f1e3;
+                outline-offset: 2px;
+            }
+            .mobile-menu-scroll {
+                flex: 1 1 auto;
+                min-height: 0;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                padding: 1rem 0 max(1rem, env(safe-area-inset-bottom));
+            }
+            #mobile-menu .mobile-menu-home,
+            #mobile-menu .mobile-menu-announcements {
+                display: flex;
+                min-height: 3.25rem;
+                align-items: center;
+                padding: .8rem 1rem;
+                border: 1px solid rgba(255, 255, 255, .12);
+                border-radius: .85rem;
+                background: rgba(255, 255, 255, .06);
+                color: #fff;
+                font-size: 1rem;
+                font-weight: 600;
+                transition: background-color .16s ease;
+            }
+            #mobile-menu .mobile-menu-home:hover,
+            #mobile-menu .mobile-menu-announcements:hover,
+            #mobile-menu .mobile-menu-home:focus-visible,
+            #mobile-menu .mobile-menu-announcements:focus-visible {
+                background: rgba(255, 255, 255, .14);
+                outline: none;
+            }
+            #mobile-menu .mobile-menu-group {
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, .14);
+                border-radius: .9rem;
+                background: rgba(255, 255, 255, .055);
+            }
+            #mobile-menu .mobile-nav-toggle {
+                min-height: 3.35rem;
+                padding: .8rem 1rem;
+                border-radius: 0;
+                color: #fff;
+                font-size: 1rem;
+                font-weight: 650;
+                transition: background-color .16s ease, color .16s ease;
+            }
+            #mobile-menu .mobile-nav-toggle:hover,
+            #mobile-menu .mobile-nav-toggle[aria-expanded="true"] {
+                background: rgba(255, 255, 255, .12);
+                color: #f8f1e3;
+                transform: none;
+                box-shadow: none;
+            }
+            #mobile-menu .mobile-nav-toggle i {
+                transition: transform .18s ease;
+            }
+            #mobile-menu .mobile-nav-toggle[aria-expanded="true"] i {
+                transform: rotate(180deg);
+            }
+            #mobile-menu [id^="mobile-"]:not(.mobile-menu-scroll) {
+                padding: .35rem .65rem .65rem;
+                border-top: 1px solid rgba(255, 255, 255, .12);
+                background: rgba(5, 16, 30, .28);
+            }
+            #mobile-menu [id^="mobile-"] a {
+                display: flex;
+                min-height: 2.9rem;
+                align-items: center;
+                padding: .65rem .75rem;
+                border-radius: .6rem;
+                color: rgba(255, 255, 255, .88);
+                font-size: .95rem;
+                line-height: 1.4;
+                transition: background-color .16s ease, color .16s ease;
+            }
+            #mobile-menu [id^="mobile-"] a:hover,
+            #mobile-menu [id^="mobile-"] a:focus-visible {
+                background: rgba(255, 255, 255, .12);
+                color: #fff;
+                outline: none;
+            }
+            body.mobile-menu-open {
+                overflow: hidden;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .site-nav .dropdown-menu,
+            #mobile-menu,
+            #mobile-menu .mobile-menu-close,
+            #mobile-menu .mobile-nav-toggle,
+            #mobile-menu [id^="mobile-"] a {
+                transition: none;
+            }
+        }
         .site-nav .desktop-nav-item {
             position: relative;
         }
@@ -935,20 +1148,23 @@
                     <div class="desktop-nav-item relative group">
                         <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="academics-menu" aria-expanded="false" aria-controls="academics-menu">Academics <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="academics-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
-                            <a href="{% url 'academics_844' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-school text-sm text-[#1E3A5F]"></i><span>The Highschool</span></a>
-                            <a href="{% url 'academics_26333' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#1E3A5F]"></i><span>Senior School</span></a>
+                            <a href="{% url 'academics_844' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-school text-sm text-[#1E3A5F]"></i><span>8-4-4 Curriculum</span></a>
+                            <a href="{% url 'academics_26333' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-graduation-cap text-sm text-[#1E3A5F]"></i><span>Senior School (CBE)</span></a>
+                            <a href="{% url 'academics_844_resource' slug='844-assignments' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-list-check text-sm text-[#1E3A5F]"></i><span>Assignments</span></a>
+                            <a href="{% url 'academics_844_resource' slug='844-revision-materials' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-book-open-reader text-sm text-[#1E3A5F]"></i><span>Revision Materials</span></a>
+                            <a href="{% url 'academics_844_resource' slug='844-past-kcse-papers' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-file-lines text-sm text-[#1E3A5F]"></i><span>Past KCSE Papers</span></a>
                         </div>
                     </div>
                     <div class="desktop-nav-item relative group">
                         <button type="button" class="nav-dropdown-trigger px-4 py-2 hover:bg-[#4A90C8] rounded-xl flex items-center gap-1 transition-all" data-dropdown-target="student-life-menu" aria-expanded="false" aria-controls="student-life-menu">Student Life <i class="fa-solid fa-chevron-down text-xs"></i></button>
                         <div id="student-life-menu" class="dropdown-menu absolute hidden bg-white text-zinc-800 shadow-lg rounded-2xl py-3 mt-1 origin-top" data-dropdown-menu>
                             <a href="{% url 'boarding' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-bed text-sm text-[#1E3A5F]"></i><span>Boarding</span></a>
-                            <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-praying text-sm text-[#1E3A5F]"></i><span>Guiding & Counselling</span></a>
-                            <a href="{% url 'site_page' slug='games-sports' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#1E3A5F]"></i><span>Games & Sports</span></a>
-                            <a href="{% url 'site_page' slug='clubs-societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#1E3A5F]"></i><span>Clubs & Societies</span></a>
-                            <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-palette text-sm text-[#1E3A5F]"></i><span>Performing & Visual Arts</span></a>
-                            <a href="{% url 'site_page' slug='student-welfare' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#1E3A5F]"></i><span>Student Welfare</span></a>
-                            <a href="{% url 'site_page' slug='school-gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#1E3A5F]"></i><span>School Gallery</span></a>
+                            <a href="{% url 'guiding_and_counselling' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-praying text-sm text-[#1E3A5F]"></i><span>Guiding & Counselling</span></a>
+                            <a href="{% url 'games_and_sports' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-futbol text-sm text-[#1E3A5F]"></i><span>Games & Sports</span></a>
+                            <a href="{% url 'clubs_and_societies' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-users text-sm text-[#1E3A5F]"></i><span>Clubs & Societies</span></a>
+                            <a href="{% url 'performing_and_visual_arts_page' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-palette text-sm text-[#1E3A5F]"></i><span>Performing & Visual Arts</span></a>
+                            <a href="{% url 'student_welfare' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-hands-holding text-sm text-[#1E3A5F]"></i><span>Student Welfare</span></a>
+                            <a href="{% url 'school_gallery' %}" class="dropdown-link flex items-center gap-3 px-6 py-2.5"><i class="fa-solid fa-image text-sm text-[#1E3A5F]"></i><span>School Gallery</span></a>
                         </div>
                     </div>
                     <!-- Departments link removed per UI request -->
@@ -963,12 +1179,19 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4">
+        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4" aria-hidden="true">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Explore Busiada</span>
+                <button type="button" id="mobile-menu-close" class="mobile-menu-close">
+                    <span>Close</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
             <div class="mobile-menu-scroll grid gap-2 py-3">
-                <a href="{% url 'home' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Home</a>
+                <a href="{% url 'home' %}" class="mobile-menu-home">Home</a>
 
-                <div class="rounded-2xl border border-white/10 bg-white/6">
-                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-about" aria-expanded="false">
+                <div class="mobile-menu-group">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-about" aria-expanded="false" aria-controls="mobile-about">
                         <span>About</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
@@ -984,8 +1207,8 @@
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-white/10 bg-white/6">
-                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-admissions" aria-expanded="false">
+                <div class="mobile-menu-group">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-admissions" aria-expanded="false" aria-controls="mobile-admissions">
                         <span>Admissions</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
@@ -995,34 +1218,37 @@
                     </div>
                 </div>
 
-                    <div class="rounded-2xl border border-white/10 bg-white/6">
-                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-academics" aria-expanded="false">
+                <div class="mobile-menu-group">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-academics" aria-expanded="false" aria-controls="mobile-academics">
                         <span>Academics</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-academics" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
-                        <a href="{% url 'academics_844' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-school text-sm"></i><span>The Highschool</span></a>
-                        <a href="{% url 'academics_26333' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-graduation-cap text-sm"></i><span>Senior School</span></a>
+                        <a href="{% url 'academics_844' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-school text-sm"></i><span>8-4-4 Curriculum</span></a>
+                        <a href="{% url 'academics_26333' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10"><i class="fa-solid fa-graduation-cap text-sm"></i><span>Senior School (CBE)</span></a>
+                        <a href="{% url 'academics_844_resource' slug='844-assignments' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Assignments</a>
+                        <a href="{% url 'academics_844_resource' slug='844-revision-materials' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Revision Materials</a>
+                        <a href="{% url 'academics_844_resource' slug='844-past-kcse-papers' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Past KCSE Papers</a>
                     </div>
                 </div>
 
-                <div class="rounded-2xl border border-white/10 bg-white/6">
-                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-student-life" aria-expanded="false">
+                <div class="mobile-menu-group">
+                    <button type="button" class="mobile-nav-toggle flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white hover:bg-white/10 rounded-2xl" data-mobile-target="mobile-student-life" aria-expanded="false" aria-controls="mobile-student-life">
                         <span>Student Life</span>
                         <i class="fa-solid fa-chevron-down text-xs"></i>
                     </button>
                     <div id="mobile-student-life" class="hidden space-y-1 border-t border-white/10 bg-black/10 px-3 pb-3 pt-2">
                         <!-- Departments link removed from mobile menu -->
-                        <a href="{% url 'site_page' slug='guiding-and-counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
-                        <a href="{% url 'site_page' slug='games-sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
-                        <a href="{% url 'site_page' slug='clubs-societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
-                        <a href="{% url 'site_page' slug='performing-visual-arts' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Performing & Visual Arts</a>
-                        <a href="{% url 'site_page' slug='student-welfare' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Student Welfare</a>
-                        <a href="{% url 'site_page' slug='school-gallery' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Gallery</a>
+                        <a href="{% url 'guiding_and_counselling' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Guiding & Counselling</a>
+                        <a href="{% url 'games_and_sports' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Games & Sports</a>
+                        <a href="{% url 'clubs_and_societies' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Clubs & Societies</a>
+                        <a href="{% url 'performing_and_visual_arts_page' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Performing & Visual Arts</a>
+                        <a href="{% url 'student_welfare' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">Student Welfare</a>
+                        <a href="{% url 'school_gallery' %}" class="block rounded-xl px-3 py-2.5 text-sm text-white/90 hover:bg-white/10">School Gallery</a>
                     </div>
                 </div>
 
-                <a href="{% url 'announcements' %}" class="block px-4 py-3 rounded-xl hover:bg-white/10">Announcements</a>
+                <a href="{% url 'announcements' %}" class="mobile-menu-announcements">Events & Announcements</a>
             </div>
         </div>
     </nav>
@@ -1117,22 +1343,82 @@ document.addEventListener('DOMContentLoaded', () => {
     const siteNav = document.querySelector('.site-nav');
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    let mobileMenuCloseTimer;
 
     if (menuBtn && mobileMenu) {
+        const menuIcon = (open) => open
+            ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+
+        const openMobileMenu = () => {
+            window.clearTimeout(mobileMenuCloseTimer);
+            mobileMenu.classList.remove('hidden', 'is-closing');
+            mobileMenu.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('mobile-menu-open');
+            menuBtn.setAttribute('aria-expanded', 'true');
+            menuBtn.setAttribute('aria-label', 'Close menu');
+            menuBtn.innerHTML = menuIcon(true);
+            window.requestAnimationFrame(() => mobileMenu.classList.add('is-open'));
+            mobileMenuClose?.focus();
+        };
+
+        const closeMobileMenu = (restoreFocus = false) => {
+            if (mobileMenu.classList.contains('hidden')) return;
+            mobileMenu.classList.remove('is-open');
+            mobileMenu.classList.add('is-closing');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('mobile-menu-open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            menuBtn.setAttribute('aria-label', 'Open menu');
+            menuBtn.innerHTML = menuIcon(false);
+            closeMobileDropdowns();
+            const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 220;
+            mobileMenuCloseTimer = window.setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('is-closing');
+                if (restoreFocus) menuBtn.focus();
+            }, delay);
+        };
+
         menuBtn.addEventListener('click', (event) => {
             event.stopPropagation();
-            const willOpen = mobileMenu.classList.contains('hidden');
-            mobileMenu.classList.toggle('hidden');
-            menuBtn.setAttribute('aria-expanded', String(willOpen));
-            menuBtn.innerHTML = willOpen
-                ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>'
-                : '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+            if (mobileMenu.classList.contains('hidden')) openMobileMenu();
+            else closeMobileMenu();
+        });
+        mobileMenuClose?.addEventListener('click', () => closeMobileMenu(true));
+        mobileMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => closeMobileMenu());
+        });
+        mobileMenu.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeMobileMenu(true);
+                return;
+            }
+            if (event.key !== 'Tab') return;
+            const focusable = Array.from(mobileMenu.querySelectorAll('a[href], button:not([disabled])'))
+                .filter((element) => element.getClientRects().length && !element.closest('.hidden'));
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && !mobileMenu.classList.contains('hidden')) closeMobileMenu();
         });
     }
 
     const dropdownTriggers = document.querySelectorAll('.nav-dropdown-trigger');
     const dropdownMenus = document.querySelectorAll('[data-dropdown-menu]');
     const mobileNavToggles = document.querySelectorAll('.mobile-nav-toggle');
+    const dropdownCloseTimers = new Map();
 
     function closeMobileDropdowns() {
         mobileNavToggles.forEach((button) => {
@@ -1147,27 +1433,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function closeAllDropdowns() {
-        dropdownMenus.forEach((menu) => menu.classList.add('hidden'));
-        dropdownTriggers.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+    function closeDropdown(button) {
+        const menu = document.getElementById(button.getAttribute('data-dropdown-target'));
+        if (!menu || menu.classList.contains('hidden')) return;
+        menu.classList.add('is-closing');
+        button.setAttribute('aria-expanded', 'false');
+        const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180;
+        const timer = window.setTimeout(() => {
+            menu.classList.add('hidden');
+            menu.classList.remove('is-closing');
+            dropdownCloseTimers.delete(menu);
+        }, delay);
+        dropdownCloseTimers.set(menu, timer);
+    }
+
+    function openDropdown(button) {
+        const menu = document.getElementById(button.getAttribute('data-dropdown-target'));
+        if (!menu) return;
+        const timer = dropdownCloseTimers.get(menu);
+        if (timer) window.clearTimeout(timer);
+        dropdownCloseTimers.delete(menu);
+        menu.classList.remove('hidden', 'is-closing');
+        button.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeAllDropdowns(exceptButton = null) {
+        dropdownTriggers.forEach((button) => {
+            if (button !== exceptButton) closeDropdown(button);
+        });
     }
 
     dropdownTriggers.forEach((button) => {
+        const navItem = button.closest('.desktop-nav-item');
+        navItem?.addEventListener('mouseenter', () => {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            closeAllDropdowns(button);
+            openDropdown(button);
+        });
+        navItem?.addEventListener('mouseleave', () => closeDropdown(button));
+        navItem?.addEventListener('focusout', (event) => {
+            if (!navItem.contains(event.relatedTarget)) closeDropdown(button);
+        });
         button.addEventListener('click', (event) => {
             event.stopPropagation();
-            const target = button.getAttribute('data-dropdown-target');
-            const menu = document.getElementById(target);
+            const menu = document.getElementById(button.getAttribute('data-dropdown-target'));
+            const isOpen = menu && !menu.classList.contains('hidden') && !menu.classList.contains('is-closing');
+            closeAllDropdowns(button);
+            const hoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            if (isOpen && !(hoverDevice && navItem?.matches(':hover'))) closeDropdown(button);
+            else openDropdown(button);
+        });
+    });
 
-            if (!menu) return;
-
-            const isOpen = !menu.classList.contains('hidden');
-
-            closeAllDropdowns();
-
-            if (!isOpen) {
-                menu.classList.remove('hidden');
-                button.setAttribute('aria-expanded', 'true');
-            }
+    dropdownMenus.forEach((menu) => {
+        menu.addEventListener('mouseenter', () => {
+            const trigger = document.querySelector(`[data-dropdown-target="${menu.id}"]`);
+            if (trigger) openDropdown(trigger);
         });
     });
 
@@ -1193,19 +1514,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('click', (event) => {
-        if (!event.target.closest('.relative.group')) {
+        if (!(event.target instanceof Element) || !event.target.closest('.desktop-nav-item')) {
             closeAllDropdowns();
         }
-        if (!event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobile-menu')) {
+        if (event.target instanceof Element && !event.target.closest('.mobile-nav-toggle') && !event.target.closest('#mobile-menu')) {
             closeMobileDropdowns();
         }
-        if (mobileMenu && !event.target.closest('#mobile-menu') && !event.target.closest('#menu-btn')) {
-            mobileMenu.classList.add('hidden');
-            if (menuBtn) {
-                menuBtn.setAttribute('aria-expanded', 'false');
-                menuBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>';
-            }
-        }
+        if (mobileMenu && event.target === mobileMenu) closeMobileMenu();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeAllDropdowns();
+    });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 1024) closeAllDropdowns();
     });
 
     if (progressBar) {

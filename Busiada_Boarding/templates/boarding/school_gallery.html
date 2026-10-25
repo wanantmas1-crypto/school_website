@@ -1,0 +1,151 @@
+{% extends 'boarding/base.html' %}
+
+{% block content_wrapper_start %}{% endblock %}
+{% block content_wrapper_end %}{% endblock %}
+
+{% block content %}
+<main class="school-gallery-page">
+  <section class="school-gallery-hero">
+    <div class="school-gallery-container">
+      <p class="school-gallery-eyebrow">Campus life</p>
+      <h1>Busiada in Pictures</h1>
+      <p>A visual journey through daily learning, co-curricular activities, and milestone events on campus.</p>
+    </div>
+  </section>
+
+  {% if page.content %}
+  <section class="school-gallery-container school-gallery-intro">{{ page.content|safe }}</section>
+  {% endif %}
+
+  <section class="school-gallery-container school-gallery-content" aria-label="School photo gallery">
+    <div class="school-gallery-filters" role="group" aria-label="Filter gallery photos">
+      <button type="button" class="school-gallery-filter is-active" data-gallery-filter="all" aria-pressed="true">All Photos</button>
+      {% for category in gallery_categories %}
+      <button type="button" class="school-gallery-filter" data-gallery-filter="{{ category.slug }}" aria-pressed="false">{{ category.name }}</button>
+      {% endfor %}
+    </div>
+
+    <p class="school-gallery-empty" data-gallery-empty role="status" {% if gallery_items %}hidden{% endif %}>New photos for this category are coming soon.</p>
+    <div class="school-gallery-grid" data-gallery-grid>
+      {% for img in gallery_items %}
+      <article class="school-gallery-item" data-gallery-category="{{ img.category }}">
+        <button type="button" class="school-gallery-photo" data-gallery-open data-gallery-src="{{ img.src }}" data-gallery-alt="{{ img.alt }}" data-gallery-caption="{{ img.title }}{% if img.caption %} — {{ img.caption }}{% endif %}{% if img.description %}. {{ img.description }}{% endif %}" aria-label="View {{ img.title }}">
+          <img src="{{ img.src }}" alt="{{ img.alt }}" loading="lazy" decoding="async">
+          <span class="school-gallery-photo-caption">
+            <strong>{{ img.title|default:'School photo' }}</strong>
+            {% if img.caption %}<span>{{ img.caption }}</span>{% endif %}
+          </span>
+        </button>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="school-gallery-lightbox" data-gallery-lightbox role="dialog" aria-modal="true" aria-label="Full-size school photo" aria-hidden="true" hidden>
+    <button type="button" class="school-gallery-close" data-gallery-close aria-label="Close photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+    </button>
+    <figure>
+      <img data-gallery-lightbox-image alt="">
+      <figcaption data-gallery-lightbox-caption></figcaption>
+    </figure>
+  </div>
+</main>
+
+<style>
+  .school-gallery-page { min-height: 60vh; padding-bottom: 4rem; background: #F8FAFC; color: #334155; }
+  .school-gallery-container { width: min(100% - 2rem, 76rem); margin-inline: auto; }
+  .school-gallery-hero { padding: clamp(3.25rem, 8vw, 6rem) 0; color: #fff; background: linear-gradient(120deg, #1E3A5F, #152A45); }
+  .school-gallery-eyebrow { margin: 0 0 .75rem; color: #BFDBFE; font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  .school-gallery-hero h1 { margin: 0; color: #fff !important; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.1; }
+  .school-gallery-hero p:last-child { max-width: 48rem; margin: 1.1rem 0 0; color: #E2E8F0; font-size: 1.1rem; line-height: 1.8; }
+  .school-gallery-intro { margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; color: #475569; line-height: 1.8; }
+  .school-gallery-content { padding-top: clamp(2rem, 5vw, 3.5rem); }
+  .school-gallery-filters { display: flex; flex-wrap: wrap; gap: .65rem; margin-bottom: 1.5rem; }
+  .school-gallery-filter { min-height: 2.75rem; padding: .65rem 1rem; border: 1px solid rgba(30,58,95,.14); border-radius: 999px; background: #fff; color: #1E3A5F; font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; transition: background-color .18s ease, color .18s ease, border-color .18s ease; }
+  .school-gallery-filter:hover, .school-gallery-filter:focus-visible { border-color: #2B6CB0; outline: 3px solid rgba(43,108,176,.2); outline-offset: 2px; }
+  .school-gallery-filter.is-active { border-color: #2B6CB0; background: #2B6CB0; color: #fff; }
+  .school-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 1.15rem; }
+  .school-gallery-item[hidden], .school-gallery-empty[hidden] { display: none; }
+  .school-gallery-photo { position: relative; display: block; width: 100%; overflow: hidden; padding: 0; border: 1px solid rgba(30,58,95,.1); border-radius: 1.25rem; background: #fff; text-align: left; cursor: zoom-in; box-shadow: 0 10px 28px -22px rgba(21,42,69,.4); }
+  .school-gallery-photo img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; }
+  .school-gallery-photo:hover img, .school-gallery-photo:focus-visible img { transform: scale(1.035); }
+  .school-gallery-photo:focus-visible { outline: 3px solid #2B6CB0; outline-offset: 3px; }
+  .school-gallery-photo-caption { display: grid; gap: .2rem; padding: .9rem 1rem 1rem; color: #1E3A5F; }
+  .school-gallery-photo-caption span { color: #475569; font-size: .9rem; line-height: 1.5; }
+  .school-gallery-empty { margin: 2rem 0; padding: 2rem; border: 1px dashed rgba(30,58,95,.2); border-radius: 1rem; background: #fff; color: #475569; text-align: center; }
+  .school-gallery-lightbox[hidden] { display: none; }
+  .school-gallery-lightbox { position: fixed; z-index: 1000; inset: 0; display: grid; place-items: center; padding: clamp(1rem, 4vw, 2.5rem); background: rgba(9,22,38,.94); }
+  .school-gallery-lightbox figure { display: grid; justify-items: center; gap: .8rem; width: min(100%, 90rem); max-height: 100%; margin: 0; }
+  .school-gallery-lightbox img { display: block; max-width: 100%; max-height: 82vh; object-fit: contain; }
+  .school-gallery-lightbox figcaption { color: #fff; text-align: center; line-height: 1.5; }
+  .school-gallery-close { position: absolute; top: 1rem; right: 1rem; display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; background: rgba(255,255,255,.1); color: #fff; cursor: pointer; }
+  .school-gallery-close svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  @media (prefers-reduced-motion: reduce) { .school-gallery-page *, .school-gallery-page *::before, .school-gallery-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+</style>
+
+<script>
+  (() => {
+    const filters = document.querySelectorAll('[data-gallery-filter]');
+    const items = document.querySelectorAll('.school-gallery-item');
+    const emptyState = document.querySelector('[data-gallery-empty]');
+    const grid = document.querySelector('[data-gallery-grid]');
+    const lightbox = document.querySelector('[data-gallery-lightbox]');
+    const lightboxImage = document.querySelector('[data-gallery-lightbox-image]');
+    const lightboxCaption = document.querySelector('[data-gallery-lightbox-caption]');
+    const closeButton = document.querySelector('[data-gallery-close]');
+    let previouslyFocused = null;
+
+    function filterGallery(category) {
+      let visibleCount = 0;
+      items.forEach((item) => {
+        const visible = category === 'all' || item.dataset.galleryCategory === category;
+        item.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+      emptyState.hidden = visibleCount > 0;
+      grid.hidden = visibleCount === 0;
+      filters.forEach((filter) => {
+        const active = filter.dataset.galleryFilter === category;
+        filter.classList.toggle('is-active', active);
+        filter.setAttribute('aria-pressed', String(active));
+      });
+    }
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.removeAttribute('src');
+      lightboxCaption.textContent = '';
+      document.body.style.overflow = '';
+      if (previouslyFocused) previouslyFocused.focus();
+    }
+
+    filters.forEach((filter) => {
+      filter.addEventListener('click', () => filterGallery(filter.dataset.galleryFilter));
+    });
+
+    document.querySelectorAll('[data-gallery-open]').forEach((photo) => {
+      photo.addEventListener('click', () => {
+        previouslyFocused = photo;
+        lightboxImage.src = photo.dataset.gallerySrc;
+        lightboxImage.alt = photo.dataset.galleryAlt;
+        lightboxCaption.textContent = photo.dataset.galleryCaption;
+        lightbox.hidden = false;
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeButton.focus();
+      });
+    });
+
+    closeButton.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    });
+    filterGallery('all');
+  })();
+</script>
+{% endblock %}

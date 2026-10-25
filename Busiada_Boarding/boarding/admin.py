@@ -4,40 +4,59 @@ from django import forms
 from django.utils.text import slugify
 from django.core.files.base import ContentFile
 import time
-from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, HistoryImage, SchoolAnthem
+from .models import Inquiry, SitePage, PageImage, PageVideo, Document, Announcement, HistoryImage, SchoolAnthem, GalleryCategory
 from .models import SiteSettings
 from .validators import compress_image, get_file_size_display
 
 
-class SitePageAdminForm(forms.ModelForm):
-    class Meta:
-        model = SitePage
-        fields = '__all__'
-        widgets = {
-            'content': forms.Textarea(attrs={
-                'rows': 18,
-                'style': 'width: 100%; min-height: 420px; box-sizing: border-box;',
-                'data-quill-editor': 'true',
-            }),
-            'sections': forms.Textarea(attrs={
-                'rows': 18,
-                'style': 'width: 100%; min-height: 300px; font-family: monospace; resize: vertical; box-sizing: border-box;'
-            }),
-        }
+class RichTextAdminForm(forms.ModelForm):
+    rich_text_fields = ()
 
     class Media:
         js = [
             'https://cdn.quilljs.com/1.3.6/quill.js',
             'boarding/js/quill_init.js',
-            'boarding/js/admin_image_preview.js',
-            'boarding/js/inline_ordering.js',
-            'boarding/js/upload_progress.js',
         ]
         css = {
             'all': [
                 'https://cdn.quilljs.com/1.3.6/quill.snow.css',
             ]
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.rich_text_fields:
+            field = self.fields.get(field_name)
+            if field:
+                field.widget.attrs.update({
+                    'rows': 18,
+                    'style': 'width: 100%; min-height: 420px; box-sizing: border-box;',
+                    'data-quill-editor': 'true',
+                })
+                field.help_text = (
+                    f'{field.help_text} ' if field.help_text else ''
+                ) + 'Use the toolbar to format content, or choose HTML to edit the source directly.'
+
+
+class SitePageAdminForm(RichTextAdminForm):
+    rich_text_fields = ('content',)
+
+    class Meta:
+        model = SitePage
+        fields = '__all__'
+        widgets = {
+            'sections': forms.Textarea(attrs={
+                'rows': 18,
+                'style': 'width: 100%; min-height: 300px; font-family: monospace; resize: vertical; box-sizing: border-box;'
+            }),
+        }
+
+    class Media(RichTextAdminForm.Media):
+        js = RichTextAdminForm.Media.js + [
+            'boarding/js/admin_image_preview.js',
+            'boarding/js/inline_ordering.js',
+            'boarding/js/upload_progress.js',
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,30 +106,26 @@ class SitePageAdminForm(forms.ModelForm):
         return data
 
 
-class SiteSettingsAdminForm(forms.ModelForm):
+class SiteSettingsAdminForm(RichTextAdminForm):
+    rich_text_fields = ('principal_message',)
+
     class Meta:
         model = SiteSettings
         fields = '__all__'
-        widgets = {
-            'principal_message': forms.Textarea(attrs={
-                'rows': 18,
-                'style': 'width: 100%; min-height: 420px; box-sizing: border-box;',
-                'data-quill-editor': 'true',
-            }),
-        }
 
-    class Media:
-        js = [
-            'https://cdn.quilljs.com/1.3.6/quill.js',
-            'boarding/js/quill_init.js',
+    class Media(RichTextAdminForm.Media):
+        js = RichTextAdminForm.Media.js + [
             'boarding/js/admin_image_preview.js',
             'boarding/js/upload_progress.js',
         ]
-        css = {
-            'all': [
-                'https://cdn.quilljs.com/1.3.6/quill.snow.css',
-            ]
-        }
+
+
+class SchoolAnthemAdminForm(RichTextAdminForm):
+    rich_text_fields = ('lyrics',)
+
+    class Meta:
+        model = SchoolAnthem
+        fields = '__all__'
 
 
 @admin.register(Inquiry)
@@ -129,8 +144,17 @@ class HistoryImageAdmin(admin.ModelAdmin):
 
 @admin.register(SchoolAnthem)
 class SchoolAnthemAdmin(admin.ModelAdmin):
+    form = SchoolAnthemAdminForm
     list_display = ['title', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
+
+
+@admin.register(GalleryCategory)
+class GalleryCategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug', 'order']
+    search_fields = ['name', 'slug']
+    prepopulated_fields = {'slug': ('name',)}
+    ordering = ['order', 'name']
 
 
 class PageImageInline(admin.TabularInline):
@@ -138,7 +162,7 @@ class PageImageInline(admin.TabularInline):
     fk_name = 'page'
     template = 'admin/edit_inline/tabular.html'
     extra = 0
-    fields = ['title', 'caption', 'description', 'image', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
+    fields = ['title', 'caption', 'description', 'image', 'category', 'order', 'uploaded_at', 'updated_at', 'uploaded_by']
     readonly_fields = ['uploaded_at', 'updated_at', 'uploaded_by']
     ordering = ['order', 'uploaded_at']
     
@@ -211,7 +235,7 @@ class SitePageAdmin(admin.ModelAdmin):
         ('Content', {
             'fields': ('content', 'featured_image', 'background_image', 'sections'),
             'classes': ('wide',),
-            'description': 'featured_image is used in page galleries and carousels. background_image is used as the page background. On the School Chaplaincy page, background_image is the hero background, featured_image is the introduction photo, and Page Images below populate the Growing Through Connection gallery. On the Home page, uploaded Page Images are used as an automatically transitioning hero slideshow in admin order; an uploaded video takes priority, and background_image is the fallback when no hero images or video are available. On the CBE page, add any number of Page Images titled “STEM”, “Social Sciences”, or “Arts & Sports Science” to populate each pathway gallery. STEM Laboratory and Computer Lab titles are also treated as STEM images. Images appear in their admin-defined order; pathways without uploads show no image area.'
+            'description': 'featured_image is used in page galleries and carousels. background_image is used as the page background. On student-life pages, featured_image is an optional hero photo and Page Images add an optional gallery; both are omitted when no media is uploaded. On the School Gallery page, assign each Page Image a category from the dropdown. Use the + icon beside Category to add a category, or manage them from Gallery categories in the admin. New categories automatically become School Gallery filters. On the School Chaplaincy page, background_image is the hero background; featured_image and multiple Page Images below create an automatically transitioning introduction slideshow, while Page Images also populate the Growing Through Connection gallery. On the Home page, uploaded Page Images are used as an automatically transitioning hero slideshow in admin order; an uploaded video takes priority, and background_image is the fallback when no hero images or video are available. On the CBE page, add any number of Page Images titled “STEM”, “Social Sciences”, or “Arts & Sports Science” to populate each pathway gallery. STEM Laboratory and Computer Lab titles are also treated as STEM images. Images appear in their admin-defined order; pathways without uploads show no image area. On the 8-4-4 Curriculum page, upload Documents to the pages with slugs “844-assignments”, “844-revision-materials”, and “844-past-kcse-papers” to publish downloads on the matching resource pages.'
         }),
         ('Senior School Pathway Populations', {
             'fields': ('stem_learner_population', 'social_sciences_learner_population'),
