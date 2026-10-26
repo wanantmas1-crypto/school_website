@@ -1,0 +1,15 @@
+.git
+.env
+**/.env
+.venv
+venv
+**/__pycache__
+**/*.py[cod]
+**/db.sqlite3
+**/*.backup-*.sqlite3
+**/sqlite_backup.json
+**/media
+**/staticfiles
+**/*.log
+recovered_git_blobs
+backups

@@ -9,6 +9,9 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
+from django.core.management.base import CommandError
+from django.db import DatabaseError
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
@@ -17,6 +20,109 @@ from .models import Announcement, Document, GalleryCategory, HistoryImage, Leade
 
 
 TEST_MEDIA_ROOT = tempfile.mkdtemp()
+
+
+class HealthCheckTests(TestCase):
+    def test_health_check_returns_success_when_database_is_available(self):
+        response = self.client.get('/healthz/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'ok')
+
+    def test_health_check_returns_service_unavailable_when_database_fails(self):
+        with patch('config.urls.connection.cursor', side_effect=DatabaseError):
+            response = self.client.get('/healthz/')
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.content, b'Service unavailable')
+
+    def test_health_check_returns_service_unavailable_when_migrations_are_pending(self):
+        with patch('config.urls.MigrationExecutor') as migration_executor:
+            migration_executor.return_value.migration_plan.return_value = [
+                object(),
+            ]
+            response = self.client.get('/healthz/')
+
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.content, b'Service unavailable')
+
+
+class CloudinaryMediaMigrationTests(TestCase):
+    def test_media_migration_dry_run_does_not_upload_or_modify_source(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_root = os.path.join(temp_dir, 'media')
+            source_file = os.path.join(source_root, 'branding', 'logo.png')
+            os.makedirs(os.path.dirname(source_file))
+            with open(source_file, 'wb') as media_file:
+                media_file.write(b'fixture image data')
+            SiteSettings.objects.create(logo='branding/logo.png')
+
+            with patch(
+                'boarding.management.commands.migrate_media_to_cloudinary.default_storage'
+            ) as storage:
+                call_command(
+                    'migrate_media_to_cloudinary',
+                    '--source-dir',
+                    source_root,
+                )
+
+            storage.exists.assert_not_called()
+            self.assertTrue(os.path.isfile(source_file))
+            self.assertEqual(
+                SiteSettings.objects.get().logo.name,
+                'branding/logo.png',
+            )
+
+    def test_media_migration_updates_reference_after_verified_upload(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_root = os.path.join(temp_dir, 'media')
+            source_file = os.path.join(source_root, 'branding', 'logo.png')
+            os.makedirs(os.path.dirname(source_file))
+            with open(source_file, 'wb') as media_file:
+                media_file.write(b'fixture image data')
+            SiteSettings.objects.create(logo='branding/logo.png')
+
+            with (
+                override_settings(
+                    DEBUG=False,
+                    STORAGES={
+                        'default': {
+                            'BACKEND': (
+                                'cloudinary_storage.storage.MediaCloudinaryStorage'
+                            ),
+                        },
+                    },
+                ),
+                patch(
+                    'boarding.management.commands.migrate_media_to_cloudinary.default_storage'
+                ) as storage,
+            ):
+                storage.exists.side_effect = [False, True]
+                storage.save.return_value = 'branding/verified-logo.png'
+                call_command(
+                    'migrate_media_to_cloudinary',
+                    '--source-dir',
+                    source_root,
+                    '--apply',
+                )
+
+            self.assertEqual(
+                SiteSettings.objects.get().logo.name,
+                'branding/verified-logo.png',
+            )
+            self.assertTrue(os.path.isfile(source_file))
+            storage.save.assert_called_once()
+
+    def test_media_migration_rejects_missing_source_files(self):
+        with tempfile.TemporaryDirectory() as source_root:
+            SiteSettings.objects.create(logo='branding/missing.png')
+
+            with self.assertRaisesMessage(CommandError, 'Source media file is missing'):
+                call_command(
+                    'migrate_media_to_cloudinary',
+                    '--source-dir',
+                    source_root,
+                )
 
 
 class RichTextAdminFormTests(TestCase):

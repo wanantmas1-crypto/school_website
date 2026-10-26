@@ -42,3 +42,4 @@ db.sqlite3
 # Project specific
 recovered_git_blobs/
 *.bak
+*.backup-*.sqlite3
