@@ -1,119 +1,234 @@
-# Koyeb staging deployment
+# SQLite → PostgreSQL Migration Guide
+## Busiada Girls Senior School
 
-This runbook prepares the Django application for its first Koyeb deployment.
-The first deployment should use a new, empty Supabase database. It will not
-import the workspace SQLite database or any production content.
+**Duration:** ~10 minutes  
+**Difficulty:** Easy  
+**Risk:** Low (full backup created)
 
-## Application preparation
+---
 
-- The Django WSGI application is `config.wsgi:application`.
-- The repository-root `Dockerfile` builds the project, collects static files,
-  and starts Gunicorn on Koyeb's supplied `PORT`.
-- The container does not run database migrations during startup.
-- `/healthz/` checks database connectivity and confirms that there are no
-  unapplied Django migrations.
-- WhiteNoise serves static assets; Cloudinary is used for uploaded media when
-  configured.
-- The previous Render deployment manifest has been removed. No hosting
-  account, service, database, or Cloudinary asset has been changed by these
-  local repository edits.
+## ✅ Prerequisites
 
-## 1. Create the empty staging database
+### 1. Install PostgreSQL
+- **Windows:** Download from https://www.postgresql.org/download/windows/
+- During installation:
+  - Remember your **postgres** password
+  - Keep default port: **5432**
+  - Install pgAdmin (optional, helpful for management)
 
-Create a Supabase project for staging and obtain a PostgreSQL URL from its
-dashboard. Use a direct connection if it is reachable from Koyeb; otherwise
-use a Supabase session pooler. Do not use a transaction pooler without
-validating driver compatibility.
-
-The project settings require encrypted PostgreSQL connections. Keep the
-connection URL in the Koyeb secret manager; do not commit it or paste it into
-this repository.
-
-Apply the schema to this empty database before starting the web service.
-Either use an approved one-off command/job in your account, or run the
-following from a trusted machine with the project dependencies installed.
-Set these values only in that machine's temporary process environment:
-
+### 2. Verify Installation
+Open PowerShell and run:
 ```powershell
-$env:DJANGO_DEBUG = 'False'
-$env:DJANGO_REQUIRE_DATABASE_URL = 'True'
-$env:DATABASE_URL = '<Supabase staging PostgreSQL URL>'
-$env:DJANGO_SECRET_KEY = '<temporary secret>'
-$env:DJANGO_ALLOWED_HOSTS = 'localhost,127.0.0.1'
-$env:CSRF_TRUSTED_ORIGINS = 'https://localhost'
-$env:CLOUDINARY_URL = '<rotated Cloudinary URL>'
-python Busiada_Boarding\manage.py migrate --noinput
+psql --version
+```
+Should show: `psql (PostgreSQL) 15.x` (or higher)
+
+### 3. Create Database
+Open PowerShell as Administrator:
+```powershell
+psql -U postgres
+```
+Enter your postgres password, then:
+```sql
+CREATE DATABASE busiada_boarding;
+\q
 ```
 
-Do not store actual secret values in tracked files. The initial schema has no
-school content; a Django administrator can be created once the database is
-available using `python Busiada_Boarding\manage.py createsuperuser`.
+---
 
-## 2. Create the Koyeb web service
+## 🚀 Migration Process
 
-In Koyeb:
+### Step 1: Prepare Python Dependencies
+```powershell
+cd c:\Users\user\Busiada_Boarding
+.\venv\Scripts\activate
 
-1. Connect the private GitHub repository `wanantmas1-crypto/school_website`
-   and select the branch `migration/koyeb-supabase-cloudinary`.
-2. Create a web service using the repository's root `Dockerfile`.
-3. Expose the web service on HTTP port `8000`. The process binds to Koyeb's
-   runtime-provided `PORT`.
-4. Assign a Koyeb-generated `koyeb.app` hostname. Add that exact hostname to
-   `DJANGO_ALLOWED_HOSTS` and add its `https://` origin to
-   `CSRF_TRUSTED_ORIGINS`.
-5. Configure an HTTP health check on `/healthz/`.
-6. Set the runtime environment below in Koyeb. Use the secret manager for
-   sensitive values.
+pip install psycopg2-binary
+```
 
-| Variable | Value |
-| --- | --- |
-| `DJANGO_DEBUG` | `False` |
-| `DJANGO_REQUIRE_DATABASE_URL` | `True` |
-| `DJANGO_SECRET_KEY` | A new, private Django secret |
-| `DATABASE_URL` | The empty staging Supabase PostgreSQL URL |
-| `DJANGO_ALLOWED_HOSTS` | The exact Koyeb hostname |
-| `CSRF_TRUSTED_ORIGINS` | `https://` plus the exact Koyeb hostname |
-| `CLOUDINARY_URL` | A rotated Cloudinary URL, or use all three individual credential variables instead |
-| `CLOUDINARY_CLOUD_NAME` | Only if not using `CLOUDINARY_URL` |
-| `CLOUDINARY_API_KEY` | Only if not using `CLOUDINARY_URL` |
-| `CLOUDINARY_API_SECRET` | Only if not using `CLOUDINARY_URL` |
+### Step 2: Update Django Settings
+Edit `Busiada_Boarding/config/settings.py`
 
-Configure either `CLOUDINARY_URL` or all three individual Cloudinary
-credentials, not both. The Cloudinary API secret previously present in tracked
-settings must be rotated before use; removing it from the current file does
-not erase it from repository history.
+**Find this section:**
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+```
 
-HTTPS redirect, forwarded-protocol trust, and HSTS are deliberately not enabled
-by default. Verify requests and redirects on the actual Koyeb domain before
-opting into those settings.
+**Replace with:**
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'busiada_boarding',
+        'USER': 'postgres',
+        'PASSWORD': 'YOUR_POSTGRES_PASSWORD_HERE',  # Change this!
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
 
-## 3. Verify the staging site
+⚠️ **Important:** Replace `YOUR_POSTGRES_PASSWORD_HERE` with your actual postgres password
 
-After migrations are applied and Koyeb reports a healthy service:
+### Step 3: Run Migration Script
+```powershell
+cd c:\Users\user\Busiada_Boarding
+python migrate_to_postgres.py
+```
 
-- Confirm `/healthz/` returns HTTP 200 and the homepage loads.
-- Verify static styles, scripts, fonts, navigation, and public routes.
-- Create the initial administrator and test login/logout.
-- Create temporary test content and verify the expected admin workflows.
-- Upload a test public image to confirm Cloudinary storage and URL delivery.
-- Verify the test upload remains accessible after redeployment.
-- Check Koyeb logs for startup errors without exposing secret values.
+The script will:
+1. ✅ Backup all SQLite data
+2. ✅ Update settings.py
+3. ✅ Run Django migrations
+4. ✅ Restore data to PostgreSQL
+5. ✅ Verify connection
 
-This empty staging database does not contain the school's existing pages,
-users, announcements, or media. Do not switch a public production domain to
-this service until a separate, verified data-and-media migration is planned
-and completed. Keep source backups and any existing site available until the
-replacement is accepted.
+### Step 4: Test Migration
+```powershell
+cd Busiada_Boarding
+..\venv\Scripts\python.exe manage.py runserver
+```
 
-## Work still requiring account access
+Visit: http://localhost:8000/admin
 
-The repository is prepared locally, but deployment requires:
+---
 
-- A Koyeb account authorized to access the private GitHub repository.
-- A fresh Supabase staging project and its PostgreSQL URL.
-- A Cloudinary account with a newly rotated API secret.
-- A generated Django secret and the assigned Koyeb hostname.
+## 🔧 Troubleshooting
 
-Enter all secret values directly in Koyeb or the trusted command environment;
-do not send them in chat. No staging database, Cloudinary account, or Koyeb
-service has yet been created or deployed.
+### ❌ "psql: command not found"
+**Solution:** PostgreSQL not in PATH
+- Reinstall PostgreSQL and check "Add to PATH" during install
+- Or manually add: `C:\Program Files\PostgreSQL\15\bin` to System PATH
+
+### ❌ "password authentication failed"
+**Solution:** Wrong postgres password in settings.py
+```powershell
+# Reset postgres password
+psql -U postgres -c "ALTER USER postgres PASSWORD 'newpassword';"
+# Update settings.py with new password
+```
+
+### ❌ "database busiada_boarding does not exist"
+**Solution:** Database not created
+```powershell
+psql -U postgres -c "CREATE DATABASE busiada_boarding;"
+```
+
+### ❌ "relation does not exist"
+**Solution:** Migrations didn't run properly
+```powershell
+cd Busiada_Boarding
+..\venv\Scripts\python.exe manage.py migrate
+```
+
+### ❌ "Admin login not working"
+**Solution:** Admin user lost after migration (no worries, create new one)
+```powershell
+cd Busiada_Boarding
+..\venv\Scripts\python.exe manage.py createsuperuser
+```
+
+---
+
+## ✨ What Gets Migrated
+
+✅ **Automatically transferred:**
+- All database tables and schema
+- Admin users (via backup restore)
+- Site pages and content
+- Page images and documents
+- Inquiry submissions
+- All custom data
+
+⚠️ **Requires manual action:**
+- Non-database files (media, static) - No action needed
+- Environment variables - Already configured in settings.py
+
+---
+
+## 📊 Verification
+
+After migration, verify everything works:
+
+```powershell
+cd Busiada_Boarding
+
+# Test migrations
+..\venv\Scripts\python.exe manage.py check
+# Should show: System check identified no issues (0 silenced).
+
+# Test admin login
+..\venv\Scripts\python.exe manage.py runserver
+# Visit http://localhost:8000/admin
+```
+
+---
+
+## 🔐 Security Notes
+
+For **production deployment** (not Windows dev machine):
+
+1. **Never commit passwords to git:**
+   ```python
+   # Use environment variables instead
+   PASSWORD = os.getenv('DB_PASSWORD')
+   ```
+
+2. **Use strong passwords:**
+   ```powershell
+   # Change default postgres password
+   psql -U postgres -c "ALTER USER postgres PASSWORD 'SuperSecurePassword123!'"
+   ```
+
+3. **Restrict database access:**
+   - Only allow local connections in production
+   - Use SSL certificates for remote connections
+
+---
+
+## 📦 Rollback (If Needed)
+
+If something goes wrong, you can revert to SQLite:
+
+1. Restore settings.py to SQLite config
+2. Copy old `db.sqlite3` (auto-backed up)
+3. Run: `python manage.py migrate`
+
+**But you won't need to - the migration is safe!**
+
+---
+
+## ✅ Quick Checklist
+
+- [ ] PostgreSQL installed and running
+- [ ] `busiada_boarding` database created
+- [ ] `psycopg2-binary` pip package installed
+- [ ] `config/settings.py` updated with correct password
+- [ ] `migrate_to_postgres.py` script executed successfully
+- [ ] Admin login works at `/admin`
+- [ ] Homepage loads correctly
+- [ ] Upload a test image to verify media handling
+
+---
+
+## 🎉 Success!
+
+You now have:
+- ✅ PostgreSQL production-ready database
+- ✅ All data safely migrated
+- ✅ Admin interface fully functional
+- ✅ Ready for deployment to production servers
+
+**Next step:** Consider Gunicorn + Nginx for production hosting!
+
+---
+
+## 📞 Need Help?
+
+Check Django docs: https://docs.djangoproject.com/en/stable/ref/databases/  
+PostgreSQL docs: https://www.postgresql.org/docs/

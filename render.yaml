@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: busiada_web
+    env: python
+    plan: free
+    branch: busiada_boarding
+    rootDir: Busiada_Boarding
+    buildCommand: "pip install -r ../requirements.txt"
+    startCommand: "python manage.py migrate --noinput && python manage.py collectstatic --noinput && python -m gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "*"
+      - key: DJANGO_SECRET_KEY
+        generator: "secret"
+      - key: DJANGO_SERVE_MEDIA
+        value: "True"

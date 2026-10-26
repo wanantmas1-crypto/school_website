@@ -1,52 +1,99 @@
-# Cloudinary configuration
+# Cloudinary Setup Guide for Busiada Boarding
 
-Django user uploads use Cloudinary only when Cloudinary credentials are
-configured. Local development without credentials uses local filesystem media.
-Static CSS, JavaScript, fonts, and application assets remain on the existing
-WhiteNoise/static-files path.
+## Step 1: Create Free Cloudinary Account
 
-## Credentials
+1. Go to https://cloudinary.com/users/register/free
+2. Sign up with email (or GitHub)
+3. Confirm your email
+4. Log in to dashboard
 
-Configure exactly one credential style in the deployment environment:
+## Step 2: Get Your Credentials
 
-- `CLOUDINARY_URL`, or
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and
-  `CLOUDINARY_API_SECRET`.
+1. Go to **Dashboard** (https://cloudinary.com/console)
+2. Look for **API Environment variable** section
+3. Copy your **Cloud Name** (looks like: `abc123xyz`)
+4. Click "Reveal" next to the API Key and API Secret
+5. Copy all three:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
 
-Do not commit credentials or put API secrets in templates, JavaScript, logs,
-or this guide. Use the deployment platform's secret manager. Rotate the
-previously embedded API secret before deploying and update the replacement in
-each service that still needs it.
+## Step 3: Install Package
 
-## Transfer existing files
-
-First export the media files from the verified live storage and confirm that
-the files match database `FileField` references. The migration tool performs a
-dry run unless `--apply` is supplied:
-
-```powershell
-python Busiada_Boarding\manage.py migrate_media_to_cloudinary `
-  --source-dir 'D:\secure-export\media'
+```bash
+pip install cloudinary
 ```
 
-After setting the destination database, Cloudinary secrets, and
-`DJANGO_DEBUG=False` in the process environment:
-
-```powershell
-python Busiada_Boarding\manage.py migrate_media_to_cloudinary `
-  --source-dir 'D:\secure-export\media' --apply
+Add to `requirements.txt`:
+```
+cloudinary==1.40.0
 ```
 
-The command verifies each uploaded object before changing its database file
-name and never deletes the source file. It skips `Document.file` by default.
-Use `--include-documents` only after verifying that the documents are intended
-to be publicly accessible. Retain the original backup until every migrated
-URL and its intended access policy have been checked.
+## Step 4: Update Django Settings
 
-## Admin uploads and access
+In `Busiada_Boarding/config/settings.py`, add:
 
-The existing Django admin continues to use its model `FileField` controls.
-Verify representative image, document, video, and audio uploads after
-configuring Cloudinary. Public Cloudinary delivery is appropriate only for
-content intended for public pages; do not migrate confidential or
-authenticated-only records to public assets.
+```python
+import cloudinary
+import cloudinary.storage
+import os
+
+# Cloudinary Configuration
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET')
+)
+
+# Update Django storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'
+```
+
+## Step 5: Set Environment Variables
+
+### For Local Development:
+Create `.env` file in project root:
+```
+CLOUDINARY_CLOUD_NAME=your_cloud_name_here
+CLOUDINARY_API_KEY=your_api_key_here
+CLOUDINARY_API_SECRET=your_api_secret_here
+```
+
+Install `python-dotenv`:
+```bash
+pip install python-dotenv
+```
+
+In `Busiada_Boarding/config/settings.py` (top of file):
+```python
+from dotenv import load_dotenv
+load_dotenv()
+```
+
+### For Render/Production:
+1. Go to Render dashboard
+2. Select your service
+3. Go to **Environment**
+4. Add the three variables
+
+## Step 6: Test It Works
+
+Run migrations:
+```bash
+python manage.py migrate
+```
+
+Upload a test image through Django admin and verify it appears on Cloudinary dashboard.
+
+## Free Tier Limits
+- 25GB storage/month
+- 25GB bandwidth/month
+- Great for school site
+
+## Dashboard URL
+Once set up, view all uploads: https://cloudinary.com/console/media_library
+
+---
+
+Need help? Let me know when you have your credentials and I'll update settings.py for you.
