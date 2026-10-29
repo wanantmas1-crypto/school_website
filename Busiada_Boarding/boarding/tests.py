@@ -508,7 +508,7 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, '<video class="hero-background-media" autoplay muted loop playsinline', html=False)
         self.assertContains(response, '<source src="/media/videos/hero.mp4">', html=False)
         self.assertContains(response, 'animation: hero-ken-burns 20s ease-in-out infinite alternate')
-        self.assertContains(response, 'rgba(30, 58, 95, 0.52)')
+        self.assertContains(response, 'rgba(34, 79, 148, 0.1)')
         self.assertContains(response, 'Existing hero content.')
 
     @patch(
