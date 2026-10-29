@@ -17,47 +17,28 @@
         *, *::before, *::after { box-sizing: border-box; }
         html {
             scroll-behavior: smooth;
-            background: rgba(10, 37, 64, 0.04);
+            background: #f3f7fc;
             overflow-x: hidden;
-            overflow-y: overlay;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        html::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
+            overflow-y: auto;
         }
         body {
-            background: linear-gradient(180deg, #F7F5F2 0%, #f3efe9 100%);
+            background: linear-gradient(180deg, #f8fbff 0%, #f1f6fc 100%);
             color: #1A2A44;
             font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.7;
             min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: overlay;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            overflow-x: clip;
             padding-top: 5rem;
             color-scheme: light;
         }
-        body::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
-        body::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: transparent;
-        }
 
         :root {
-            --navy: #1E3A5F;
-            --navy-dark: #152A45;
-            --blue: #2B6CB0;
-            --cream: #F8F1E3;
-            --cream-light: #FDF8F0;
-            --sky: #EBF4FF;
+            --navy: #2D63B8;
+            --navy-dark: #1C477F;
+            --blue: #2D63B8;
+            --cream: #EFF5FC;
+            --cream-light: #F8FBFF;
+            --sky: #EAF2FC;
             --soft-gray: #F1F5F9;
             --text-dark: #1E293B;
             --text-muted: #475569;
@@ -75,15 +56,15 @@
             --container-5xl: 64rem;
             --container-6xl: 72rem;
             --container-7xl: 80rem;
-            --primary-blue: #1E3A5F;
-            --secondary-sky: #4A90C8;
-            --accent-red: #C41E3A;
-            --dark-accent: #6B2D3C;
-            --background: #F7F5F2;
+            --primary-blue: #2D63B8;
+            --secondary-sky: #5B91D1;
+            --accent-red: #1C477F;
+            --dark-accent: #1C477F;
+            --background: #F3F7FC;
             --surface: #FFFFFF;
-            --text-primary: #1A2A44;
-            --text-secondary: #5A6A7A;
-            --logo-gold: #D4A017;
+            --text-primary: #1E293B;
+            --text-secondary: #526174;
+            --logo-gold: #2D63B8;
         }
 
         .w-1 { width: calc(var(--spacing) * 1); }
@@ -168,9 +149,9 @@
             width: 3rem;
             height: 3rem;
             border-radius: 9999px;
-            background: rgba(196, 30, 58, 0.12);
-            color: #C41E3A;
-            box-shadow: inset 0 0 0 1px rgba(196, 30, 58, 0.18);
+            background: rgba(45, 99, 184, 0.12);
+            color: #2D63B8;
+            box-shadow: inset 0 0 0 1px rgba(45, 99, 184, 0.18);
         }
         .icon-badge-soft {
             display: inline-flex;
@@ -180,8 +161,79 @@
             height: 3rem;
             border-radius: 9999px;
             background: rgba(255, 255, 255, 0.72);
-            color: #1E3A5F;
+            color: #1E5AA8;
             border: 1px solid rgba(74, 144, 200, 0.2);
+        }
+        .icon-badge,
+        .icon-badge-soft {
+            color: #1E5AA8;
+        }
+        .icon-badge i,
+        .icon-badge-soft i,
+        .brand-feature-icon {
+            font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+            line-height: 1;
+            color: #1E5AA8;
+            transition: color .2s ease;
+        }
+        .icon-badge:hover i,
+        .icon-badge-soft:hover i,
+        .brand-feature-icon:hover,
+        h3:hover .brand-feature-icon,
+        h3:hover .brand-feature-icon-svg,
+        .scroll-morph:hover .brand-feature-icon {
+            color: #3B7DD8;
+        }
+        .utility-info-icon {
+            width: clamp(1.25rem, 1.8vw, 1.75rem);
+            height: clamp(1.25rem, 1.8vw, 1.75rem);
+            flex-shrink: 0;
+        }
+        .utility-social-link svg {
+            width: clamp(1.25rem, 1.6vw, 1.5rem);
+            height: clamp(1.25rem, 1.6vw, 1.5rem);
+        }
+        .fee-payment-icon i,
+        .curriculum-844-resource-icon i {
+            color: #1E5AA8;
+            font-size: clamp(1.25rem, 1.8vw, 1.75rem);
+        }
+        .brand-feature-icon-svg {
+            width: clamp(1.25rem, 1.8vw, 1.75rem);
+            height: clamp(1.25rem, 1.8vw, 1.75rem);
+            flex-shrink: 0;
+            color: #1E5AA8;
+            transition: color .2s ease;
+        }
+        .brand-feature-icon-svg:hover {
+            color: #3B7DD8;
+        }
+        .utility-phone-link:hover .utility-info-icon,
+        .utility-bar-inner a:hover .utility-info-icon {
+            color: #3B7DD8;
+        }
+        .site-nav .nav-dropdown-trigger i,
+        #mobile-menu i,
+        .site-footer-mobile .footer-contact-icon i {
+            color: #fff;
+        }
+        .site-footer-mobile .footer-contact-icon i {
+            font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+        }
+        .site-nav .nav-dropdown-trigger:hover i,
+        .site-nav .nav-dropdown-trigger:focus-visible i,
+        #mobile-menu .mobile-nav-toggle:hover i,
+        #mobile-menu .mobile-nav-toggle:focus-visible i,
+        .utility-social-link:hover svg,
+        .utility-social-link:focus-visible svg {
+            color: #3B7DD8;
+        }
+        .site-nav .dropdown-link i {
+            color: #1E5AA8;
+        }
+        .site-nav .dropdown-link:hover i,
+        .site-nav .dropdown-link:focus-visible i {
+            color: #3B7DD8;
         }
 
         @media (max-width: 640px) {
@@ -193,7 +245,25 @@
             }
             .icon-badge i,
             .icon-badge-soft i {
-                font-size: 1rem;
+                font-size: 1.25rem;
+            }
+            .utility-info-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+        @media (min-width: 641px) and (max-width: 1023px) {
+            .icon-badge i,
+            .icon-badge-soft i,
+            .brand-feature-icon,
+            .fee-payment-icon i,
+            .curriculum-844-resource-icon i,
+            .site-footer-mobile .footer-contact-icon i,
+            .utility-info-icon,
+            .brand-feature-icon-svg {
+                font-size: 1.375rem;
+                width: 1.375rem;
+                height: 1.375rem;
             }
         }
 
@@ -249,7 +319,7 @@
             color: white;
         }
         .site-footer-mobile {
-            background: linear-gradient(180deg, #1E3A5F 0%, #1E3A5F 55%, #152A45 100%);
+            background: linear-gradient(180deg, #1C477F 0%, #1C477F 55%, #163B6B 100%);
             color: #ffffff;
             font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
         }
@@ -257,12 +327,12 @@
             border-color: rgba(255, 255, 255, 0.16);
             background: rgba(255, 255, 255, 0.06);
         }
-        .site-footer-mobile .footer-heading { color: #F8F1E3; }
+        .site-footer-mobile .footer-heading { color: #ffffff; }
         .site-footer-mobile .footer-small,
         .site-footer-mobile .footer-contact-item { color: rgba(255, 255, 255, 0.82); }
         .site-footer-mobile .footer-contact-icon {
             background: rgba(255, 255, 255, 0.12);
-            color: #F8F1E3;
+            color: #ffffff;
         }
 
         .page-shell { max-width: min(1180px, 100%); margin: 0 auto; padding: 0 1.25rem; }
@@ -274,10 +344,26 @@
         .footer-socials { display: flex; flex-wrap: wrap; gap: 0.6rem; }
         .footer-contact-list { display: grid; gap: 0.7rem; }
         .footer-contact-item { display: flex; align-items: flex-start; gap: 0.7rem; color: rgba(255,255,255,0.84); font-size: 0.92rem; line-height: 1.5; }
-        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(196, 30, 58, 0.16); color: #C41E3A; flex-shrink: 0; }
+        .footer-contact-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.9rem; border-radius: 9999px; background: rgba(255, 255, 255, 0.14); color: #ffffff; flex-shrink: 0; }
+        .photo-highlights-card { grid-column: 1 / -1; animation: photo-highlights-enter .65s ease-out both; }
+        .photo-highlights-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+        .photo-highlight-item { overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: .9rem; background: rgba(30,90,168,.62); animation: photo-highlight-enter .55s ease-out backwards; transition: transform .25s ease, box-shadow .25s ease; }
+        .photo-highlight-item:nth-child(2) { animation-delay: .1s; }
+        .photo-highlight-item:nth-child(3) { animation-delay: .2s; }
+        .photo-highlight-item:nth-child(4) { animation-delay: .3s; }
+        .photo-highlight-item:hover { transform: translateY(-4px) scale(1.025); box-shadow: 0 12px 24px rgba(0,0,0,.2); }
+        .photo-highlight-image { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .45s ease; }
+        .photo-highlight-item:hover .photo-highlight-image { transform: scale(1.06); }
+        .photo-highlight-placeholder { display: flex; aspect-ratio: 4 / 3; flex-direction: column; align-items: center; justify-content: center; gap: .55rem; color: rgba(255,255,255,.9); font-size: .9rem; font-weight: 600; }
+        .photo-highlight-placeholder i { color: #fff; font-size: 1.5rem; }
+        .photo-highlight-caption { padding: .5rem .65rem; color: rgba(255,255,255,.82); font-size: .75rem; text-align: center; }
+        .photo-highlights-note { color: rgba(255,255,255,.68); font-size: .75rem; text-align: center; }
+        @keyframes photo-highlights-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes photo-highlight-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (min-width: 768px) {
             .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+            .photo-highlights-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
         }
         @media (max-width: 767.98px) {
             .site-footer-mobile {
@@ -308,19 +394,28 @@
                 height: 1.8rem;
             }
         }
+        @media (prefers-reduced-motion: reduce) {
+            .photo-highlights-card,
+            .photo-highlight-item { animation: none; transition: none; }
+            .photo-highlight-item:hover,
+            .photo-highlight-item:hover .photo-highlight-image { transform: none; }
+        }
         .site-nav { position: sticky; top: 0; left: 0; width: 100%; z-index: 1000; }
-        .site-nav.scrolled { box-shadow: 0 4px 20px rgba(30, 58, 95, 0.15); }
+        .site-nav.scrolled { box-shadow: 0 4px 20px rgba(28, 71, 127, 0.2); }
         .site-utility-bar {
             position: fixed;
             top: var(--site-nav-height, 5rem);
             left: 0;
             z-index: 40;
             width: 100%;
-            background: linear-gradient(90deg, #991b1b 0%, #C41E3A 48%, #7f1d1d 100%);
+            background: #164785;
             color: #ffffff;
             font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
         }
-        .site-main { margin-top: 3.75rem; }
+        .site-main {
+            margin-top: 3.75rem;
+            overflow-x: clip;
+        }
         .utility-phone-link {
             display: inline-flex;
             align-items: center;
@@ -359,14 +454,14 @@
             line-height: 1.2;
             letter-spacing: -0.02em;
             font-weight: 800;
-            color: #1E3A5F;
+            color: #2D63B8;
         }
         .section-kicker {
             font-size: 0.82rem;
             letter-spacing: 0.28em;
             text-transform: uppercase;
             font-weight: 700;
-            color: #C41E3A;
+            color: #2D63B8;
         }
         .section-copy {
             font-size: 1rem;
@@ -706,7 +801,7 @@
                 height: 100dvh;
                 padding: max(1rem, env(safe-area-inset-top)) 1.25rem max(1rem, env(safe-area-inset-bottom));
                 overflow: hidden;
-                background: linear-gradient(155deg, #1e3a5f 0%, #152a45 58%, #0a1b30 100%);
+                background: #164785;
                 opacity: 0;
                 transform: translateY(-.5rem);
                 transition: opacity .22s ease, transform .22s ease;
@@ -727,7 +822,7 @@
                 border-bottom: 1px solid rgba(255, 255, 255, .16);
             }
             .mobile-menu-title {
-                color: #f8f1e3;
+                color: #fff;
                 font-size: 1.1rem;
                 font-weight: 700;
                 letter-spacing: .01em;
@@ -741,17 +836,17 @@
                 gap: .5rem;
                 border: 1px solid rgba(255, 255, 255, .28);
                 border-radius: .8rem;
-                background: rgba(255, 255, 255, .1);
+                background: transparent;
                 color: #fff;
-                font-size: .9rem;
+                font-size: 1rem;
                 font-weight: 600;
                 cursor: pointer;
                 transition: background-color .16s ease;
             }
             .mobile-menu-close:hover,
             .mobile-menu-close:focus-visible {
-                background: rgba(255, 255, 255, .2);
-                outline: 2px solid #f8f1e3;
+                background: #3B7DD8;
+                outline: 2px solid #fff;
                 outline-offset: 2px;
             }
             .mobile-menu-scroll {
@@ -763,18 +858,18 @@
                 overflow-y: auto;
                 overscroll-behavior: contain;
                 padding: 1rem 0 max(1rem, env(safe-area-inset-bottom));
-                scrollbar-color: rgba(248, 241, 227, .55) rgba(255, 255, 255, .08);
+                scrollbar-color: #3B7DD8 #164785;
                 scrollbar-width: thin;
             }
             .mobile-menu-scroll::-webkit-scrollbar {
                 width: .45rem;
             }
             .mobile-menu-scroll::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, .08);
+                background: #164785;
                 border-radius: 999px;
             }
             .mobile-menu-scroll::-webkit-scrollbar-thumb {
-                background: rgba(248, 241, 227, .55);
+                background: #3B7DD8;
                 border-radius: 999px;
             }
             .mobile-menu-scroll > * {
@@ -788,7 +883,7 @@
                 padding: .8rem 1rem;
                 border: 1px solid rgba(255, 255, 255, .12);
                 border-radius: .85rem;
-                background: rgba(255, 255, 255, .06);
+                background: #164785;
                 color: #fff;
                 font-size: 1rem;
                 font-weight: 600;
@@ -798,14 +893,14 @@
             #mobile-menu .mobile-menu-announcements:hover,
             #mobile-menu .mobile-menu-home:focus-visible,
             #mobile-menu .mobile-menu-announcements:focus-visible {
-                background: rgba(255, 255, 255, .14);
+                background: #3B7DD8;
                 outline: none;
             }
             #mobile-menu .mobile-menu-group {
                 overflow: hidden;
                 border: 1px solid rgba(255, 255, 255, .14);
                 border-radius: .9rem;
-                background: rgba(255, 255, 255, .055);
+                background: #164785;
             }
             #mobile-menu .mobile-nav-toggle {
                 min-height: 3.35rem;
@@ -818,8 +913,8 @@
             }
             #mobile-menu .mobile-nav-toggle:hover,
             #mobile-menu .mobile-nav-toggle[aria-expanded="true"] {
-                background: rgba(255, 255, 255, .12);
-                color: #f8f1e3;
+                background: #3B7DD8;
+                color: #fff;
                 transform: none;
                 box-shadow: none;
             }
@@ -832,7 +927,7 @@
             #mobile-menu [id^="mobile-"]:not(.mobile-menu-scroll) {
                 padding: .35rem .65rem .65rem;
                 border-top: 1px solid rgba(255, 255, 255, .12);
-                background: rgba(5, 16, 30, .28);
+                background: #164785;
             }
             #mobile-menu [id^="mobile-"] a {
                 display: flex;
@@ -841,13 +936,13 @@
                 padding: .65rem .75rem;
                 border-radius: .6rem;
                 color: rgba(255, 255, 255, .88);
-                font-size: .95rem;
+                font-size: 1rem;
                 line-height: 1.4;
                 transition: background-color .16s ease, color .16s ease;
             }
             #mobile-menu [id^="mobile-"] a:hover,
             #mobile-menu [id^="mobile-"] a:focus-visible {
-                background: rgba(255, 255, 255, .12);
+                background: #3B7DD8;
                 color: #fff;
                 outline: none;
             }
@@ -881,14 +976,34 @@
             z-index: 1100;
             height: 3px;
             width: 0;
-            background: linear-gradient(90deg, #C41E3A, #4A90C8, #1E3A5F);
-            box-shadow: 0 0 16px rgba(196, 30, 58, 0.25);
+            background: linear-gradient(90deg, #2D63B8, #5B91D1, #1C477F);
+            box-shadow: 0 0 16px rgba(45, 99, 184, 0.25);
             transition: width 0.15s ease-out;
         }
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(24px);
             transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .scroll-morph {
+            opacity: .58;
+            translate: 0 16px;
+            scale: .985;
+            box-shadow: 0 8px 24px rgba(30, 75, 135, 0);
+            transition:
+                opacity .6s ease-out,
+                translate .65s cubic-bezier(.2, .7, .25, 1),
+                scale .65s cubic-bezier(.2, .7, .25, 1),
+                box-shadow .65s ease-out;
+        }
+        .scroll-morph.visible {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1;
+            box-shadow: 0 14px 34px rgba(30, 75, 135, .09);
+        }
+        .scroll-morph.visible:hover {
+            box-shadow: 0 18px 36px rgba(30, 75, 135, .16);
         }
         .fade-up {
             opacity: 0;
@@ -902,7 +1017,7 @@
         .fade-up.visible { opacity: 1; transform: translateY(0); }
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
-            .fade-up, .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
+            .fade-up, .reveal-on-scroll, .scroll-morph { opacity: 1; transform: none; translate: none; scale: none; transition: none; box-shadow: none; }
         }
         .panel-card,
         .content-card,
@@ -960,7 +1075,7 @@
         }
         .site-footer-mobile {
             transition: opacity .3s ease, transform .3s ease;
-            background: linear-gradient(180deg, #1E3A5F 0%, rgba(30, 58, 95, 0.95) 55%, #152A45 100%);
+            background: linear-gradient(180deg, #1C477F 0%, rgba(28, 71, 127, 0.95) 55%, #163B6B 100%);
         }
         @media (max-width: 768px) {
             .site-footer-mobile {
@@ -997,7 +1112,7 @@
             transform: translateX(3px);
         }
         .dropdown-link:hover i {
-            color: #C41E3A;
+            color: #2D63B8;
         }
         @keyframes dropdownFade {
             from { opacity: 0; transform: translateY(-6px); }
@@ -1126,17 +1241,63 @@
     50% { transform: translateX(-30px); }
     100% { transform: translateX(30px); }
 }
+
+        [class~="text-[#1E3A5F]"],
+        [class~="text-[#2B6CB0]"] {
+            color: #2D63B8 !important;
+        }
+        [class~="bg-[#1E3A5F]"],
+        [class~="bg-[#152A45]"] {
+            background-color: #2D63B8 !important;
+        }
+        [class~="bg-[#0A2540]"] {
+            background-color: #1C477F !important;
+        }
+        [class~="bg-[#FDF8F0]"],
+        [class~="bg-[#F7F5F2]"],
+        [class~="bg-[#F8FAFC]"] {
+            background-color: #F8FBFF !important;
+        }
+        [class~="bg-[#EBF4FF]"] {
+            background-color: #EFF5FC !important;
+        }
+        [class~="bg-[#2B6CB0]"] {
+            background-color: #2D63B8 !important;
+        }
+        [class~="border-[#1E3A5F]/10"],
+        [class~="border-[#1E3A5F]/15"] {
+            border-color: rgba(45, 99, 184, 0.18) !important;
+        }
+        [class~="text-cyan-600"],
+        [class~="text-cyan-700"] {
+            color: #2D63B8 !important;
+        }
+        [class~="bg-cyan-50"] {
+            background-color: #EAF2FC !important;
+        }
+        .site-nav [class~="hover:bg-[#4A90C8]"]:hover,
+        .site-nav [class~="hover:bg-[#4A90C8]"]:focus-visible {
+            background-color: #5B91D1 !important;
+        }
+        .site-nav .dropdown-link:hover,
+        .site-nav .dropdown-link:focus-visible {
+            color: #2D63B8;
+        }
+        .site-nav .dropdown-link:hover i,
+        .site-nav .dropdown-link:focus-visible i {
+            color: #2D63B8;
+        }
     </style>
 </head>
 <body class="bg-sky-50 text-zinc-900">
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
     <!-- Navbar -->
-    <nav class="site-nav bg-[#152A45] text-white fixed top-0 z-50 shadow-lg">
+    <nav class="site-nav bg-[#1E5AA8] text-white fixed top-0 z-50 shadow-lg">
         <div class="nav-shell mx-auto px-3 sm:px-6">
             <div class="flex items-center justify-between gap-3 py-3 sm:py-4 min-h-[4rem]">
                 <a href="{% url 'home' %}" class="brand-wrap flex items-center gap-3 hover:scale-[1.02] transition-transform">
-                    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center whitespace-nowrap rounded-2xl border border-white/20 bg-gradient-to-br from-[#D4A017] to-[#6B2D3C] text-[0.55rem] font-black leading-none tracking-[0.08em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">B.G.S.S</div>
+                    <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center whitespace-nowrap rounded-2xl border border-white/40 bg-transparent text-[0.55rem] font-black leading-none tracking-[0.08em] text-white shadow-lg shadow-black/10 md:h-12 md:w-12">B.G.S.S</div>
                     <div class="min-w-0">
                         <span class="brand-title font-bold text-sm sm:text-base md:text-xl">Busiada Girls Senior School</span>
                         <span class="brand-subtitle block text-xs text-white/70">Unleash Your Potential</span>
@@ -1190,7 +1351,7 @@
                     <a href="{% url 'announcements' %}" class="desktop-nav-item px-4 py-2 hover:bg-[#4A90C8] rounded-xl transition-all">Announcements</a>
                 </div>
 
-                <button id="menu-btn" class="inline-flex lg:hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/10 text-xl text-white hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300" aria-label="Open menu" aria-expanded="false" type="button">
+                <button id="menu-btn" class="inline-flex lg:hidden h-11 w-11 items-center justify-center rounded-xl border border-white/30 bg-transparent text-xl text-white hover:bg-[#3B7DD8] focus:outline-none focus:ring-2 focus:ring-white" aria-label="Open menu" aria-expanded="false" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -1198,7 +1359,7 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#0A2540] text-white px-3 pb-4" aria-hidden="true">
+        <div id="mobile-menu" class="navbar-collapse hidden lg:hidden bg-[#164785] text-white px-3 pb-4" aria-hidden="true">
             <div class="mobile-menu-header">
                 <span class="mobile-menu-title">Explore Busiada</span>
                 <button type="button" id="mobile-menu-close" class="mobile-menu-close">
@@ -1278,16 +1439,16 @@
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
                 {% if site_settings.phone_number %}
                 <a href="tel:{{ site_settings.phone_number_href }}" class="utility-phone-link" aria-label="Call the school at {{ site_settings.phone_number }}">
-                    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5.5A2.5 2.5 0 0 1 6.5 3h2A1.5 1.5 0 0 1 10 4.2l.8 3.2a1.5 1.5 0 0 1-.7 1.7l-1.4.9a14 14 0 0 0 5.5 5.5l.9-1.4a1.5 1.5 0 0 1 1.7-.7l3.2.8a1.5 1.5 0 0 1 1.2 1.5v2A2.5 2.5 0 0 1 18.7 20 15.7 15.7 0 0 1 4 5.5Z"/></svg>
+                    <svg class="utility-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5.5A2.5 2.5 0 0 1 6.5 3h2A1.5 1.5 0 0 1 10 4.2l.8 3.2a1.5 1.5 0 0 1-.7 1.7l-1.4.9a14 14 0 0 0 5.5 5.5l.9-1.4a1.5 1.5 0 0 1 1.7-.7l3.2.8a1.5 1.5 0 0 1 1.2 1.5v2A2.5 2.5 0 0 1 18.7 20 15.7 15.7 0 0 1 4 5.5Z"/></svg>
                     <span>{{ site_settings.phone_number }}</span>
                 </a>
                 {% endif %}
                 <span class="hidden items-center gap-2 md:inline-flex">
-                    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM4 9h16M8 5v4m8-4v4M8 13h3m2 0h3M8 16h3"/></svg>
+                    <svg class="utility-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v14H4zM4 9h16M8 5v4m8-4v4M8 13h3m2 0h3M8 16h3"/></svg>
                     <span>P.O. Box 35-50404, Bumala, Busia County, Kenya</span>
                 </span>
                 <a href="mailto:info@busiadagirls.ac.ke" class="hidden items-center gap-2 transition hover:text-white/80 md:inline-flex">
-                    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg>
+                    <svg class="utility-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 7 8 6 8-6"/></svg>
                     <span>info@busiadagirls.ac.ke</span>
                 </a>
             </div>
@@ -1308,7 +1469,7 @@
         </div>
     </section>
 
-    <main class="site-main w-full overflow-x-hidden">
+    <main class="site-main w-full">
         {% block content_wrapper_start %}
         <div class="w-full max-w-none px-3 py-5 sm:px-6 lg:px-8 lg:py-8 reveal-on-scroll">
         {% endblock %}
@@ -1320,11 +1481,11 @@
         {% endblock %}
     </main>
 
-    <footer class="site-footer-mobile bg-[#1E3A5F] text-white py-3 sm:py-4 reveal-on-scroll">
+    <footer class="site-footer-mobile bg-[#1C477F] text-white py-3 sm:py-4">
         <div class="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-8">
             <div class="footer-grid">
                 <div class="footer-card">
-                    <h3 class="footer-heading font-semibold text-[#D4A017]">School Updates</h3>
+                    <h3 class="footer-heading font-semibold text-white">School Updates</h3>
                     <p class="footer-small text-white/70">Explore the latest school announcements or get in touch with our team.</p>
                     <div class="flex flex-wrap gap-2">
                         <a href="{% url 'announcements' %}" class="inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20">View Announcements</a>
@@ -1332,19 +1493,26 @@
                     </div>
                 </div>
 
-                <div class="footer-card">
-                    <h3 class="footer-heading font-semibold text-[#D4A017]">Contact Us</h3>
-                    <ul class="footer-contact-list">
-                        <li class="footer-contact-item">
-                            <span class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></span>
-                            <span><span class="block font-medium text-white">Location</span><span class="mt-0.5 block text-white/70">Busiada, Kenya</span></span>
-                        </li>
-                        <li class="footer-contact-item">
-                            <span class="footer-contact-icon"><i class="fa-solid fa-envelope"></i></span>
-                            <span><span class="block font-medium text-white">Email</span><span class="mt-0.5 block text-white/70">info@busiadagirls.ac.ke</span></span>
-                        </li>
-                    </ul>
-                </div>
+                {% if photo_highlights %}
+                <section class="footer-card photo-highlights-card" aria-labelledby="photo-highlights-title">
+                    <div class="text-center">
+                        <h2 id="photo-highlights-title" class="footer-heading flex items-center justify-center gap-2 font-semibold text-white">
+                            <i class="fa-solid fa-camera" aria-hidden="true"></i>
+                            Photo Highlights
+                        </h2>
+                        <p class="footer-small mt-1 text-white/80">Moments from Busiada Girls School</p>
+                    </div>
+                    <div class="photo-highlights-grid">
+                        {% for photo in photo_highlights %}
+                        <article class="photo-highlight-item">
+                            <img class="photo-highlight-image" src="{{ photo.src }}" alt="{{ photo.alt }}" loading="lazy">
+                            <p class="photo-highlight-caption">Uploaded by Admin</p>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    <p class="photo-highlights-note">Photos are uploaded and managed by the school administrator.</p>
+                </section>
+                {% endif %}
             </div>
 
             <div class="mt-3 border-t border-white/10 pt-3 text-center text-[0.72rem] text-white/60">
@@ -1358,7 +1526,9 @@
    <script>
 document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('scroll-progress');
-    const revealItems = document.querySelectorAll('.reveal-on-scroll, .fade-up');
+    const morphItems = document.querySelectorAll('.site-main article, .site-main .panel-card, .site-main .content-card, .site-main .admission-process-section');
+    morphItems.forEach((item) => item.classList.add('scroll-morph'));
+    const revealItems = document.querySelectorAll('.reveal-on-scroll, .fade-up, .scroll-morph');
     const footer = document.querySelector('footer.site-footer-mobile');
     const siteNav = document.querySelector('.site-nav');
     const menuBtn = document.getElementById('menu-btn');

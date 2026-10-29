@@ -49,6 +49,6 @@
     {% if announcement.cta_link %}<a href="{{ announcement.cta_link }}" target="_blank" rel="noopener noreferrer">{{ announcement.cta_text|default:'Learn more' }}</a>{% endif %}
     {% if announcement.video_url %}<a href="{{ announcement.video_url }}" target="_blank" rel="noopener noreferrer">Watch video</a>{% endif %}
   </div>
-  <a class="announcement-detail-back" href="{% url 'announcements' %}">← Back to all announcements</a>
+  <a class="announcement-detail-back" href="{% url 'announcements' %}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to all announcements</a>
 </article>
 {% endblock %}

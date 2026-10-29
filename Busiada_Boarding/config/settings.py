@@ -142,6 +142,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'boarding.context_processors.site_settings',
+                'boarding.context_processors.photo_highlights',
             ],
         },
     },

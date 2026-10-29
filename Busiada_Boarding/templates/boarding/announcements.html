@@ -120,7 +120,7 @@
         </div>
         <h2 id="featured-announcement-heading">{{ featured_announcement.title }}</h2>
         <p class="announcements-featured-summary">{% if featured_announcement.subtitle %}{{ featured_announcement.subtitle }}{% else %}{{ featured_announcement.content|striptags|truncatewords:38 }}{% endif %}</p>
-        <a class="announcements-text-link" href="{% url 'announcement_detail' pk=featured_announcement.pk %}">Read announcement <span aria-hidden="true">→</span></a>
+        <a class="announcements-text-link" href="{% url 'announcement_detail' pk=featured_announcement.pk %}">Read announcement <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
       {% if featured_announcement.safe_image_url %}<img class="announcements-featured-image" src="{{ featured_announcement.safe_image_url }}" alt="{{ featured_announcement.title }}" decoding="async">{% endif %}
     </div>
@@ -182,7 +182,7 @@
           </div>
           <h3>{{ announcement.title }}</h3>
           <p class="announcements-card-summary">{% if announcement.subtitle %}{{ announcement.subtitle }}{% else %}{{ announcement.content|striptags|truncatewords:30 }}{% endif %}</p>
-          <a class="announcements-text-link" href="{% url 'announcement_detail' pk=announcement.pk %}">Read announcement <span aria-hidden="true">→</span></a>
+          <a class="announcements-text-link" href="{% url 'announcement_detail' pk=announcement.pk %}">Read announcement <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
         </div>
       </article>
       {% endfor %}

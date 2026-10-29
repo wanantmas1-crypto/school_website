@@ -22,7 +22,7 @@
             transition: opacity 1.4s ease-in-out;
         }
         .hero-background-slide.is-active { opacity: 1; }
-        .hero-background-overlay { background: rgba(30, 58, 95, 0.52); }
+        .hero-background-overlay { background: rgba(34, 79, 148, 0.1); }
         @keyframes hero-ken-burns {
             from { transform: scale(1); }
             to { transform: scale(1.07); }
@@ -38,7 +38,7 @@
             .landing-page-heading { font-size: clamp(2.5rem, 11vw, 3.5rem); }
         }
     </style>
-    <div class="absolute inset-0 bg-[#1E3A5F]">
+    <div class="absolute inset-0 bg-[#2D63B8]">
         {% if hero_video_url %}
         <video class="hero-background-media" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
             <source src="{{ hero_video_url }}">
@@ -68,7 +68,7 @@
                 </div>
                 {% endif %}
                 <h1 class="landing-page-heading mb-4 font-bold tracking-tight text-white">{{ site_settings.site_name|default:'Busiada Girls’ High School' }}</h1>
-                <p class="mb-10 text-xl font-medium tracking-wide text-[#F8F1E3] md:text-2xl">{{ site_settings.tagline|default:'Unleash Your Potential' }}</p>
+                <p class="mb-10 text-xl font-medium tracking-wide text-white md:text-2xl">{{ site_settings.tagline|default:'Unleash Your Potential' }}</p>
                 {% if page and page.content %}
                 <div class="mx-auto max-w-2xl text-base leading-7 text-white/85">
                     {{ page.content|safe }}
@@ -76,9 +76,9 @@
                 {% endif %}
 
                 <div class="flex flex-wrap justify-center gap-4">
-                    <a href="{% url 'site_page' slug='admission-process' %}" class="landing-cta-button inline-flex items-center justify-center rounded-full bg-[#2B6CB0] px-8 py-3.5 font-semibold text-white shadow-lg transition hover:bg-blue-700">Admission Process</a>
-                    <a href="{% url 'school_history' %}" class="landing-cta-button inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-8 py-3.5 font-semibold text-white transition hover:bg-white/20">Our History</a>
-                    <a href="{% url 'contact_page' %}" class="landing-cta-button inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-8 py-3.5 font-semibold text-white transition hover:bg-white/20">Contact Us</a>
+                    <a href="{% url 'site_page' slug='admission-process' %}" class="landing-cta-button inline-flex items-center justify-center gap-2 rounded-full bg-[#1E5AA8] px-8 py-3.5 font-semibold text-white shadow-lg transition hover:bg-[#164785]"><i class="fa-solid fa-file-signature text-lg" aria-hidden="true"></i>Admission Process</a>
+                    <a href="{% url 'school_history' %}" class="landing-cta-button inline-flex items-center justify-center gap-2 rounded-full border border-white/60 bg-[#164785] px-8 py-3.5 font-semibold text-white transition hover:bg-[#1E5AA8]"><i class="fa-solid fa-book-open text-lg" aria-hidden="true"></i>Our History</a>
+                    <a href="{% url 'contact_page' %}" class="landing-cta-button inline-flex items-center justify-center gap-2 rounded-full border border-white/60 bg-[#164785] px-8 py-3.5 font-semibold text-white transition hover:bg-[#1E5AA8]"><i class="fa-solid fa-address-book text-lg" aria-hidden="true"></i>Contact Us</a>
                 </div>
             </div>
         </div>
@@ -101,48 +101,69 @@
 </script>
 {% endif %}
 <!-- Motto / Identity Section -->
-<section class="fade-up bg-[#FDF8F0] py-16 md:py-20">
+<section class="fade-up bg-[#F8FBFF] py-16 md:py-20">
     <div class="mx-auto max-w-4xl px-6 text-center">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-[#2B6CB0]">Our Motto</p>
-        <h2 class="mb-6 text-3xl font-bold text-[#1E3A5F] md:text-4xl">{{ site_settings.tagline|default:'Unleash Your Potential' }}</h2>
+        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-[#2D63B8]">Our Motto</p>
+        <h2 class="mb-6 text-3xl font-bold text-[#2D63B8] md:text-4xl">{{ site_settings.tagline|default:'Unleash Your Potential' }}</h2>
         <p class="mx-auto max-w-2xl text-lg leading-relaxed text-[#475569]">This is the spirit that guides every girl at Busiada — to discover her gifts, grow in character, and step into the world with confidence and purpose.</p>
         <div class="mt-10 grid gap-5 text-left sm:grid-cols-2">
-            <article class="rounded-2xl border border-[#1E3A5F]/10 bg-white p-6 shadow-sm">
-                <h3 class="mb-2 text-xl font-bold text-[#1E3A5F]">Our Vision</h3>
+            <article class="rounded-2xl border border-[#2D63B8]/20 border-t-4 border-t-[#2D63B8] bg-white p-6 shadow-sm">
+                <h3 class="mb-2 flex items-center gap-3 text-xl font-bold text-[#2D63B8]">
+                    <i class="fa-solid fa-eye brand-feature-icon" aria-hidden="true"></i>
+                    Our Vision
+                </h3>
                 <p class="text-[#475569]">To nurture confident, compassionate leaders who shape a better world.</p>
             </article>
-            <article class="rounded-2xl border border-[#1E3A5F]/10 bg-white p-6 shadow-sm">
-                <h3 class="mb-2 text-xl font-bold text-[#1E3A5F]">Our Mission</h3>
+            <article class="rounded-2xl border border-[#2D63B8]/20 border-t-4 border-t-[#2D63B8] bg-white p-6 shadow-sm">
+                <h3 class="mb-2 flex items-center gap-3 text-xl font-bold text-[#2D63B8]">
+                    <i class="fa-solid fa-bullseye brand-feature-icon" aria-hidden="true"></i>
+                    Our Mission
+                </h3>
                 <p class="text-[#475569]">Deliver excellent education, strong pastoral care, and opportunities for every learner to thrive.</p>
             </article>
         </div>
     </div>
 </section>
 <!-- Principal Message Section -->
-<section class="fade-up bg-[#EBF4FF] py-16 md:py-20">
+<section class="fade-up bg-[#EFF5FC] py-10 md:py-14">
     <style>
-        .principal-message-content { color: #475569; font-size: 1.0625rem; font-weight: 400; line-height: 1.8; }
+        .principal-message-content { color: #475569; font-size: 1rem; font-weight: 400; line-height: 1.7; }
         .principal-message-content p + p,
         .principal-message-content ul,
-        .principal-message-content ol { margin-top: 1rem; }
+        .principal-message-content ol { margin-top: .75rem; }
         .principal-message-content strong,
         .principal-message-content b { color: #334155; font-weight: 600; }
         .principal-message-content h2,
         .principal-message-content h3,
-        .principal-message-content h4 { color: #1E3A5F; font-size: 1.125rem; font-weight: 600; }
+        .principal-message-content h4 { color: #2D63B8; font-size: 1.125rem; font-weight: 600; }
+        .principal-message-content > :first-child { margin-top: 0; }
+        .principal-portrait { width: min(100%, 320px); aspect-ratio: 4 / 5; box-shadow: 0 20px 45px -18px rgba(15, 23, 42, .32); }
+        .principal-signature { border-top: 1px solid rgba(30, 58, 95, .15); }
+        .why-parents-section { background: #164785; }
+        .why-parents-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s ease-in-out; }
+        .why-parents-slide.is-active { opacity: 1; }
+        .why-parents-overlay { background: rgba(22, 71, 133, .78); }
+        .why-parents-card { border: 1px solid rgba(255,255,255,.82); border-top-width: 3px; background: #fff !important; color: #475569; box-shadow: 0 8px 24px rgba(15, 23, 42, .14); }
+        .why-parents-card h3 { color: #164785 !important; }
+        .why-parents-card p { color: #475569; }
+        .why-parents-card-teal { border-top-color: #5FB8AE; }
+        .why-parents-card-blue { border-top-color: #1E5AA8; }
+        .why-parents-card-indigo { border-top-color: #6875C7; }
+        .why-parents-card-coral { border-top-color: #F08A65; }
         .home-map-container { height: 360px; }
         .home-map-frame { display: block; width: 100%; height: 100%; border: 0; }
         @media (min-width: 1024px) { .home-map-container { height: 420px; } }
+        @media (prefers-reduced-motion: reduce) { .why-parents-slide { transition: none; } }
     </style>
-    <div class="mx-auto max-w-5xl px-6">
-        <div class="grid items-center gap-10 md:grid-cols-5">
-            <div class="flex justify-center md:col-span-2">
-                <div class="h-56 w-56 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-md md:h-64 md:w-64">
+    <div class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+        <div class="grid items-start gap-6 md:grid-cols-[minmax(240px,320px)_minmax(0,1fr)] md:gap-7 lg:gap-8">
+            <div class="flex justify-center md:justify-start">
+                <div class="principal-portrait scroll-morph overflow-hidden rounded-2xl border-4 border-white bg-white">
                     {% if site_settings.principal_image_url %}
                     <img src="{{ site_settings.principal_image_url }}" alt="{{ site_settings.principal_name|default:'Principal' }}" class="h-full w-full object-cover">
                     {% else %}
                     <div class="flex h-full w-full items-center justify-center bg-gradient-to-b from-white to-[#F1F5F9] text-[#1E3A5F]" role="img" aria-label="Principal portrait placeholder">
-                        <svg class="h-28 w-28 md:h-32 md:w-32" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+                        <svg class="h-32 w-32 md:h-36 md:w-36" viewBox="0 0 120 120" fill="none" aria-hidden="true">
                             <circle cx="60" cy="42" r="22" fill="currentColor" opacity=".18"/>
                             <path d="M20 108c2-23 18-36 40-36s38 13 40 36" fill="currentColor" opacity=".18"/>
                             <circle cx="60" cy="42" r="17" stroke="currentColor" stroke-width="3"/>
@@ -152,10 +173,13 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="md:col-span-3">
-                <p class="mb-2 text-sm font-semibold uppercase tracking-widest text-[#2B6CB0]">Principal’s Message</p>
-                <h2 class="mb-5 text-2xl font-bold text-[#1E3A5F] md:text-3xl">A Word from the Principal</h2>
-                <div class="principal-message-content space-y-4">
+            <div class="scroll-morph min-w-0">
+                <p class="mb-2 text-sm font-semibold uppercase tracking-widest text-[#2D63B8]">Principal’s Message</p>
+                <h2 class="mb-4 flex items-center gap-3 text-2xl font-bold text-[#2D63B8] md:text-3xl">
+                    <i class="fa-solid fa-user-tie brand-feature-icon" aria-hidden="true"></i>
+                    A Word from the Principal
+                </h2>
+                <div class="principal-message-content">
                     {% if site_settings.principal_message %}
                         {{ site_settings.principal_message|safe }}
                     {% else %}
@@ -164,12 +188,10 @@
                         <p>We are proud of the discipline, hard work, and sisterhood that define life at our school. Thank you for trusting us with your daughters.</p>
                     {% endif %}
                 </div>
-                {% if site_settings.principal_name and site_settings.principal_name != 'Principal Name' %}
-                <div class="mt-6 border-t border-[#1E3A5F]/15 pt-5">
-                    <p class="font-bold text-[#1E3A5F]">{{ site_settings.principal_name }}</p>
+                <div class="principal-signature mt-5 pt-4">
+                    <p class="font-bold text-[#1E3A5F]">{% if site_settings.principal_name and site_settings.principal_name != 'Principal Name' %}{{ site_settings.principal_name }}{% else %}The Principal{% endif %}</p>
                     <p class="text-sm text-slate-600">{{ site_settings.principal_title|default:'Principal' }}, Busiada Girls Senior School</p>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>
@@ -185,54 +207,54 @@
         </div>
 
         <div class="mt-10 grid gap-8 xl:grid-cols-[1.15fr_0.85fr]">
-            <div class="rounded-[2rem] border border-[#1E3A5F]/10 bg-white p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] sm:p-8 lg:p-10">
+            <div class="scroll-morph rounded-[2rem] border border-[#1E3A5F]/10 bg-white p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] sm:p-8 lg:p-10">
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <h3 class="flex items-center gap-3 text-2xl font-semibold text-[#1E3A5F]">
-                            <svg class="h-6 w-6 shrink-0 text-[#2B6CB0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 12v4.2c2.8 2.5 7.2 2.5 10 0V12M21 9.5v6"/></svg>
+                            <svg class="brand-feature-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 12v4.2c2.8 2.5 7.2 2.5 10 0V12M21 9.5v6"/></svg>
                             Academics
                         </h3>
                     </div>
                     <span class="rounded-full bg-cyan-50 px-4 py-2 text-sm font-semibold text-cyan-700">Curriculum pathways</span>
                 </div>
                 <div class="mt-8 grid gap-4 md:grid-cols-2">
-                    <a href="{% url 'academics_844' %}" class="group rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] p-5 transition hover:-translate-y-1 hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">8-4-4</p>
-                        <h4 class="mt-3 text-lg font-semibold text-slate-900">Secondary school curriculum</h4>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">An established pathway with strong academic grounding and subject depth.</p>
+                    <a href="{% url 'academics_844' %}" class="curriculum-pathway curriculum-pathway-844 group flex min-h-56 flex-col rounded-2xl border border-[#164785]/20 bg-[#164785] p-5 text-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <span class="curriculum-pathway-label self-start rounded-full bg-[#1E5AA8] px-3 py-1 text-sm font-bold uppercase tracking-[0.16em] text-white">8-4-4</span>
+                        <h4 class="mt-3 rounded-xl bg-[#1E5AA8] px-3 py-2 text-lg font-semibold text-white">Secondary school curriculum</h4>
+                        <p class="mt-auto pt-3 text-sm leading-7 text-white/85">An established pathway with strong academic grounding and subject depth.</p>
                     </a>
-                    <a href="{% url 'academics_26333' %}" class="group rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] p-5 transition hover:-translate-y-1 hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">2-6-3-3-3</p>
-                        <h4 class="mt-3 text-lg font-semibold text-slate-900">Competency-based education</h4>
-                        <p class="mt-2 text-sm leading-7 text-slate-600">A modern senior-school structure focused on competencies, skills and readiness.</p>
+                    <a href="{% url 'academics_26333' %}" class="curriculum-pathway curriculum-pathway-cbe group flex min-h-56 flex-col rounded-2xl border border-[#0F766E]/20 bg-[#0F766E] p-5 text-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <span class="curriculum-pathway-label self-start rounded-full bg-[#4F46A5] px-3 py-1 text-sm font-bold uppercase tracking-[0.16em] text-white">2-6-3-3-3</span>
+                        <h4 class="mt-3 rounded-xl bg-[#4F46A5] px-3 py-2 text-lg font-semibold text-white">Competency-based education</h4>
+                        <p class="mt-auto pt-3 text-sm leading-7 text-white/85">A modern senior-school structure focused on competencies, skills and readiness.</p>
                     </a>
                 </div>
             </div>
 
-            <div class="rounded-[2rem] border border-[#1E3A5F]/10 bg-white p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] sm:p-8 lg:p-10">
+            <div class="scroll-morph rounded-[2rem] border border-[#1E3A5F]/10 bg-white p-7 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.2)] sm:p-8 lg:p-10">
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <h3 class="flex items-center gap-3 text-2xl font-semibold text-[#1E3A5F]">
-                            <svg class="h-6 w-6 shrink-0 text-[#2B6CB0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0V4Zm0 2H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4"/></svg>
+                            <svg class="brand-feature-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0V4Zm0 2H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4"/></svg>
                             Co-Curricular & Talent Development
                         </h3>
                     </div>
                 </div>
                 <div class="mt-8 grid gap-4 sm:grid-cols-2">
                     <a href="{% url 'games_and_sports' %}" class="flex items-center justify-between rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] px-5 py-4 transition hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <span class="font-semibold text-slate-900">Games & Sports</span>
+                        <span class="flex items-center gap-3 font-semibold text-slate-900"><i class="fa-solid fa-futbol text-xl text-[#1E5AA8]" aria-hidden="true"></i>Games & Sports</span>
                         <svg class="h-4 w-4 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </a>
                     <a href="{% url 'clubs_and_societies' %}" class="flex items-center justify-between rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] px-5 py-4 transition hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <span class="font-semibold text-slate-900">Clubs & Societies</span>
+                        <span class="flex items-center gap-3 font-semibold text-slate-900"><i class="fa-solid fa-people-group text-xl text-[#1E5AA8]" aria-hidden="true"></i>Clubs & Societies</span>
                         <svg class="h-4 w-4 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </a>
                     <a href="{% url 'guiding_and_counselling' %}" class="flex items-center justify-between rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] px-5 py-4 transition hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <span class="font-semibold text-slate-900">Guiding & Counselling</span>
+                        <span class="flex items-center gap-3 font-semibold text-slate-900"><i class="fa-solid fa-hand-holding-heart text-xl text-[#1E5AA8]" aria-hidden="true"></i>Guiding & Counselling</span>
                         <svg class="h-4 w-4 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </a>
                     <a href="{% url 'performing_visual_arts' %}" class="flex items-center justify-between rounded-2xl border border-[#1E3A5F]/10 bg-[#FDF8F0] px-5 py-4 transition hover:border-[#2B6CB0]/40 hover:bg-white">
-                        <span class="font-semibold text-slate-900">Performing & Visual Arts</span>
+                        <span class="flex items-center gap-3 font-semibold text-slate-900"><i class="fa-solid fa-palette text-xl text-[#1E5AA8]" aria-hidden="true"></i>Performing & Visual Arts</span>
                         <svg class="h-4 w-4 shrink-0 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
                     </a>
                 </div>
@@ -273,41 +295,63 @@
 </section>
 
 <!-- Why Parents Choose Us Section -->
-<section class="bg-[#F8FAFC] py-16">
-  <div class="container mx-auto px-6 text-center">
+<section class="why-parents-section relative isolate overflow-hidden py-16">
+  <div class="why-parents-slideshow absolute inset-0" aria-hidden="true">
+    {% for image in why_parents_images %}
+    <img class="why-parents-slide{% if forloop.first %} is-active{% endif %}" src="{{ image.url }}" alt="" loading="lazy">
+    {% endfor %}
+  </div>
+  <div class="why-parents-overlay absolute inset-0" aria-hidden="true"></div>
+  <div class="container relative z-10 mx-auto px-6 text-center">
     <!-- Heading -->
-    <h2 class="mb-10 text-3xl font-bold text-[#1E3A5F] md:text-4xl">
+    <h2 class="mb-10 text-3xl font-bold text-white md:text-4xl">
       Why Parents Choose Our Girls’ Boarding School
     </h2>
 
     <!-- Responsive Card Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Card 1 -->
-      <div class="rounded-[1.25rem] border border-[#1E3A5F]/10 bg-[#FDF8F0] p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:bg-white hover:shadow-xl">
+      <div class="why-parents-card why-parents-card-teal scroll-morph rounded-[1.25rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="mb-4 text-xl font-semibold text-[#1E3A5F]">A Secure and Caring Home</h3>
         <p class="text-[#475569]">A safe, nurturing environment where girls feel at home away from home.</p>
       </div>
 
       <!-- Card 2 -->
-      <div class="rounded-[1.25rem] border border-[#1E3A5F]/10 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:bg-[#FDF8F0] hover:shadow-xl">
+      <div class="why-parents-card why-parents-card-blue scroll-morph rounded-[1.25rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="mb-4 text-xl font-semibold text-[#1E3A5F]">Academic Excellence & Character</h3>
         <p class="text-[#475569]">We balance strong academics with values and character formation.</p>
       </div>
 
       <!-- Card 3 -->
-      <div class="rounded-[1.25rem] border border-[#1E3A5F]/10 bg-[#FDF8F0] p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:bg-white hover:shadow-xl">
+      <div class="why-parents-card why-parents-card-indigo scroll-morph rounded-[1.25rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="mb-4 text-xl font-semibold text-[#1E3A5F]">Confident Young Ladies</h3>
         <p class="text-[#475569]">We develop well-rounded, confident young women ready for the future.</p>
       </div>
 
       <!-- Card 4 -->
-      <div class="rounded-[1.25rem] border border-[#1E3A5F]/10 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:bg-[#FDF8F0] hover:shadow-xl">
+      <div class="why-parents-card why-parents-card-coral scroll-morph rounded-[1.25rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
         <h3 class="mb-4 text-xl font-semibold text-[#1E3A5F]">Parent Engagement</h3>
         <p class="text-[#475569]">Transparent communication and regular updates keep parents involved.</p>
       </div>
     </div>
   </div>
 </section>
+{% if why_parents_images|length > 1 %}
+<script>
+    (() => {
+        const section = document.querySelector('.why-parents-section');
+        const slides = section?.querySelectorAll('.why-parents-slide');
+        if (!slides || slides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        let activeIndex = 0;
+        window.setInterval(() => {
+            slides[activeIndex].classList.remove('is-active');
+            activeIndex = (activeIndex + 1) % slides.length;
+            slides[activeIndex].classList.add('is-active');
+        }, 8000);
+    })();
+</script>
+{% endif %}
 
 <!-- Campus Life Gallery section removed -->
 

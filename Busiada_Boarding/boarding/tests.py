@@ -328,6 +328,46 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, page.title)
         self.assertContains(response, 'Welcome to the homepage.')
 
+    def test_footer_photo_highlights_only_shows_uploaded_photos(self):
+        page = SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+        PageImage.objects.create(
+            page=page,
+            title='School celebration',
+            image='pages/school-celebration.jpg',
+            order=1,
+        )
+
+        with patch.object(PageImage, 'display_url', return_value='/media/school-celebration.jpg'):
+            response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Photo Highlights')
+        self.assertContains(response, 'Moments from Busiada Girls School')
+        self.assertContains(response, 'Photos are uploaded and managed by the school administrator.')
+        self.assertContains(response, 'Uploaded by Admin', count=1)
+        self.assertNotContains(response, 'Upload Photo')
+        self.assertContains(response, '/media/school-celebration.jpg')
+        self.assertNotContains(response, '<h3 class="footer-heading font-semibold text-white">Contact Us</h3>', html=False)
+
+    def test_footer_photo_highlights_is_hidden_without_uploaded_photos(self):
+        SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Photo Highlights')
+        self.assertNotContains(response, 'Upload Photo')
+
     def test_home_page_displays_services_we_offer_section(self):
         SitePage.objects.create(
             slug='home',
@@ -347,6 +387,49 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'Additional Value-Added Services')
         self.assertContains(response, '/student-health/')
         self.assertContains(response, '/guiding-and-counselling/')
+
+    def test_homepage_pathways_icons_and_admin_managed_parent_reasons_slideshow(self):
+        page = SitePage.objects.create(
+            slug='home',
+            title='Home',
+            content='<p>Welcome to the homepage.</p>',
+            status='published',
+        )
+        slideshow_category = GalleryCategory.objects.get(slug='why-parents-choose-us')
+        PageImage.objects.create(
+            page=page,
+            title='School community',
+            image='pages/community.jpg',
+            external_url='https://media.example.test/community.jpg',
+            category=slideshow_category,
+            order=1,
+        )
+        PageImage.objects.create(
+            page=page,
+            title='School event',
+            image='pages/event.jpg',
+            external_url='https://media.example.test/event.jpg',
+            category=slideshow_category,
+            order=2,
+        )
+
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'curriculum-pathway-844')
+        self.assertContains(response, 'curriculum-pathway-cbe')
+        self.assertContains(response, 'fa-futbol')
+        self.assertContains(response, 'fa-people-group')
+        self.assertContains(response, 'fa-hand-holding-heart')
+        self.assertContains(response, 'fa-palette')
+        self.assertContains(response, 'why-parents-slide')
+        self.assertContains(response, 'https://media.example.test/community.jpg')
+        self.assertContains(response, 'https://media.example.test/event.jpg')
+        self.assertNotContains(
+            response,
+            'class="hero-background-media hero-background-slide',
+            html=False,
+        )
 
     def test_home_page_features_modern_ctas_and_contact_bar(self):
         SitePage.objects.create(
@@ -381,11 +464,13 @@ class PublicPagesTests(TestCase):
         self.assertContains(response, 'Unleash Your Potential')
         self.assertContains(response, 'CMS Principal')
         self.assertContains(response, 'Welcome to our school.')
+        self.assertContains(response, 'principal-portrait')
+        self.assertContains(response, 'principal-signature')
         self.assertContains(response, 'href="/contact/"')
         self.assertContains(response, 'View Announcements')
         self.assertContains(response, 'Principal portrait placeholder')
         self.assertContains(response, 'home-map-frame')
-        self.assertContains(response, 'Busiada, Kenya')
+        self.assertNotContains(response, 'Photo Highlights')
         self.assertContains(response, 'P.O. Box 35-50404, Bumala, Busia County, Kenya')
         self.assertContains(response, '<svg', html=False)
         for social_url in (

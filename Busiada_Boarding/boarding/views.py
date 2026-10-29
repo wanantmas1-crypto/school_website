@@ -284,13 +284,23 @@ def home(request):
     hero_video = PageVideo.objects.filter(page=page).exclude(video='').first() if page else None
     hero_video_url = _safe_file_url(hero_video.video) if hero_video else ''
     hero_images = []
+    why_parents_images = []
     if page:
-        for image in page.images.all():
+        for image in page.images.exclude(category__slug='why-parents-choose-us'):
             image_url = image.display_url()
             if image_url:
                 hero_images.append({
                     'url': image_url,
                     'alt': image.caption or image.title or 'Busiada school',
+                })
+        for image in page.images.filter(
+            category__slug='why-parents-choose-us'
+        ).order_by('order', 'uploaded_at'):
+            image_url = image.display_url()
+            if image_url:
+                why_parents_images.append({
+                    'url': image_url,
+                    'alt': image.caption or image.title or 'Busiada school life',
                 })
 
     # Pass gallery items to the template
@@ -301,6 +311,7 @@ def home(request):
         'page_background_image_url': page_background_image_url,
         'hero_video_url': hero_video_url,
         'hero_images': hero_images,
+        'why_parents_images': why_parents_images,
         'gallery_items': gallery_items,
     })
 
